@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "21C852-0_v1_00_a_20240815",
+            "type": "ccs-debug",
+            "request": "launch",
+            "project": "21C852-0_v1_00_a_20240815"
+        }
+    ]
+}

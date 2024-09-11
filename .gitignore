@@ -1,0 +1,23 @@
+pcb/CTRL_MODULE/History
+pcb/CTRL_MODULE/*.htm
+pcb/LINKER_MODULE/History
+pcb/LINKER_MODULE/__Previews
+pcb/LINKER_MODULE/Project *
+pcb/LINKER_MODULE/Project Outputs for Linker
+pcb/LINKER_MODULE/*.htm
+pcb/PUMP_MODULE/History
+pcb/PUMP_MODULE/Output
+pcb/PUMP_MODULE/__Previews
+pcb/PUMP_MODULE/Project Logs for Linker
+pcb/PUMP_MODULE/Project Outputs for Linker
+pcb/PUMP_MODULE/*.htm
+pcb/PUMP_MODULE_20230921/*.htm
+pcb/VALVE_MODULE/History
+pcb/VALVE_MODULE/Output
+pcb/VALVE_MODULE/__Previews
+pcb/VALVE_MODULE/Project Logs for Linker
+pcb/VALVE_MODULE/Project Outputs for Linker
+pcb/VALVE_MODULE/*.htm
+model/
+master/dist/*.exe
+master/pymaster/dist/*.exe

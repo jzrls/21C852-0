@@ -1,0 +1,98 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+
+entity protect_module is
+
+	port 
+	(
+	   M_EXT_IO_OUT1		: in std_logic;
+	   M_EXT_IO_OUT2		: in std_logic;
+
+      S_EXT_IO_OUT1   	:in std_logic;
+	   S_EXT_IO_OUT2   	:in std_logic;
+
+		M_IGBT_FO   		: in std_logic;
+		S_IGBT_FO   		: in std_logic;		
+		
+		SLT_MODE0  			: in std_logic;
+		SLT_MODE1  			: in std_logic;
+		
+		TEST_LED   			: out std_logic;
+		
+		MS_SLT  	  			:out std_logic;
+		
+		BC_SLT   			:out std_logic;		
+		BC_SLTN   			:out std_logic;		
+      M_BC_SLT   			:out std_logic;
+		S_BC_SLT   			:out std_logic;
+		
+		M_EN_TXD  			:out std_logic; 		
+		S_EN_TXD  			:out std_logic; 		
+
+ 	   M_EXT_IO_IN1	   : out std_logic;
+		M_EXT_IO_IN2	   : out std_logic;		
+		
+      S_EXT_IO_IN1   	:out std_logic;
+		S_EXT_IO_IN2   	:out std_logic;      
+      
+      IGBT_FAULT1   		:buffer std_logic;
+		IGBT_FAULT2   		:buffer std_logic
+
+	);
+
+end entity;
+
+architecture rtl of protect_module is
+begin
+
+      TEST_LED	         <='0';
+
+		MS_SLT				<=SLT_MODE0 and SLT_MODE1;
+		
+		M_EXT_IO_IN1	   <=SLT_MODE0;
+		M_EXT_IO_IN2	   <=SLT_MODE1;
+		
+      S_EXT_IO_IN1   	<=SLT_MODE0;
+		S_EXT_IO_IN2   	<=SLT_MODE1;
+	
+	   IGBT_FAULT1			<=M_EXT_IO_OUT1 or M_IGBT_FO;		
+		
+		IGBT_FAULT2			<=S_EXT_IO_OUT1 or S_IGBT_FO;
+	
+      
+
+process(M_EXT_IO_OUT2,IGBT_FAULT1,S_EXT_IO_OUT2)
+begin
+
+     if(M_EXT_IO_OUT2='0' and S_EXT_IO_OUT2='1')then
+
+        BC_SLT		<='0';
+		  BC_SLTN	<='1';
+		  
+		  M_BC_SLT	<='0';
+		  S_BC_SLT  <='0';
+		  
+		  M_EN_TXD	<='1';
+		  S_EN_TXD	<='0';		  
+		  
+     --elsif( IGBT_FAULT1='0' and S_EXT_IO_OUT2='0')then
+	  elsif( S_EXT_IO_OUT2='0')then
+	  
+        BC_SLT		<='1';
+		  BC_SLTN	<='0';
+		  
+		  M_BC_SLT	<='1';
+		  S_BC_SLT  <='1';
+		  
+		  M_EN_TXD	<='0';
+		  S_EN_TXD	<='1';
+		  
+	  end if;   	  
+
+end process;
+
+
+end rtl;

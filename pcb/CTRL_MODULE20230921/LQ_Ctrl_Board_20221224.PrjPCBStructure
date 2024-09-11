@@ -1,0 +1,4 @@
+Record=TopLevelDocument|FileName=MAP.SchDoc|SheetNumber= 
+Record=SheetSymbol|SourceDocument=MAP.SchDoc|Designator=UB1|SchDesignator=UB1|FileName=Ctrl_Board.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=Ctrl_Board.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=MAP.SchDoc|Designator=UB2|SchDesignator=UB2|FileName=Ctrl_Board.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=Ctrl_Board.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=MAP.SchDoc|Designator=UB3|SchDesignator=UB3|FileName=MS_COM.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=MS_COM.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 

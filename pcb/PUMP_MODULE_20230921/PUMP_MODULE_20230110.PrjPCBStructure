@@ -1,0 +1,4 @@
+Record=TopLevelDocument|FileName=DB_TPM.SchDoc|SheetNumber= 
+Record=SheetSymbol|SourceDocument=DB_TPM.SchDoc|Designator=U1|SchDesignator=U1|FileName=PUMP_THREEPHASE_MODULE.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=PUMP_THREEPHASE_MODULE.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=DB_TPM.SchDoc|Designator=U2|SchDesignator=U2|FileName=PUMP_THREEPHASE_MODULE.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=PUMP_THREEPHASE_MODULE.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=DB_TPM.SchDoc|Designator=U3|SchDesignator=U3|FileName=Interface.SchDoc|SheetNumber= |SymbolType=Normal|RawFileName=Interface.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 

@@ -353,8 +353,6 @@ void getAdc() {
     ADc_Udc = AdcRegs.ADCRESULT3;   /* 母线电压 */
     ADc_Temp4 = AdcRegs.ADCRESULT4; /* 驱动板温度 */
     ADc_Idc = AdcRegs.ADCRESULT5;   /* 母线电流 */
-    // ADc_Temp0 = AdcRegs.ADCRESULT6; /* 外部温度输入1，未使用 */
-    // ADc_Temp2 = AdcRegs.ADCRESULT7; /* 外部温度输入2，未使用 */
 
     Isa = __getCurrent(ADc_Isa, K_Isa, Off_Isa); /* 获取A相电流 */
     Isb = __getCurrent(ADc_Isb, K_Isb, Off_Isb); /* 获取B相电流 */
@@ -369,16 +367,6 @@ void getAdc() {
     Idc = RCFilter(Idc0, Idc, Udc_Filter);
     Idc0 = Idc;
 
-    // Temperature1 = Adc_Temp(ADc_Temp0);
-    // Temperature1 = _IQmpy((Temperature1 - Temperature1_Off), Temperature1_K);
-    // Temperature1 = RCFilter(Temperature10, Temperature1, Temp_Filter);
-    // Temperature10 = Temperature1;
-
-    // Temperature3 = Adc_Temp(ADc_Temp2);
-    // Temperature3 = _IQmpy((Temperature3 - Temperature3_Off), Temperature3_K);
-    // Temperature3 = RCFilter(Temperature30, Temperature3, Temp_Filter);
-    // Temperature30 = Temperature3;
-
     Temperature5 = Adc_Temp(ADc_Temp4);
     Temperature5 = _IQmpy((Temperature5 - Temperature5_Off), Temperature5_K);
     Temperature5 = RCFilter(Temperature50, Temperature5, Temp_Filter);
@@ -390,9 +378,7 @@ void getAdc() {
     } else {
         for (Uint16 i = 1; i < 31; i++) {
             if (Temperature5 <= m_PT_V[i]) {
-                Temperature5 =
-                    _IQdiv(_IQmpy(m_PT_T[i] - m_PT_T[i - 1], Temperature5 - m_PT_V[i - 1]), m_PT_V[i] - m_PT_V[i - 1]) +
-                    m_PT_T[i - 1];
+                Temperature5 = _IQdiv(_IQmpy(m_PT_T[i] - m_PT_T[i - 1], Temperature5 - m_PT_V[i - 1]), m_PT_V[i] - m_PT_V[i - 1]) + m_PT_T[i - 1];
                 break;
             }
         }

@@ -75,7 +75,7 @@ class PlotWidget(pg.PlotWidget):
         self.x_range = 0
 
     def add(self, name: str, color: str) -> None:
-        curve = pg.PlotCurveItem(pen=mkPen(color=color, width=1.5), name=name)
+        curve = pg.PlotCurveItem(pen=mkPen(color=color, width=2), name=name)
         curve.setVisible(False)
         self.addItem(curve)
         self.curves[name] = {"curve": curve, "data": np.array([])}

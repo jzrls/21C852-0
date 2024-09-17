@@ -121,12 +121,9 @@ void selfCheckResponse() {
     if (isMainCpu || isSubCpu) {
         Ctrl_Flag.bit.CANERROR_FLAG = 0;
         CAN_Index = 0;
-<<<<<<< HEAD
-        for (Uint16 i = 0; i < 8; i++) CAN_BUFFER_RX[i] = 0;
-=======
-        for (Uint16 i = 0; i < 8; i++)
+        for (Uint16 i = 0; i < 8; i++) {
             CAN_BUFFER_RX[i] = 0;
->>>>>>> refs/remotes/origin/main
+        }
         CAN_BUFFER_RX[0] = SCI_RX_BUFFER[2];
         Can_Tx11_Data();
 
@@ -485,10 +482,11 @@ void telemeteringResponse() {
         Ctrl_Flag.bit.CANERROR_FLAG = 0;
         CAN_Index = 0;
 <<<<<<< HEAD
-        for (Uint16 i = 0; i < 8; i++) CAN_BUFFER_RX[i] = 0;
-=======
         for (Uint16 i = 0; i < 8; i++)
             CAN_BUFFER_RX[i] = 0;
+        == == == =
+                     for (Uint16 i = 0; i < 8; i++)
+                         CAN_BUFFER_RX[i] = 0;
 >>>>>>> refs/remotes/origin/main
         CAN_BUFFER_RX[0] = SCI_RX_BUFFER[2];
         Can_Tx11_Data();
@@ -509,9 +507,9 @@ void controlResponse() {
     CAN_BUFFER_RX[0] = SCI_RX_BUFFER[2]; /* 指令类型 */
 
 <<<<<<< HEAD
-    CAN_BUFFER_RX[1] = 0x07;  // 先选择从板
-=======
-    CAN_BUFFER_RX[1] = 0x07; // 先选择从板
+    CAN_BUFFER_RX[1] = 0x07;             // 先选择从板
+    == == == =
+                 CAN_BUFFER_RX[1] = 0x07; // 先选择从板
 >>>>>>> refs/remotes/origin/main
     // 如果主板无故障，且从板不在运行中，则选择主板运行
     if ((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01) {
@@ -528,8 +526,8 @@ void controlResponse() {
 
 <<<<<<< HEAD
     CAN_CONTROL = CAN_BUFFER_RX[1];
-=======
-    CAN_CONTROL = CAN_BUFFER_RX[1]; // 板卡选择
+    == == == =
+                 CAN_CONTROL = CAN_BUFFER_RX[1]; // 板卡选择
 >>>>>>> refs/remotes/origin/main
     for (Uint16 i = 2; i < 7; i++) {
         CAN_BUFFER_RX[i] = SCI_RX_BUFFER[3 + i]; /* 命令码+命令参数 */
@@ -547,9 +545,9 @@ void controlResponse() {
         /* 设置蝶阀1角度  */
         _iq angle = Hex_Float(CAN_BUFFER_RX[3], CAN_BUFFER_RX[4], CAN_BUFFER_RX[5], CAN_BUFFER_RX[6]);
 <<<<<<< HEAD
-        angle = _IQmpy(angle, 3200);  // 100>>15
-=======
         angle = _IQmpy(angle, 3200); // 100>>15
+        == == == =
+                     angle = _IQmpy(angle, 3200); // 100>>15
 >>>>>>> refs/remotes/origin/main
         if (angle >= 65535) {
             angle = 65535;
@@ -589,9 +587,9 @@ void controlResponse() {
         /* 设置蝶阀2角度 */
         _iq angle = Hex_Float(CAN_BUFFER_RX[3], CAN_BUFFER_RX[4], CAN_BUFFER_RX[5], CAN_BUFFER_RX[6]);
 <<<<<<< HEAD
-        angle = _IQmpy(angle, 3200);  // 100>>15
-=======
         angle = _IQmpy(angle, 3200); // 100>>15
+        == == == =
+                     angle = _IQmpy(angle, 3200); // 100>>15
 >>>>>>> refs/remotes/origin/main
         if (angle >= 65535) {
             angle = 65535;
@@ -943,10 +941,11 @@ void canBufferCtrlNum() {
     // 通过CAN进行控制
     if (CAN_BUFFER_CTRL[0] == 0xA1) {
 <<<<<<< HEAD
-        for (Uint16 i = 0; i < 8; i++) CAN_CHANGE_CTRL[i] = CAN_BUFFER_CTRL[i];
-=======
         for (Uint16 i = 0; i < 8; i++)
             CAN_CHANGE_CTRL[i] = CAN_BUFFER_CTRL[i];
+        == == == =
+                     for (Uint16 i = 0; i < 8; i++)
+                         CAN_CHANGE_CTRL[i] = CAN_BUFFER_CTRL[i];
 >>>>>>> refs/remotes/origin/main
         if ((BORAD_NUM == 0 || BORAD_NUM == 1)) {
             if (CAN_BUFFER_CTRL[2] == 0x11 && CAN_BUFFER_CTRL[3] == 0x5A) {

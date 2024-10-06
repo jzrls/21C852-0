@@ -13,6 +13,12 @@
 
 void Can_Rt_Data(Uint16 Num) {
     volatile _iq tmp = 0;
+    static _iq sumSpeed = 0;
+    static Uint16 index = 0;
+    _iq speed = 0;
+
+    static _iq speedArray[16] = {0};
+
     if (Num == 1) {
         Uint16 isPump = BORAD_NUM == 2 || BORAD_NUM == 3;
         if (isPump) {
@@ -24,8 +30,40 @@ void Can_Rt_Data(Uint16 Num) {
             if (tmp >= 65535) {
                 tmp = 65535;
             }
-            CAN_BUFFER_RT[BORAD_NUM][0] = tmp & 0x00FF;
-            CAN_BUFFER_RT[BORAD_NUM][1] = (tmp >> 8) & 0x00FF;
+
+            /**
+             * 对tmp进行16次均值滤波处理
+             */
+            // sumSpeed += tmp;
+            // index++;
+            // if (index >= 16) {
+            //     speed = sumSpeed >> 4;
+            //     sumSpeed = 0;
+            //     index = 0;
+            // }
+
+            if (index < 16) {
+                speedArray[index] = tmp;
+                index++;
+
+                for (int i = 0; i < index - 1; i++) {
+                    sumSpeed += speedArray[i];
+                }
+                speed = sumSpeed / index;
+
+            } else {
+                for (int i = 0; i < 15; i++) {
+                    speedArray[i] = speedArray[i + 1];
+                }
+                speedArray[15] = tmp;
+                for (int i = 0; i < index - 1; i++) {
+                    sumSpeed += speedArray[i];
+                }
+                speed = sumSpeed / index;
+            }
+
+            CAN_BUFFER_RT[BORAD_NUM][0] = speed & 0x00FF;
+            CAN_BUFFER_RT[BORAD_NUM][1] = (speed >> 8) & 0x00FF;
 
             Fault_Flag.bit.POS_LIMIT = 0;
         } else {
@@ -38,7 +76,7 @@ void Can_Rt_Data(Uint16 Num) {
              * 实际角度与计算角度有100的定标系数
              */
             tmp = Angle_Fa_Q16;
-            tmp = _IQmpy(tmp, _IQ(0.54931640625));  // 360/65536*100
+            tmp = _IQmpy(tmp, _IQ(0.54931640625)); // 360/65536*100
             if (tmp >= 65535)
                 tmp = 65535;
             CAN_BUFFER_RT[BORAD_NUM][0] = tmp & 0x00FF;
@@ -165,7 +203,7 @@ void Can_Ctrl(Uint16 Board) {
             Isd_Set = 0;
             tmp = Hex_Float(CAN_BUFFER_RX[3], CAN_BUFFER_RX[4], CAN_BUFFER_RX[5], CAN_BUFFER_RX[6]);
             tmp = _IQmpy(tmp,
-                         _IQ(0.0055555555555555555555555555555556));  // 65536/360>>15
+                         _IQ(0.0055555555555555555555555555555556)); // 65536/360>>15
             Pos_Set = tmp;
             if (Pos_Set > POSMAX) {
                 Pos_Set = POSMAX;
@@ -558,7 +596,7 @@ interrupt void ECana_T(void) {
     volatile Uint16 Sum_Temp = 0;
     if (ECanaRegs.CANRMP.bit.RMP0 == 1) /*等待所有RMP0置位*/
     {
-        if (CANB.FLAG.bit.RX_FLAG == 0)  // && CANB.FLAG.bit.TXBO_FLAG == 1)
+        if (CANB.FLAG.bit.RX_FLAG == 0) // && CANB.FLAG.bit.TXBO_FLAG == 1)
         {
             *CANB.p_Rx_Buffer = ECanaMboxes.MBOX0.MDL.byte.BYTE4;
             CANB.p_Rx_Buffer++;
@@ -607,7 +645,7 @@ interrupt void ECana_T(void) {
     }
     if (ECanaRegs.CANRMP.bit.RMP3 == 1) /*等待所有RMP0置位*/
     {
-        if (CANB2.FLAG.bit.RX_FLAG == 0)  // && CANB2.FLAG.bit.TXBO_FLAG == 1)
+        if (CANB2.FLAG.bit.RX_FLAG == 0) // && CANB2.FLAG.bit.TXBO_FLAG == 1)
         {
             *CANB2.p_Rx_Buffer = ECanaMboxes.MBOX3.MDL.byte.BYTE4;
             CANB2.p_Rx_Buffer++;
@@ -978,7 +1016,7 @@ void Can_Deal(void) {
     command = (RX_BUFFER[2]);
 
     switch (command) {
-    case 0x0000:  // 初始化检测控制器指令			lxy
+    case 0x0000: // 初始化检测控制器指令			lxy
         SendData[0] = ReceData[1];
         SendData[1] = BORAD_NUM;
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -986,10 +1024,10 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0001:                              // 清除故障标志指令			lxy
-        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;    // "1"表明电机过流保护
-        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0;  // "1"表明超速保护
-        Sys_Flag.bit.UDC_FLAG = 0;            // "1"表明直流电压故障
+    case 0x0001:                             // 清除故障标志指令			lxy
+        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;   // "1"表明电机过流保护
+        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0; // "1"表明超速保护
+        Sys_Flag.bit.UDC_FLAG = 0;           // "1"表明直流电压故障
         Sys_Flag.bit.STOP_PWM_Flag_Driv = 0;
 
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -997,7 +1035,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000D:  // LOCK
+    case 0x000D: // LOCK
         CAN_DataCombine_Rx(RX_BUFFER);
         Usa_Lock = ReceData[0];
         Usb_Lock = ReceData[1];
@@ -1011,7 +1049,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0002:  // Read Position
+    case 0x0002: // Read Position
         SendData[0] = Isa;
         SendData[1] = Isb;
         SendData[2] = Isc;
@@ -1026,7 +1064,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0003:  // Openloop
+    case 0x0003: // Openloop
 
         CAN_DataCombine_Rx(RX_BUFFER);
         Um_OpenLoop = ReceData[0];
@@ -1040,7 +1078,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000E:  // Release LOCK
+    case 0x000E: // Release LOCK
 
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
@@ -1051,7 +1089,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0004:  // 写电机参数和基值系统指令			lxy
+    case 0x0004: // 写电机参数和基值系统指令			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         getMotorParams(ReceData);
 
@@ -1061,7 +1099,7 @@ void Can_Deal(void) {
         p = _IQdiv(Mp, Rp); /* 电机与旋变的极对数比 */
         Udc_Mche_realvalue = _IQdiv(_IQ(1), Udc_Setg);
         K_Velo_Cal = _IQdiv(_IQ(62.83185307179586476925286766559), V_Base);
-        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0);  // 定时器周期为100us
+        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0); // 定时器周期为100us
         K_Velo_Cal = _IQdiv(K_Velo_Cal, Velo_Calc_Num << 20);
         K_Velo_Cal = _IQmpy(K_Velo_Cal, p);
         Is_PerAdd = _IQmpy(Is_Add, Per_Ctrl);
@@ -1079,7 +1117,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0005:  // 读电机参数和基值系统指令		lxy
+    case 0x0005: // 读电机参数和基值系统指令		lxy
         SendData[0] = Rs;
         SendData[1] = Ld;
         SendData[2] = Lq;
@@ -1089,7 +1127,7 @@ void Can_Deal(void) {
         SendData[6] = Udc_Setg;
         SendData[7] = U_Base;
         SendData[8] = I_Base;
-        SendData[9] = V_Base;  // 电械速度基值(rad/s)
+        SendData[9] = V_Base; // 电械速度基值(rad/s)
         SendData[10] = Angle_Init_Digital;
         SendData[11] = Velo_Max;
         SendData[12] = id_Max;
@@ -1116,7 +1154,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0006:  // 位置控制指令			lxy
+    case 0x0006: // 位置控制指令			lxy
 
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
             SendData[0] = 1;
@@ -1144,7 +1182,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0007:  // 速度控制指令			lxy
+    case 0x0007: // 速度控制指令			lxy
 
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
             SendData[0] = 1;
@@ -1174,7 +1212,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0008:  // 转矩控制指令			lxy
+    case 0x0008: // 转矩控制指令			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Choose_Mode = ReceData[1];
@@ -1189,7 +1227,7 @@ void Can_Deal(void) {
                 Isd_Set = ReceData[2];
                 Isdq_Set1 = -ReceData[3];
                 TorqueAngleA = ReceData[4];
-                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1;  // 置转矩控制标志
+                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1; // 置转矩控制标志
                 Ctrl_Flag.bit.VELO_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.POS_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.STOP_VELO_FLAG = 0;
@@ -1225,7 +1263,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0009:  // 读入电机传感器指令			lxy
+    case 0x0009: // 读入电机传感器指令			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Sys_Flag.bit.RDC_FAULT = rdc1.FAULT;
@@ -1253,7 +1291,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000A:  // 电机停转指令			lxy
+    case 0x000A: // 电机停转指令			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
@@ -1263,7 +1301,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000B:  // 写控制参数指令
+    case 0x000B: // 写控制参数指令
         CAN_DataCombine_Rx(RX_BUFFER);
         getControlParams(ReceData);
 
@@ -1272,14 +1310,14 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000C:  // 读参数指令
+    case 0x000C: // 读参数指令
         setControlParams(SendData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
             CAN_DataPackage_Tx(SendData, 0x007C, 30);
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0010:  // 写模拟指令
+    case 0x0010: // 写模拟指令
         CAN_DataCombine_Rx(RX_BUFFER);
         getAnalogParams(ReceData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1287,7 +1325,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0011:  // 读参数指令
+    case 0x0011: // 读参数指令
         SendData[0] = K_Udc;
         SendData[1] = Off_Udc;
         SendData[2] = K_Isa;
@@ -1308,7 +1346,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0012:  // 写其他参数指令
+    case 0x0012: // 写其他参数指令
         CAN_DataCombine_Rx(RX_BUFFER);
         getOtherParams(ReceData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1316,7 +1354,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0013:  // 读其他参数指令
+    case 0x0013: // 读其他参数指令
         SendData[0] = Temperature1_K;
         SendData[1] = UdcLimit1_Set;
         // SendData[2] = TemperatureB1_K;
@@ -1332,10 +1370,10 @@ void Can_Deal(void) {
         SendData[12] = Ctrl_Flag.bit.RotorWay_Flag;
         // SendData[13] = Sys_Flag.bit.RotorWay_Flag;
         SendData[14] = UdcLimit_Set;
-        SendData[15] = Velo_Start;  // 启动速度
+        SendData[15] = Velo_Start; // 启动速度
         SendData[16] = maxSpeed;
         SendData[17] = Ctrl_Flag.bit.VelWay_Flag;
-        SendData[18] = TorquetoIs;  // 转矩电流比
+        SendData[18] = TorquetoIs; // 转矩电流比
         SendData[19] = IdProtectNum;
         SendData[20] = VeloProtectNum;
         SendData[21] = Velo_Calc_Num;
@@ -1353,7 +1391,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0060:  // 写入EEPROM指令
+    case 0x0060: // 写入EEPROM指令
 
         WriteEEProm_Flag = 1;
 

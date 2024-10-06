@@ -1,0 +1,50 @@
+-----------------------------  Based.pjt - Debug  -----------------------------
+[App_AD_RDC.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_AD_RDC.c"
+
+[App_Arith.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Arith.c"
+
+[App_Control.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Control.c"
+
+[App_Ev.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Ev.c"
+
+[App_IsrFunction.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_IsrFunction.c"
+
+[App_Main.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Main.c"
+
+[App_MainLoop.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_MainLoop.c"
+
+[App_PI.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_PI.c"
+
+[App_Ref_Trans.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Ref_Trans.c"
+
+[App_Scib.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Scib.c"
+
+[App_Spi.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Spi.c"
+
+[F2812_eCAN.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F2812_eCAN.c"
+
+[F28335_AsmCode.asm] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_AsmCode.asm"
+
+[F28335_CSMPasswords.asm] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_CSMPasswords.asm"
+
+[F28335_GlobalVariableDefs.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_GlobalVariableDefs.c"
+
+[F28335_InitECan.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitECan.c"
+
+[F28335_InitEPwm.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitEPwm.c"
+
+[F28335_InitGpio.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitGpio.c"
+
+[F28335_Initialize.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_Initialize.c"
+
+[F28335_InitPie.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitPie.c"
+
+[Mk_CRC.c] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "Mk_CRC.c"
+
+[Table.asm] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -g -pdsw225 -fr"C:/Users/lisheng/Desktop/PROJ/21C852-0/PMControl_For28335_20231107_LQ/PMControl_For28335_20231107_LQ/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "Table.asm"
+
+[Linking...] "C:\CCStudio_v3.3PLA\C2000\cgtools\bin\cl2000" -@"Debug.lkf"
+<Linking>
+
+Build Complete,
+  0 Errors, 0 Warnings, 0 Remarks.

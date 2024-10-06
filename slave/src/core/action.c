@@ -481,13 +481,8 @@ void telemeteringResponse() {
     if (isMainCpu || isSubCpu) {
         Ctrl_Flag.bit.CANERROR_FLAG = 0;
         CAN_Index = 0;
-<<<<<<< HEAD
         for (Uint16 i = 0; i < 8; i++)
             CAN_BUFFER_RX[i] = 0;
-        == == == =
-                     for (Uint16 i = 0; i < 8; i++)
-                         CAN_BUFFER_RX[i] = 0;
->>>>>>> refs/remotes/origin/main
         CAN_BUFFER_RX[0] = SCI_RX_BUFFER[2];
         Can_Tx11_Data();
 

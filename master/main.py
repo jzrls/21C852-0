@@ -14,3 +14,5 @@ apply_stylesheet(app, theme="light_blue.xml")
 master.show()
 
 app.exec()
+
+master.save()

@@ -73,6 +73,7 @@ class PlotWidget(pg.PlotWidget):
 
         # 自动化 x 轴坐标
         self.x_range = 0
+        self.setXRange(0, 1000)
 
     def add(self, name: str, color: str) -> None:
         curve = pg.PlotCurveItem(pen=mkPen(color=color, width=2), name=name)
@@ -110,8 +111,8 @@ class PlotWidget(pg.PlotWidget):
             curve["curve"].setData(curve["data"])
 
             # X 轴显示范围设置
-        if self.x_range >= 99:
-            self.setXRange(self.x_range - 99, self.x_range + 1)
+        if self.x_range >= 1000:
+            self.setXRange(self.x_range - 1000, self.x_range + 1)
 
         self.x_range += 1
 
@@ -135,8 +136,8 @@ class UpdateThread(QThread):
     def run(self):
         if self.datas:
             datas = (np.array(self.datas[Dual.PARAMS_INDEX_MIN:Dual.PARAMS_INDEX_MAX]) * Dual.SCALING_FACTOR_MIN)
-            datas[Dual.PUMP_SET_SPEED_INDEX] * Dual.SCALING_FACTOR_MAX
-            datas[Dual.PUMP_REAL_TIME_SPEED_INDEX] * Dual.SCALING_FACTOR_MAX
+            datas[Dual.PUMP_SET_SPEED_INDEX] *= Dual.SCALING_FACTOR_MAX
+            datas[Dual.PUMP_REAL_TIME_SPEED_INDEX] *= Dual.SCALING_FACTOR_MAX
             datas = np.append(datas, self.datas[Dual.FRAME_COUNTER_INDEX])
 
             self.data_updated.emit(datas)

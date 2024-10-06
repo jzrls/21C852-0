@@ -26,3 +26,6 @@ class Master(QMainWindow):
         self.layout.addWidget(self.master)
 
         self.setCentralWidget(self.content)
+
+    def save(self):
+        self.serial_helper.save()

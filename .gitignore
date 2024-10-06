@@ -19,5 +19,7 @@ pcb/VALVE_MODULE/Project Logs for Linker
 pcb/VALVE_MODULE/Project Outputs for Linker
 pcb/VALVE_MODULE/*.htm
 model/
-master/dist/*.exe
-master/pymaster/dist/*.exe
+master/dist/
+master/logs/
+data/
+dist/logs/

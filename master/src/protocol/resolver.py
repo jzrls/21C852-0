@@ -10,7 +10,7 @@ class Resolver(QObject):
     received_self = Signal(SelfTestResponseInstruction)
     received_control = Signal(ControlResponseInstruction)
     received_telemetry = Signal(TelemetryResponseInstruction)
-    buffer = Signal(str)
+    buffer = Signal(TelemetryResponseInstruction)
 
     def __init__(self, counter: Counter):
         super().__init__()
@@ -161,9 +161,8 @@ class Resolver(QObject):
                 self._buffer += self.crc
                 self.obj.unpack(self._buffer)
                 self.signal.emit(self.obj)
-                self.buffer.emit(f"Rx: {self._buffer.hex(' ').upper()}")
-
-
+                # self.buffer.emit(f"Rx: {self._buffer.hex(' ').upper()}")
+                self.buffer.emit(self.obj)
 
     def _instruction(self, byte, response: Response) -> None:
         self._buffer += byte  # 帧计数

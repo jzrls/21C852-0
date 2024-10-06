@@ -259,3 +259,6 @@ class SerialHelper(QtWidgets.QWidget):
         # self.layout.setRowStretch(1, 1)
 
         self.setLayout(self.layout)
+        
+    def save(self):
+        self.recorder.save()

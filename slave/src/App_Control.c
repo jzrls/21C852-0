@@ -472,6 +472,10 @@ void getMotorSpeed() {
     Velo_Elec = RCFilter(Velo_Elec0, Velo_Elec_Cal, Velo_Filter);
     Velo_Elec0 = Velo_Elec;
     Velo_Elec_abs = _IQabs(Velo_Elec);
+
+
+    
+
 }
 
 void getDqCurrent() {

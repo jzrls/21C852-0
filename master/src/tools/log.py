@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 from logging.handlers import TimedRotatingFileHandler
 
+from openpyxl.workbook import Workbook
+
 
 class Recorder:
     def __init__(self):
@@ -23,11 +25,35 @@ class Recorder:
         self.handler.suffix = '%Y-%m-%d.log'
 
         # 创建一个格式器并将其添加到处理程序
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+        fmt = '%(asctime)s - %(message)s'
+        date_fmt = '%Y-%m-%d %H:%M:%S'
+        formatter = logging.Formatter(fmt, datefmt=date_fmt)
         self.handler.setFormatter(formatter)
         self.logger.addHandler(self.handler)
 
-    def record(self, message: str) -> None:
-        time = datetime.now()
-        time = time.strftime("%d/%m/%Y %H:%M:%S")
-        self.logger.info(f'[{time}]-{message}')
+        self.header = [
+            "包头1", "包头2", "包类型", "包计数", "数据长度", "驱动状态",
+            '阀1-设定角度', '阀1-实际角度', '阀2-设定角度', '阀2-实际角度',
+            '泵-设定转速', '泵-实际转速',
+            '阀1-温度', '阀2-温度', '泵-温度',
+            '阀1-母线电压', '阀2-母线电压', '泵-母线电压',
+            '阀1-母线电流', '阀2-母线电流', '泵-母线电流',
+            '阀1-A相电流', '阀1-B相电流', '阀1-C相电流',
+            '阀2-A相电流', '阀2-B相电流', '阀2-C相电流',
+            '泵-A相电流', '泵-B相电流', '泵-C相电流',
+            "故障状态字", "校验码"
+        ]
+
+        self.__wb = Workbook()
+        self.__ws = self.__wb.active
+        self.__ws.append(self.header)
+        self.__ws_name = 'logs/' + datetime.now().strftime('%Y-%m-%d') + '.xlsx'
+
+    def save(self):
+        self.__wb.save(self.__ws_name)
+
+    def record(self, message) -> None:
+        if isinstance(message, str):
+            self.logger.info(message)
+        else:
+            self.__ws.append(message.res)

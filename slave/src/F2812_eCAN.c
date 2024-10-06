@@ -77,8 +77,9 @@ void Can_Rt_Data(Uint16 Num) {
              */
             tmp = Angle_Fa_Q16;
             tmp = _IQmpy(tmp, _IQ(0.54931640625)); // 360/65536*100
-            if (tmp >= 65535)
+            if (tmp >= 65535) {
                 tmp = 65535;
+            }
             CAN_BUFFER_RT[BORAD_NUM][0] = tmp & 0x00FF;
             CAN_BUFFER_RT[BORAD_NUM][1] = (tmp >> 8) & 0x00FF;
 
@@ -102,6 +103,8 @@ void Can_Rt_Data(Uint16 Num) {
 
         /* 母线过流故障 */
         Fault_Flag.bit.STOP_PWM_Flag_Id = Sys_Flag.bit.STOP_PWM_Flag_Id;
+
+        /* 超速故障 */
         Fault_Flag.bit.STOP_PWM_Flag_Velo = Sys_Flag.bit.STOP_PWM_Flag_Velo;
 
         /* 硬件保护 */
@@ -110,6 +113,7 @@ void Can_Rt_Data(Uint16 Num) {
         Fault_Flag.bit.UDC_FLAG = Sys_Flag.bit.UDC_FLAG; /* 母线过压故障 */
         Fault_Flag.bit.Temp1Over_Flag = Ctrl_Flag.bit.Temp1Over_Flag;
         Fault_Flag.bit.Temp2Over_Flag = Ctrl_Flag.bit.Temp2Over_Flag;
+
         Fault_Flag.bit.UdcLow_Flag = Ctrl_Flag.bit.UdcLow_Flag; /* 欠压故障 */
         Fault_Flag.bit.CANERROR_FLAG = Ctrl_Flag.bit.CANERROR_FLAG;
         Fault_Flag.bit.RunAllow_Flag = RunAllow_Flag;

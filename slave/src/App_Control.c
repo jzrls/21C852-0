@@ -116,26 +116,28 @@ void Loop_Ctrl(Uint16 Board) {
 
 //-------------------------------------------------------------------------
 void Ctrl_Change(void) {
-    volatile Uint16 CAN_CONTROL_PRE = 0x07;
+    volatile Uint16 CAN_CONTROL_PRE = 0x07; // 0000,0111
 
+    /* CAN_CHANGE_CTRL[2] 为命令码， 0x11：停止 */
     if (CAN_CHANGE_CTRL[2] == 0x11 || CAN_CHANGE_CTRL[2] == 0x00) {
         return;
     }
 
     // 先选择从板,如果主板无故障，且从板不在运行中，则选择主板运行
+    // CAN_BUFFER_RT[BORAD_NUM][2] + CAN_BUFFER_RT[BORAD_NUM][3]: 故障位
     if ((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01) {
-        CAN_CONTROL_PRE &= 0xFE;
+        CAN_CONTROL_PRE &= 0xFE; // 0000,0110
     }
 
     if ((CAN_BUFFER_RT[2][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[3][2] & 0x01) == 0x01) {
-        CAN_CONTROL_PRE &= 0xFD;
+        CAN_CONTROL_PRE &= 0xFD; // 0000,0101
     }
 
     if ((CAN_BUFFER_RT[4][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[5][2] & 0x01) == 0x01) {
-        CAN_CONTROL_PRE &= 0xFB;
+        CAN_CONTROL_PRE &= 0xFB; // 0000,0011
     }
 
-    /* 蝶阀1主副板切换 */
+    /* 蝶阀1主板运行 */
     if ((CAN_CONTROL_PRE & 0x01) == 0x01 && (BORAD_NUM == 0 || BORAD_NUM == 1)) {
         if (BORAD_NUM == 0) {
             ET_IO_OUT1_L;
@@ -151,6 +153,7 @@ void Ctrl_Change(void) {
         }
     }
 
+    /* 蝶阀1副板运行 */
     if ((CAN_CONTROL_PRE & 0x01) == 0x00 && (BORAD_NUM == 0 || BORAD_NUM == 1)) {
         if (BORAD_NUM == 0) {
             ET_IO_OUT1_H;
@@ -167,7 +170,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* 泵电机主副切换 */
+    /* 泵电机主板运行 */
     if ((CAN_CONTROL_PRE & 0x02) == 0x02 && (BORAD_NUM == 2 || BORAD_NUM == 3)) {
         if (BORAD_NUM == 2) {
             ET_IO_OUT1_L;
@@ -181,6 +184,7 @@ void Ctrl_Change(void) {
         }
     }
 
+    /* 泵电机副板运行 */
     if ((CAN_CONTROL_PRE & 0x02) == 0x00 && (BORAD_NUM == 2 || BORAD_NUM == 3)) {
         if (BORAD_NUM == 2) {
             ET_IO_OUT1_L;
@@ -194,7 +198,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* 蝶阀2，主副板切换 */
+    /* 蝶阀2主板运行 */
     if ((CAN_CONTROL_PRE & 0x04) == 0x04 && (BORAD_NUM == 4 || BORAD_NUM == 5)) {
         if (BORAD_NUM == 4) {
             ET_IO_OUT1_L;
@@ -210,6 +214,7 @@ void Ctrl_Change(void) {
         }
     }
 
+    /* 蝶阀2副板运行 */
     if ((CAN_CONTROL_PRE & 0x04) == 0x00 && (BORAD_NUM == 4 || BORAD_NUM == 5)) {
         if (BORAD_NUM == 4) {
             ET_IO_OUT1_H;
@@ -472,10 +477,6 @@ void getMotorSpeed() {
     Velo_Elec = RCFilter(Velo_Elec0, Velo_Elec_Cal, Velo_Filter);
     Velo_Elec0 = Velo_Elec;
     Velo_Elec_abs = _IQabs(Velo_Elec);
-
-
-    
-
 }
 
 void getDqCurrent() {

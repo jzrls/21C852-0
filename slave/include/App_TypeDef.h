@@ -226,7 +226,7 @@ struct FAULT_FLAG_BITS {
     volatile Uint16 STOP_PWM_Flag : 1;      // 故障停止
     volatile Uint16 STOP_PWM_Flag_Id : 1;   // "1"表明电机过流保护
     volatile Uint16 STOP_PWM_Flag_Velo : 1; // "1"表明超速保护
-    volatile Uint16 STOP_PWM_Flag_Driv : 1; // "1"表明PWMA功率保护
+    volatile Uint16 STOP_PWM_Flag_Driv : 1; // "1"表明PWMA功率保护 , 硬件故障（母线过流）
     volatile Uint16 UDC_FLAG : 1;           // "1"表明直流电压故障
     volatile Uint16 Temp1Over_Flag : 1;     // 电机过温1
     volatile Uint16 Temp2Over_Flag : 1;     // 模块过温

@@ -45,44 +45,6 @@ void Can_Rt_Data(Uint16 Num)
 			if(tmp >= 65535)
 				tmp = 65535;
 
-			/**
-             * ¶Ôtmp½øĞĞ¾ùÖµÂË²¨´¦Àí
-             */
-            //sumSpeed += tmp;
-            //index++;
-            //if (index >= 2) {
-            //    speed = sumSpeed >> 1;
-            //    sumSpeed = 0;
-            //    index = 0;
-            //}
-
-
-//			if (index >= 3) {
-//				for (i = 0; i < 3; i++) {
-//					speedArray[i] = speedArray[i+1];
-//					sumSpeed += speedArray[i];
-//				}
-//				speedArray[3] = tmp;
-//				sumSpeed += tmp;
-//				speed  = sumSpeed >> 2;
-//			} else {
-//				speedArray[index] = tmp;
-//				
-//				if (index == 0){
-//					speed = tmp;
-//				} else if (index == 1) {
-//					speed = (speedArray[0] + speedArray[1]) >> 1;
-//				} else if (index == 2) {
-//					speed = (speedArray[0] + speedArray[1] + + speedArray[2]) / 3;
-//				}
-//				index++;
-//			}
-
-			
-			
-//			CAN_BUFFER_RT[BORAD_NUM][0] = speed & 0x00FF;
-//			CAN_BUFFER_RT[BORAD_NUM][1] = (speed>>8) & 0x00FF;
-
 			CAN_BUFFER_RT[BORAD_NUM][0] = tmp & 0x00FF;
 			CAN_BUFFER_RT[BORAD_NUM][1] = (tmp>>8) & 0x00FF;
 
@@ -111,8 +73,8 @@ void Can_Rt_Data(Uint16 Num)
 		Fault_Flag.bit.STOP_PWM_Flag_Velo = Sys_Flag.bit.STOP_PWM_Flag_Velo;
 		Fault_Flag.bit.STOP_PWM_Flag_Driv = Sys_Flag.bit.STOP_PWM_Flag_Driv;
 		Fault_Flag.bit.UDC_FLAG = Sys_Flag.bit.UDC_FLAG;
-		Fault_Flag.bit.Temp1Over_Flag = Ctrl_Flag.bit.Temp1Over_Flag;
-		Fault_Flag.bit.Temp2Over_Flag = Ctrl_Flag.bit.Temp2Over_Flag;
+        Fault_Flag.bit.speedFluctuation = Ctrl_Flag.bit.speedFluctuation;
+        Fault_Flag.bit.Temp2Over_Flag = Ctrl_Flag.bit.Temp2Over_Flag;
 		Fault_Flag.bit.UdcLow_Flag = Ctrl_Flag.bit.UdcLow_Flag;
 		Fault_Flag.bit.CANERROR_FLAG = Ctrl_Flag.bit.CANERROR_FLAG;
 		Fault_Flag.bit.RunAllow_Flag = RunAllow_Flag;
@@ -1055,7 +1017,7 @@ void CANEEPROM_DataPackage(_iq	*p_tx_data_L, Uint16 m_tx_length_L)
 */
 //----------------------------------------------------------------------------------------
 // ·¢ËÍÊı¾İ´ò°ü³ÌĞò
-// ½«ĞèÒª·¢ËÍµÄÊı¾İ°´ÕÕÍ¨Ñ¶¹æÔ¼´ò°ü³ÉÊıİèå
+// ½«ĞèÒª·¢ËÍµÄÊı¾İ°´ÕÕÍ¨Ñ¶¹æÔ¼´ò°ü³ÉÊıİè?
 // Èë¿Ú²ÎÊı:ĞèÒª·¢ËÍµÄÊı¾İµØÖ·¡¢·¢ËÍµÄÃüÁî×Ö¡¢·¢ËÍµÄÊı¾İ³¤¶È(×Ö)
 // ³ö¿Ú²ÎÊı:ÎŞ
 //----------------------------------------------------------------------------------------
@@ -1087,7 +1049,7 @@ void CAN_DataPackage_Tx(_iq	*p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_len
 
 	Data_Temp = CalCRC16_Byte(TX_BUFFER, (m_tx_length_L << 2) + 5);
 	*CANB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-	*CANB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓóĞ§ÑéºÍ*/
+	*CANB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓóĞ§Ñéº?*/
 	CANB.p_Tx_Buffer = (Uint16 *)TX_BUFFER;
 	CANB.m_Tx_Length = (m_tx_length_L<<2) + 2 + 5;
 
@@ -1672,7 +1634,7 @@ void Can_Deal(void)
    	   		break;
    	   	   	//---------------------------------------------------------------------------
    	   	//---------------------------------------------------------------------------
-   	   	case 0x0010:		//Ğ´Ä£âÍ¨µÀÊıÖ¸Áî		lr
+   	   	case 0x0010:		//Ğ´Ä£âÍ¨µÀÊıÖ¸Á?		lr
 
    	 	CAN_DataCombine_Rx(RX_BUFFER);
 

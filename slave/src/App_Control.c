@@ -763,7 +763,7 @@ void speedControl() {
     }
 
     pi_velo.ctrl_index++;
-    /* pi_velo.ctrl_period = 10， 10 * 100us = 1ms控制一次？？？ */
+    /* pi_velo.ctrl_period = 10， 10 * 150us = 1.5ms控制一次？？？ */
     if (pi_velo.ctrl_index >= pi_velo.ctrl_period) {
         pi_velo.ctrl_index = 0;
         pi_velo.pi_ref_reg = Velo_Set;

@@ -362,9 +362,13 @@ void Ready_DataA(void) {
      *
      * 修改内容：增加速度波动计算，判断是否需要进行切板操作
      */
-    static _iq speedThreshold = 200;
-    static _iq speedProtectionCount = 0;
-    static _iq speedMaxProtectionCount = 20;
+    static _iq speedThreshold = 104858;  /* 实际转速与计算使用的转速相差：524.288， 200 * 524.88 = 104857.6 */
+    static Uint16 speedProtectionCount = 0;
+    static Uint16 speedProtectionExitCount = 0;
+    static Uint16 speedMaxProtectionCount = 20;
+    static Uint16 startTime = 40000; /* 启动阶段不进行转速波动判断，现实际启动时间1s，150 * 20000 / 1000 / 1000 = 3s  */
+    static Uint16 startTimeCount = 0;
+    static volatile _iq prevSpeed = 0;
     volatile _iq speedError = 0;
 
     //----------------------------------------------------------------------
@@ -436,36 +440,38 @@ void Ready_DataA(void) {
     Velo_Elec0 = Velo_Elec;
     Velo_Elec_abs = _IQabs(Velo_Elec);
 
-    // 计算实际转速， 将转速标幺值转换为IQ15的实际转速值，再转换为16位整数,低字节在前
 
-    /* 速度波动过大切换逻辑 */
-    speedError = _IQabs(Velo_Elec_abs - Veloover_Set);
-    speedError = _IQmpy(speedError, _IQ(9.5492965855137201461330258023509));
-    speedError = _IQdiv(tmp, Mp);
-    speedError = _IQmpy(tmp, V_Base >> 5);
-    speedError = (speedError >> 15);
-    if (speedError >= 65535)
-        speedError = 65535;
-
-    if (speedError >= speedThreshold) {
-        speedProtectionCount++;
-        if (speedProtectionCount >= speedMaxProtectionCount) {
-            Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
-            Ctrl_Flag.bit.speedFluctuation = 1;
-            Ctrl_Flag.bit.STOP_PWM_Flag = 1;
-        }
+    /* 设定转速为0时， 计数器清0 */
+    if (_IQabs(setSpeed - prevSpeed) > 0 || (setSpeed <= 0 && prevSpeed <= 0)) {
+        startTimeCount = 0;
+        prevSpeed = setSpeed;
     } else {
-        speedProtectionCount = 0;
+        startTimeCount++;
     }
 
-    if (Ctrl_Flag.bit.speedFluctuation == 1 && speedError < speedThreshold) {
-        speedProtectionCount++;
-        if (Temp1OverProtect1 >= speedMaxProtectionCount) {
-            Ctrl_Flag.bit.speedFluctuation = 0;
+    /* 速度波动过大切换逻辑 */
+    if (startTimeCount >= startTime) {
+        speedError = _IQabs(Velo_Elec_abs - setSpeed);
+        if (speedError >= speedThreshold) {
+            speedProtectionCount++;
+            if (speedProtectionCount >= speedMaxProtectionCount) {
+                Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
+                Ctrl_Flag.bit.speedFluctuation = 1;
+                Ctrl_Flag.bit.STOP_PWM_Flag = 1;
+            }
+        } else {
             speedProtectionCount = 0;
         }
-    } else {
-        speedProtectionCount = 0;
+
+        if (Ctrl_Flag.bit.speedFluctuation == 1 && speedError < speedThreshold) {
+            speedProtectionExitCount++;
+            if (speedProtectionExitCount >= speedMaxProtectionCount) {
+                Ctrl_Flag.bit.speedFluctuation = 0;
+                speedProtectionExitCount = 0;
+            }
+        } else {
+            speedProtectionExitCount = 0;
+        }
     }
 
     //----------------------------------------------------------
@@ -962,10 +968,10 @@ void ControlA(void) {
     }*/
 
     if (Ctrl_Flag.bit.STOP_VELO_FLAG == 1) {
-        if (Ctrl_Flag.bit.LOCK_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
+        if (Ctrl_Flag.bit.LOCK_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 &&  Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
             PWMA_Update();
             MeasureInitDigital();
-        } else if (Ctrl_Flag.bit.OPEN_LOOP_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
+        } else if (Ctrl_Flag.bit.OPEN_LOOP_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 &  Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
             PWMA_Update();
             OpenLoop();
         } else {

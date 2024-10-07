@@ -25,13 +25,6 @@
 void Can_Rt_Data(Uint16 Num)
 {
 	volatile _iq tmp=0;
-//	static _iq sumSpeed = 0;
-//    static Uint16 index = 0;
-//    static _iq speed = 0;
-//	static _iq speedArray[4] = {0};
-
-//	Uint16 i = 0;
-//	_iq sumSpeed = 0;
 
 	if(Num == 1)
 	{

@@ -1,21 +1,21 @@
 /*
 =================================================================================
 
- ÎÄ¼şÃû:	  App_MainLoop.c
+ æ–‡ä»¶å:	  App_MainLoop.c
 
- ¹¦ÄÜÃèÊö:	
-		 	  ÏîÄ¿²âÊÔÎÄ¼ş.
+ åŠŸèƒ½æè¿°:	
+		 	  é¡¹ç›®æµ‹è¯•æ–‡ä»¶.
 			  void MainLoop(void);
 
- ±àĞ´Õß:    ÎéÔó¶«
- ±àĞ´ÈÕÆÚ:  2011-9-1
+ ç¼–å†™è€…:    ä¼æ³½ä¸œ
+ ç¼–å†™æ—¥æœŸ:  2011-9-1
 
 =================================================================================
 */
 
 
-#include "F28335_Device.h"     /* F28335 ÍâÉèÍ·ÎÄ¼ş*/
-#include "App_UserDef.h"      /* F28335 Ó¦ÓÃÏîÄ¿Í·ÎÄ¼ş*/
+#include "F28335_Device.h"     /* F28335 å¤–è®¾å¤´æ–‡ä»¶*/
+#include "App_UserDef.h"      /* F28335 åº”ç”¨é¡¹ç›®å¤´æ–‡ä»¶*/
 
 void MainLoop(void)
 {
@@ -23,12 +23,12 @@ void MainLoop(void)
 	volatile Uint16	Data_Temp = 0;
 	volatile Uint16 ComNum = 0;
 	volatile _iq Set_Temp = 0;
-//	SPI¶ÁĞ´²Ù×÷
+//	SPIè¯»å†™æ“ä½œ
 
 	RDC_DIS_B;
 	RDC_DIS_A;
 	for(i = 0;i < 128;i++)
-		READ_X25040(&SCI_RX_BUFFER[0+i],128+i,1,0);	// ¶ÔÓ¦ÉÏÎ»»ú¿ØÖÆ²ÎÊı½çÃæ
+		READ_X25040(&SCI_RX_BUFFER[0+i],128+i,1,0);	// å¯¹åº”ä¸Šä½æœºæ§åˆ¶å‚æ•°ç•Œé¢
 	Sci_DataCombine_Rx(SCI_RX_BUFFER);
 	Rs = SCI_ReceData[0];
 	Ld = SCI_ReceData[1];
@@ -37,12 +37,12 @@ void MainLoop(void)
 	Mp = SCI_ReceData[4];
 	Rp = SCI_ReceData[5];
 	p = _IQdiv(SCI_ReceData[4],SCI_ReceData[5]);
-	Udc_Setg= SCI_ReceData[6];      //ÕâÀïÊÇÉÏÎ»»úÉèÖÃµÄÖ±Á÷µçÑ¹µÄµ¹Êı
-	Udc_Mche_realvalue = _IQdiv(_IQ(1),Udc_Setg);  //ÕâÀïÊÇÉÏÎ»»úÉèÖÃµÄÖ±Á÷µçÑ¹µÄÖµ
+	Udc_Setg= SCI_ReceData[6];      //è¿™é‡Œæ˜¯ä¸Šä½æœºè®¾ç½®çš„ç›´æµç”µå‹çš„å€’æ•°
+	Udc_Mche_realvalue = _IQdiv(_IQ(1),Udc_Setg);  //è¿™é‡Œæ˜¯ä¸Šä½æœºè®¾ç½®çš„ç›´æµç”µå‹çš„å€¼
 
 	U_Base = SCI_ReceData[7];
 	I_Base = SCI_ReceData[8];
-	V_Base = SCI_ReceData[9];		// µçËÙ¶È»ùÖµ(rad/s)
+	V_Base = SCI_ReceData[9];		// ç”µé€Ÿåº¦åŸºå€¼(rad/s)
 	Angle_Init_Digital = SCI_ReceData[10];
 	Velo_Max = SCI_ReceData[11];
 	id_Max = SCI_ReceData[12];
@@ -75,7 +75,7 @@ void MainLoop(void)
 	pwma.mHalfPeriod = Control_Period;
 
 	for(i = 0;i < 128;i++)
-		READ_X25040(&SCI_RX_BUFFER[0+i],0+i,1,0);	// ¶ÔÓ¦ÉÏÎ»»ú¿ØÖÆ²ÎÊı½çÃæ
+		READ_X25040(&SCI_RX_BUFFER[0+i],0+i,1,0);	// å¯¹åº”ä¸Šä½æœºæ§åˆ¶å‚æ•°ç•Œé¢
 	Sci_DataCombine_Rx(SCI_RX_BUFFER);
 	pi_velo.Kp_reg 		= SCI_ReceData[0];
 	pi_velo.Ki_reg 		= SCI_ReceData[3];
@@ -129,7 +129,7 @@ void MainLoop(void)
 	pi_Iq_Kc.pi_out_min		= pi_Id_Kc.pi_out_min;
 
 	for(i = 0;i < 128;i++)
-		READ_X25040(&SCI_RX_BUFFER[0+i],0+i,1,8);	// ¶ÔÓ¦ÉÏÎ»»ú¿ØÖÆ²ÎÊı½çÃæ
+		READ_X25040(&SCI_RX_BUFFER[0+i],0+i,1,8);	// å¯¹åº”ä¸Šä½æœºæ§åˆ¶å‚æ•°ç•Œé¢
 	
 	Sci_DataCombine_Rx(SCI_RX_BUFFER);
 	K_Udc 	= SCI_ReceData[0];
@@ -160,7 +160,7 @@ void MainLoop(void)
 	//Off_IsaB = SCI_ReceData[26];
 
 	for(i = 0;i < 128;i++)
-		READ_X25040(&SCI_RX_BUFFER[0+i],128+i,1,8);	// ¶ÔÓ¦ÉÏÎ»»ú¿ØÖÆ²ÎÊı½çÃæ
+		READ_X25040(&SCI_RX_BUFFER[0+i],128+i,1,8);	// å¯¹åº”ä¸Šä½æœºæ§åˆ¶å‚æ•°ç•Œé¢
 	
 	Sci_DataCombine_Rx(SCI_RX_BUFFER);
 
@@ -202,7 +202,7 @@ void MainLoop(void)
 	K_Velo_Cal = _IQdiv(K_Velo_Cal,Velo_Calc_Num<<20);
 	K_Velo_Cal = _IQmpy(K_Velo_Cal,p);
 	
-  	/*´®¿Ú¶ÁĞ´»º³åÇøÇåÁã*/
+  	/*ä¸²å£è¯»å†™ç¼“å†²åŒºæ¸…é›¶*/
   	for(i = 0; i < RX_BUFFER_LENGTH; i++)
     {
 		EEPROM_BUFFER[i] = 0;
@@ -252,28 +252,28 @@ void MainLoop(void)
     	SCI_SendData[i] = 0;
     }
    
-	/* ¶ÁĞı±äÎ»ÖÃ*/
+	/* è¯»æ—‹å˜ä½ç½®*/
 	RDC_READ();								
 	Angle0_Q16 = rdc1.DATA_BUFFER - Angle_Init_Digital;
 	Angle_Fa_Q16 = rdc2.DATA_BUFFER - Angle_Init_Fa;
 
 
 	
-   	/*XINT1 Íâ²¿ÖĞ¶Ï1*/   	
+   	/*XINT1 å¤–éƒ¨ä¸­æ–­1*/   	
   	EALLOW;  
    	PieVectTable.XINT1 = &XINT1_Fault_Isr;
 	EDIS;
    	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
 	IER |= M_INT1;
 
-	/*TZ2ÖĞ¶Ï*/	  	
+	/*TZ2ä¸­æ–­*/	  	
   	EALLOW;  
    	PieVectTable.EPWM2_TZINT = &TZ2_Fault_Isr;
    	EDIS;    
    	PieCtrlRegs.PIEIER2.bit.INTx2 = 1;
 	IER |= M_INT2;
 
-	//EV ÏµÍ³¿ØÖÆÖÜÆÚ
+	//EV ç³»ç»Ÿæ§åˆ¶å‘¨æœŸ
    	EALLOW;  
    	PieVectTable.EPWM1_INT = &EPWM1_INT_ISR;
   	EDIS;    
@@ -281,7 +281,7 @@ void MainLoop(void)
    	IER |= M_INT3;
    	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;
 	   	
-   	/*CPUTimer0 ÏµÍ³¿ØÖÆÖÜÆÚÖĞ*/
+   	/*CPUTimer0 ç³»ç»Ÿæ§åˆ¶å‘¨æœŸä¸­*/
    	EALLOW;  
    	PieVectTable.TINT0 = &Cpu_Timer0_ISR;
   	EDIS;    
@@ -289,7 +289,7 @@ void MainLoop(void)
    	IER |= M_INT1;
    	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
    	
-   	/*ECAN½ÓÊÕÖĞ¶Ï*/
+   	/*ECANæ¥æ”¶ä¸­æ–­*/
 
    	 EALLOW;		   	
   	 PieVectTable.ECAN0INTA = &ECana_T;   	   	   	
@@ -299,7 +299,7 @@ void MainLoop(void)
   	 PieCtrlRegs.PIEIER9.bit.INTx5 = 1;     // PIE Group 9, INT9    	   	   	
    	 IER |= M_INT9;							// Enable CPU INT 
 
-	/*´®¿ÚÖĞ¶Ï*/
+	/*ä¸²å£ä¸­æ–­*/
    	EALLOW;		/* This is needed to write to EALLOW protected registers  */
    	PieVectTable.SCIRXINTC = &ScibRxIsr;
    	PieVectTable.SCITXINTC = &ScibTxIsr;
@@ -320,7 +320,7 @@ void MainLoop(void)
 	ScicRegs.SCIFFRX.bit.RXFIFORESET=1;
 	ScicRegs.SCIFFTX.bit.TXFIFOXRESET=1;
 
-   	ECanaRegs.CANGIF0.all=0xFFFFFFFF;       // ÇåËùÓĞÖĞ¶Ï±êÖ¾Î»
+   	ECanaRegs.CANGIF0.all=0xFFFFFFFF;       // æ¸…æ‰€æœ‰ä¸­æ–­æ ‡å¿—ä½
     ECanaRegs.CANGIF1.all=0xFFFFFFFF;
 
     ECanaRegs.CANRMP.bit.RMP0 =1;
@@ -334,7 +334,7 @@ void MainLoop(void)
 	ECanaRegs.CANRMP.bit.RMP12 =1;
 	PieCtrlRegs.PIEACK.bit.ACK9=1;	
 	EALLOW;
-	EPwm1Regs.ETCLR.bit.INT = 1;             //ÇåÖĞ¶Ï±êÖ¾
+	EPwm1Regs.ETCLR.bit.INT = 1;             //æ¸…ä¸­æ–­æ ‡å¿—
     EPwm2Regs.TZCLR.bit.OST = 1;
     EPwm2Regs.TZCLR.bit.INT = 1;
     EDIS;
@@ -380,14 +380,14 @@ void MainLoop(void)
 					CAN_BUFFER_RX[0] = 	SCI_RX_BUFFER[2];
 					Can_Tx11_Data();
 					//Delay_Flag = 0;
-					//while(Delay_Flag == 0);//µÈ´ı3ms
+					//while(Delay_Flag == 0);//ç­‰å¾…3ms
 					if(SCIB.FLAG.bit.TXBO_FLAG ==1)
 					{
 						*SCIB.p_Tx_Buffer++ = 0x00EB;
 						*SCIB.p_Tx_Buffer++ = 0x0090;
 						*SCIB.p_Tx_Buffer++ = 0x0050;
 
-						// ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+						// å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
 						*SCIB.p_Tx_Buffer++ = ComNum;
 						ComNum++;
 						if(ComNum > 255)
@@ -432,14 +432,14 @@ void MainLoop(void)
 						
 						Data_Temp = CalCRC16_Byte(SCI_TX_BUFFER, 13);
 						
-						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
+						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
 						SCIB.p_Tx_Buffer = SCI_TX_BUFFER;	
 						SCIB.m_Tx_Length = 8+7;
 
 						SCIB.FLAG.bit.TXBO_FLAG = 0;
 				   		//ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖĞ¶Ï
+						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
 					}
 				}
 			}
@@ -463,7 +463,7 @@ void MainLoop(void)
 						*SCIB.p_Tx_Buffer++ = 0x0090;
 						*SCIB.p_Tx_Buffer++ = 0x0052;
 
-						// ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+						// å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
 						*SCIB.p_Tx_Buffer++ = ComNum;
 						ComNum++;
 						if(ComNum > 255)
@@ -487,7 +487,7 @@ void MainLoop(void)
 						*SCIB.p_Tx_Buffer++ = (Data_Temp>>8);//2
 
 						CAN_CONTROL = 0x07;
-						//ÏÈÑ¡Ôñ´Ó°å,Èç¹ûÖ÷°åÎŞ¹ÊÕÏ£¬ÇÒ´Ó°å²»ÔÚÔËĞĞÖĞ£¬ÔòÑ¡ÔñÖ÷°åÔËĞĞ
+						//å…ˆé€‰æ‹©ä»æ¿,å¦‚æœä¸»æ¿æ— æ•…éšœï¼Œä¸”ä»æ¿ä¸åœ¨è¿è¡Œä¸­ï¼Œåˆ™é€‰æ‹©ä¸»æ¿è¿è¡Œ
 						if((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01)
 							CAN_CONTROL &=	0xFE;
 						if((CAN_BUFFER_RT[2][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[3][2] & 0x01) == 0x01)
@@ -706,14 +706,14 @@ void MainLoop(void)
 							*SCIB.p_Tx_Buffer++ = CAN_BUFFER_TX[i];
 						Data_Temp = CalCRC16_Byte(SCI_TX_BUFFER, 53+6);
 						
-						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
+						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
 						SCIB.p_Tx_Buffer = SCI_TX_BUFFER;	
 						SCIB.m_Tx_Length = 48+6+7;
 
 						SCIB.FLAG.bit.TXBO_FLAG = 0;
 				   		//ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖĞ¶Ï
+						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
 					}
 				}
 			}
@@ -725,8 +725,8 @@ void MainLoop(void)
 					CAN_BUFFER_RX[i] = 0;
 				CAN_BUFFER_RX[0] = 	SCI_RX_BUFFER[2];
 
-				CAN_BUFFER_RX[1] = 	0x07;//ÏÈÑ¡Ôñ´Ó°å
-				//Èç¹ûÖ÷°åÎŞ¹ÊÕÏ£¬ÇÒ´Ó°å²»ÔÚÔËĞĞÖĞ£¬ÔòÑ¡ÔñÖ÷°åÔËĞĞ
+				CAN_BUFFER_RX[1] = 	0x07;//å…ˆé€‰æ‹©ä»æ¿
+				//å¦‚æœä¸»æ¿æ— æ•…éšœï¼Œä¸”ä»æ¿ä¸åœ¨è¿è¡Œä¸­ï¼Œåˆ™é€‰æ‹©ä¸»æ¿è¿è¡Œ
 				if((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01)
 					CAN_BUFFER_RX[1] &=	0xFE;
 				if((CAN_BUFFER_RT[2][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[3][2] & 0x01) == 0x01)
@@ -771,6 +771,7 @@ void MainLoop(void)
 					else if(CAN_BUFFER_RX[2] == 0x14)
 					{
 						Set_Temp = Hex_Float(CAN_BUFFER_RX[3],CAN_BUFFER_RX[4],CAN_BUFFER_RX[5],CAN_BUFFER_RX[6]);
+						setSpeed = _IQdiv(Set_Temp,_IQmpy((V_Base>>5),_IQdiv(_IQ(9.5492965855137201461330258023509),Mp)));
 						Set_Temp = (Set_Temp>>15);
 						if(Set_Temp >= 65535)
 							Set_Temp = 65535;
@@ -965,7 +966,7 @@ void MainLoop(void)
 						*SCIB.p_Tx_Buffer++ = 0x0090;
 						*SCIB.p_Tx_Buffer++ = 0x0051;
 
-						// ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+						// å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
 						*SCIB.p_Tx_Buffer++ = ComNum;
 						ComNum++;
 						if(ComNum > 255)
@@ -979,14 +980,14 @@ void MainLoop(void)
 						
 						Data_Temp = CalCRC16_Byte(SCI_TX_BUFFER, 10);
 						
-						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ÀÛ¼ÓÇóĞ§ÑéÍ*/
-						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
+						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ç´¯åŠ æ±‚æ•ˆéªŒï¿½*/
+						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
 						SCIB.p_Tx_Buffer = SCI_TX_BUFFER;	
 						SCIB.m_Tx_Length = 5+7;
 
 						SCIB.FLAG.bit.TXBO_FLAG = 0;
 				   		//ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖĞ¶Ï
+						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
 						//while(SCIB.FLAG.bit.TXBO_FLAG == 0)
 						//	ScibTxCheck();
 					}
@@ -1075,7 +1076,7 @@ void MainLoop(void)
 					}
 				}
 			}
-			SCIB.FLAG.bit.RX_FLAG = 0;		    // ½ÓÊÕÃüÁî´¦ÀíÍê±ÏÓ¦´ğ
+			SCIB.FLAG.bit.RX_FLAG = 0;		    // æ¥æ”¶å‘½ä»¤å¤„ç†å®Œæ¯•åº”ç­”
 		}
 
 	    if(CANB.FLAG.bit.RX_FLAG == 1)
@@ -1149,7 +1150,7 @@ void MainLoop(void)
 			}
 			if(Board_Num == BORAD_NUM)
 				Can_Deal();
-			CANB.FLAG.bit.RX_FLAG = 0;		    // ½ÓÊÕÃüÁî´¦ÀíÍê±ÏÓ¦´ğ
+			CANB.FLAG.bit.RX_FLAG = 0;		    // æ¥æ”¶å‘½ä»¤å¤„ç†å®Œæ¯•åº”ç­”
 		}
 
 
@@ -1163,7 +1164,7 @@ void MainLoop(void)
 			}
 			if(Board2_Num == BORAD_NUM)
 				Can_Receive();
-			CANB2.FLAG.bit.RX_FLAG = 0;		    // ½ÓÊÕÃüÁî´¦ÀíÍê±ÏÓ¦´ğ
+			CANB2.FLAG.bit.RX_FLAG = 0;		    // æ¥æ”¶å‘½ä»¤å¤„ç†å®Œæ¯•åº”ç­”
 		}
 		
 		if(CANB.FLAG.bit.TIMETX_FLAG == 1)
@@ -1181,7 +1182,7 @@ void MainLoop(void)
 						*SCIB.p_Tx_Buffer++ = 0x0090;
 						*SCIB.p_Tx_Buffer++ = 0x0052;
 
-						// ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+						// å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
 						*SCIB.p_Tx_Buffer++ = ComNum;
 						ComNum++;
 						if(ComNum > 255)
@@ -1205,7 +1206,7 @@ void MainLoop(void)
 						*SCIB.p_Tx_Buffer++ = (Data_Temp>>8);//2
 
 						CAN_CONTROL = 0x07;
-						//ÏÈÑ¡Ôñ´Ó°å,Èç¹ûÖ÷°åÎŞ¹ÊÕÏ£¬ÇÒ´Ó°å²»ÔÚÔËĞĞÖĞ£¬ÔòÑ¡ÔñÖ÷°åÔËĞĞ
+						//å…ˆé€‰æ‹©ä»æ¿,å¦‚æœä¸»æ¿æ— æ•…éšœï¼Œä¸”ä»æ¿ä¸åœ¨è¿è¡Œä¸­ï¼Œåˆ™é€‰æ‹©ä¸»æ¿è¿è¡Œ
 						if((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01)
 							CAN_CONTROL &=	0xFE;
 						if((CAN_BUFFER_RT[2][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[3][2] & 0x01) == 0x01)
@@ -1424,14 +1425,14 @@ void MainLoop(void)
 							*SCIB.p_Tx_Buffer++ = CAN_BUFFER_TX[i];
 						Data_Temp = CalCRC16_Byte(SCI_TX_BUFFER, 53+6);
 						
-						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
+						*SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+						*SCIB.p_Tx_Buffer = (Data_Temp>>8); 					/* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
 						SCIB.p_Tx_Buffer = SCI_TX_BUFFER;	
 						SCIB.m_Tx_Length = 48+6+7;
 
 						SCIB.FLAG.bit.TXBO_FLAG = 0;
 				   		//ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖĞ¶Ï
+						//ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
 					}
 				}
 
@@ -1471,7 +1472,7 @@ void MainLoop(void)
 				CAN_BUFFER_CTRL_index = 0;
 			CAN_BUFFER_CTRL_Num--;
 
-			//Í¨¹ıCAN½øĞĞ¿ØÖÆ
+			//é€šè¿‡CANè¿›è¡Œæ§åˆ¶
 			if(CAN_BUFFER_CTRL[0] == 0xA1)
 			{
 				for(i = 0; i < 8; i++)

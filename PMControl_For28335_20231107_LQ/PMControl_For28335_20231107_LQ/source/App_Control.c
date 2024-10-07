@@ -362,11 +362,11 @@ void Ready_DataA(void) {
      *
      * 修改内容：增加速度波动计算，判断是否需要进行切板操作
      */
-    static _iq speedThreshold = 104858;  /* 实际转速与计算使用的转速相差：524.288， 200 * 524.88 = 104857.6 */
+    static _iq speedThreshold = 104858; /* 实际转速与计算使用的转速相差：524.288， 200 * 524.88 = 104857.6 */
     static Uint16 speedProtectionCount = 0;
     static Uint16 speedProtectionExitCount = 0;
     static Uint16 speedMaxProtectionCount = 20;
-    static Uint16 startTime = 40000; /* 启动阶段不进行转速波动判断，现实际启动时间1s，150 * 20000 / 1000 / 1000 = 3s  */
+    static Uint16 startTime = 20000; /* 启动阶段不进行转速波动判断，现实际启动时间1s，150 * 20000 / 1000 / 1000 = 3s  */
     static Uint16 startTimeCount = 0;
     static volatile _iq prevSpeed = 0;
     volatile _iq speedError = 0;
@@ -440,7 +440,6 @@ void Ready_DataA(void) {
     Velo_Elec0 = Velo_Elec;
     Velo_Elec_abs = _IQabs(Velo_Elec);
 
-
     /* 设定转速为0时， 计数器清0 */
     if (_IQabs(setSpeed - prevSpeed) > 0 || (setSpeed <= 0 && prevSpeed <= 0)) {
         startTimeCount = 0;
@@ -457,6 +456,7 @@ void Ready_DataA(void) {
             if (speedProtectionCount >= speedMaxProtectionCount) {
                 Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
                 Ctrl_Flag.bit.speedFluctuation = 1;
+                // Sys_Flag.bit.STOP_PWM_Flag_Id = 1;
                 Ctrl_Flag.bit.STOP_PWM_Flag = 1;
             }
         } else {
@@ -968,10 +968,10 @@ void ControlA(void) {
     }*/
 
     if (Ctrl_Flag.bit.STOP_VELO_FLAG == 1) {
-        if (Ctrl_Flag.bit.LOCK_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 &&  Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
+        if (Ctrl_Flag.bit.LOCK_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 && Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
             PWMA_Update();
             MeasureInitDigital();
-        } else if (Ctrl_Flag.bit.OPEN_LOOP_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 &  Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
+        } else if (Ctrl_Flag.bit.OPEN_LOOP_FLAG == 1 && Sys_Flag.bit.STOP_PWM_Flag_Velo == 0 & Ctrl_Flag.bit.speedFluctuation == 0 && Sys_Flag.bit.STOP_PWM_Flag_Id == 0 && Sys_Flag.bit.STOP_PWM_Flag_Driv == 0) {
             PWMA_Update();
             OpenLoop();
         } else {

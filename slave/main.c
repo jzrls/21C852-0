@@ -50,7 +50,7 @@ void main(void) {
             canReceiveHandle();
 
             if (Board_Num == BORAD_NUM) {
-                Can_Deal();
+                Can_Deal(); /* 自定义指令 */
             }
             CANB.FLAG.bit.RX_FLAG = 0; // 接收命令处理完毕应答
         }

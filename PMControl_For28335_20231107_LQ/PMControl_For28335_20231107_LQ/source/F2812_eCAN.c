@@ -41,7 +41,6 @@ void Can_Rt_Data(Uint16 Num)
 			CAN_BUFFER_RT[BORAD_NUM][0] = tmp & 0x00FF;
 			CAN_BUFFER_RT[BORAD_NUM][1] = (tmp>>8) & 0x00FF;
 
-
 			Fault_Flag.bit.POS_LIMIT = 0;
 		}
 		else

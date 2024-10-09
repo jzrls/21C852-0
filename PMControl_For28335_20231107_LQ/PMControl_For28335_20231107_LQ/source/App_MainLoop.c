@@ -3,7 +3,7 @@
 
  文件名:	  App_MainLoop.c
 
- 功能描述:	
+ 功能描述:
 		 	  项目测试文件.
 			  void MainLoop(void);
 
@@ -259,14 +259,14 @@ void MainLoop(void)
 
 
 	
-   	/*XINT1 外部中断1*/   	
+   	/*XINT1 外部中断1*/
   	EALLOW;  
    	PieVectTable.XINT1 = &XINT1_Fault_Isr;
 	EDIS;
    	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
 	IER |= M_INT1;
 
-	/*TZ2中断*/	  	
+	/*TZ2中断*/
   	EALLOW;  
    	PieVectTable.EPWM2_TZINT = &TZ2_Fault_Isr;
    	EDIS;    
@@ -760,11 +760,13 @@ void MainLoop(void)
 
 					if(CAN_BUFFER_RX[2] == 0x11 && CAN_BUFFER_RX[3] == 0xA5)
 					{
+					    setSpeed = 0;
 						CAN_SET_VALUE[4] = 0;
 						CAN_SET_VALUE[5] = 0;
 					}
 					else if(CAN_BUFFER_RX[2] == 0x10 && CAN_BUFFER_RX[3] == 0x55)
 					{
+					    setSpeed = 0;
 						CAN_SET_VALUE[4] = 0;
 						CAN_SET_VALUE[5] = 0;
 					}

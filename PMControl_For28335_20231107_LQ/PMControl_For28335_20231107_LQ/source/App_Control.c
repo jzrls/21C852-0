@@ -456,22 +456,21 @@ void Ready_DataA(void) {
             if (speedProtectionCount >= speedMaxProtectionCount) {
                 Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
                 Ctrl_Flag.bit.speedFluctuation = 1;
-                // Sys_Flag.bit.STOP_PWM_Flag_Id = 1;
                 Ctrl_Flag.bit.STOP_PWM_Flag = 1;
             }
         } else {
             speedProtectionCount = 0;
         }
+    }
 
-        if (Ctrl_Flag.bit.speedFluctuation == 1 && speedError < speedThreshold) {
-            speedProtectionExitCount++;
-            if (speedProtectionExitCount >= speedMaxProtectionCount) {
-                Ctrl_Flag.bit.speedFluctuation = 0;
-                speedProtectionExitCount = 0;
-            }
-        } else {
+    if (Ctrl_Flag.bit.speedFluctuation == 1 && speedError < speedThreshold) {
+        speedProtectionExitCount++;
+        if (speedProtectionExitCount >= speedMaxProtectionCount) {
+            Ctrl_Flag.bit.speedFluctuation = 0;
             speedProtectionExitCount = 0;
         }
+    } else {
+        speedProtectionExitCount = 0;
     }
 
     //----------------------------------------------------------
@@ -566,8 +565,7 @@ void Ready_DataA(void) {
     if ((BORAD_NUM == 2 || BORAD_NUM == 3)) {
         // if( (Is >= id_Max) || (_IQabs(Isa + Isb + Isc) >= _IQmpy(_IQ(1), I_Base))
         //	|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5)) )
-        //		if( (Is >= id_Max)
-        //			|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5)) )
+//        if( (Is >= id_Max) || (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5))) {
         if (Is >= id_Max) {
             IdProtect++;
             if (IdProtect >= IdProtectNum) {

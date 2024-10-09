@@ -697,8 +697,9 @@ interrupt void ECana_T(void) {
 
         ECanaRegs.CANRMP.bit.RMP3 = 1; /*清除所有RMP0位并开始接收消息*/
     }
-    if (ECanaRegs.CANRMP.bit.RMP5 == 1) /*等待所有RMP5置位*/
-    {
+
+    /*等待所有RMP5置位*/
+    if (ECanaRegs.CANRMP.bit.RMP5 == 1) {
         if (BORAD_NUM != 0) {
             CAN_BUFFER_RT[0][0] = ECanaMboxes.MBOX5.MDL.byte.BYTE4;
             CAN_BUFFER_RT[0][1] = ECanaMboxes.MBOX5.MDL.byte.BYTE3;
@@ -713,8 +714,8 @@ interrupt void ECana_T(void) {
         ECanaRegs.CANRMP.bit.RMP5 = 1; /*清除所有RMP5位并开始接收消息*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP6 == 1) /*等待所有RMP6置位*/
-    {
+    /*等待所有RMP6置位*/
+    if (ECanaRegs.CANRMP.bit.RMP6 == 1) {
         if (BORAD_NUM != 1) {
             CAN_BUFFER_RT[1][0] = ECanaMboxes.MBOX6.MDL.byte.BYTE4;
             CAN_BUFFER_RT[1][1] = ECanaMboxes.MBOX6.MDL.byte.BYTE3;
@@ -729,8 +730,8 @@ interrupt void ECana_T(void) {
         ECanaRegs.CANRMP.bit.RMP6 = 1; /*清除所有RMP6位并开始接收消息*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP7 == 1) /*等待所有RMP7置位*/
-    {
+    /*等待所有RMP7置位*/
+    if (ECanaRegs.CANRMP.bit.RMP7 == 1) {
         if (BORAD_NUM != 2) {
             CAN_BUFFER_RT[2][0] = ECanaMboxes.MBOX7.MDL.byte.BYTE4;
             CAN_BUFFER_RT[2][1] = ECanaMboxes.MBOX7.MDL.byte.BYTE3;
@@ -745,8 +746,8 @@ interrupt void ECana_T(void) {
         ECanaRegs.CANRMP.bit.RMP7 = 1; /*清除所有RMP7位并开始接收消息*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP8 == 1) /*等待所有RMP8置位*/
-    {
+    /*等待所有RMP8置位*/
+    if (ECanaRegs.CANRMP.bit.RMP8 == 1) {
         if (BORAD_NUM != 3) {
             CAN_BUFFER_RT[3][0] = ECanaMboxes.MBOX8.MDL.byte.BYTE4;
             CAN_BUFFER_RT[3][1] = ECanaMboxes.MBOX8.MDL.byte.BYTE3;
@@ -761,8 +762,8 @@ interrupt void ECana_T(void) {
         ECanaRegs.CANRMP.bit.RMP8 = 1; /*清除所有RMP8位并开始接收消息*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP9 == 1) /*等待所有RMP9置位*/
-    {
+    /*等待所有RMP9置位*/
+    if (ECanaRegs.CANRMP.bit.RMP9 == 1) {
         if (BORAD_NUM != 4) {
             CAN_BUFFER_RT[4][0] = ECanaMboxes.MBOX9.MDL.byte.BYTE4;
             CAN_BUFFER_RT[4][1] = ECanaMboxes.MBOX9.MDL.byte.BYTE3;

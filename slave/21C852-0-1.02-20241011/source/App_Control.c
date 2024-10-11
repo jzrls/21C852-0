@@ -653,9 +653,10 @@ void Ready_DataA(void)
 	{				
 		//if( (Is >= id_Max) || (_IQabs(Isa + Isb + Isc) >= _IQmpy(_IQ(1), I_Base)) 
 		//	|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5)) )
-		if( (Is >= id_Max) 
-			|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5)) )
-		{
+//		if( (Is >= id_Max)
+//			|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>3) && Is <= (idSet_Max>>5)) )
+	    if(Is >= id_Max)
+	    {
 			IdProtect++;
 			if(IdProtect >= IdProtectNum)
 			{
@@ -673,8 +674,9 @@ void Ready_DataA(void)
 	{				
 		//if( (Is >= id_Max) || (_IQabs(Isa + Isb + Isc) >= _IQmpy(_IQ(1), I_Base)) 
 		//	|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>1) && Is <= (idSet_Max>>3)) )
-		if( (Is >= id_Max)  
-			|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>1) && Is <= (idSet_Max>>3)) )
+//		if( (Is >= id_Max)
+//			|| (_IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max>>1) && Is <= (idSet_Max>>3)) )
+	    if(Is >= id_Max)
 		{
 			IdProtect++;
 			if(IdProtect >= IdProtectNum)

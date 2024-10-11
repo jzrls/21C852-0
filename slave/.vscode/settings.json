@@ -1,9 +1,0 @@
-{
-  "files.encoding": "gbk",
-  "files.associations": {
-    "power_on_initialization.h": "c",
-    "app_userdef.h": "c",
-    "command.h": "c",
-    "action.h": "c"
-  }
-}

@@ -45,7 +45,7 @@ extern "C" {
 	#define	RUN_FLASH	1
 	#define RUN_MODE	RUN_FLASH  		
 
-	#define BORAD_NUM	3	//°åºÅ
+	#define BORAD_NUM	3 	//°åºÅ
 	//#define BORAD_NUM	0	//°åºÅ	·§1Ö÷
 	//#define BORAD_NUM	1	//°åºÅ	·§1´Ó
 	//#define BORAD_NUM	2	//°åºÅ	±Ã1Ö÷

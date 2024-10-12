@@ -98,13 +98,8 @@ void RDC_READ(void)
 
 	DELAY_US(0.11L);
 
-
-
     RDC_A0_H;
 	RDC_A1_H;     /*A0,A1配置为1、1，AD2S1210工作在配置模式*/
-
-
-
 
   	RDC_FSYNC_L;
 	SpiaRegs.SPITXBUF = 0xFF00;                                     /*发送伪数据*/
@@ -143,20 +138,20 @@ void RDC_READ(void)
 
 		asm(" RPT #9 || NOP");  /*延时60nS*/
 
-			RDC_FSYNC_L;
+		RDC_FSYNC_L;
 
 		asm(" RPT #9 || NOP");  /*延时60nS*/
 		SpiaRegs.SPITXBUF = 0;                                     /*发送伪数据*/
-			while(SpiaRegs.SPISTS.bit.INT_FLAG!=1){}
-			AD1210BUF = (SpiaRegs.SPIRXBUF & 0xFF);
-			SpiaRegs.SPISTS.all=0xFF;  
+        while(SpiaRegs.SPISTS.bit.INT_FLAG!=1){}
+        AD1210BUF = (SpiaRegs.SPIRXBUF & 0xFF);
+        SpiaRegs.SPISTS.all=0xFF;
 
 		rdc2.DATA_BUFFER  = (AD1210BUF<<1);  /* 获取位置信息*/
 
 		SpiaRegs.SPITXBUF = 0;                                     /*发送伪数据*/
-			while(SpiaRegs.SPISTS.bit.INT_FLAG!=1){}
-			AD1210BUF = (SpiaRegs.SPIRXBUF & 0xFF);
-			SpiaRegs.SPISTS.all=0xFF;                                /*清除标志位*/
+        while(SpiaRegs.SPISTS.bit.INT_FLAG!=1){}
+        AD1210BUF = (SpiaRegs.SPIRXBUF & 0xFF);
+        SpiaRegs.SPISTS.all=0xFF;                                /*清除标志位*/
 		rdc2.DATA_BUFFER  = (AD1210BUF<<1) + (rdc2.DATA_BUFFER<<8);  /* 获取位置信息*/
 		RDC_FSYNC_H; 
 

@@ -1,0 +1,44 @@
+-----------------------------  Based.pjt - Debug  -----------------------------
+[App_AD_RDC.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_AD_RDC.c"
+
+[App_Arith.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Arith.c"
+
+[App_Control.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Control.c"
+
+[App_Ev.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Ev.c"
+
+[App_IsrFunction.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_IsrFunction.c"
+
+[App_Main.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Main.c"
+
+[App_MainLoop.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_MainLoop.c"
+
+[App_PI.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_PI.c"
+
+[App_Ref_Trans.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Ref_Trans.c"
+
+[App_Scib.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Scib.c"
+
+[App_Spi.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "App_Spi.c"
+
+[F2812_eCAN.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F2812_eCAN.c"
+
+[F28335_GlobalVariableDefs.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_GlobalVariableDefs.c"
+
+[F28335_InitECan.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitECan.c"
+
+[F28335_InitEPwm.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitEPwm.c"
+
+[F28335_InitGpio.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitGpio.c"
+
+[F28335_Initialize.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_Initialize.c"
+
+[F28335_InitPie.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "F28335_InitPie.c"
+
+[Mk_CRC.c] "D:\CCStudio_v3.3\bin\cl2000" -g -pdsw225 -fr"E:/CCS_Project/PMControl_For28335_20231107_LQ_FIFO/Debug" -i"../include" -d"_DEBUG" -d"LARGE_MODEL" -ml -v28 -@"../Debug.lkf" "Mk_CRC.c"
+
+[Linking...] "D:\CCStudio_v3.3\bin\cl2000" -@"Debug.lkf"
+<Linking>
+
+Build Complete,
+  0 Errors, 0 Warnings, 0 Remarks.

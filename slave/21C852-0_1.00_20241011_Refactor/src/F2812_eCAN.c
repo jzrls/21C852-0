@@ -22,7 +22,7 @@ void Can_Rt_Data(Uint16 Num) {
     if (Num == 1) {
         Uint16 isPump = BORAD_NUM == 2 || BORAD_NUM == 3;
         if (isPump) {
-            // ½«×ªËÙ±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼Ê×ªËÙÖµ£¬ÔÙ×ª»»Îª16Î»ÕûÊı,µÍ×Ö½ÚÔÚÇ°
+            // å°†è½¬é€Ÿæ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…è½¬é€Ÿå€¼ï¼Œå†è½¬æ¢ä¸º16ä½æ•´æ•°,ä½å­—èŠ‚åœ¨å‰
             tmp = _IQmpy(Velo_Elec_abs, _IQ(9.5492965855137201461330258023509));
             tmp = _IQdiv(tmp, Mp);
             tmp = _IQmpy(tmp, V_Base >> 5);
@@ -32,7 +32,7 @@ void Can_Rt_Data(Uint16 Num) {
             }
 
             /**
-             * ¶Ôtmp½øĞĞ16´Î¾ùÖµÂË²¨´¦Àí
+             * å¯¹tmpè¿›è¡Œ16æ¬¡å‡å€¼æ»¤æ³¢å¤„ç†
              */
             // sumSpeed += tmp;
             // index++;
@@ -68,12 +68,12 @@ void Can_Rt_Data(Uint16 Num) {
             Fault_Flag.bit.POS_LIMIT = 0;
         } else {
             /**
-             * µû·§Î»ÖÃ
+             * è¶é˜€ä½ç½®
              *
-             * ½«16Î»µÄÎ»ÖÃ×ª»»Îª½Ç¶ÈÖµ£¬ÔÙ*100×ª»»Îª16Î»ÕûÊı,µÍ×Ö½ÚÔÚÇ°
+             * å°†16ä½çš„ä½ç½®è½¬æ¢ä¸ºè§’åº¦å€¼ï¼Œå†*100è½¬æ¢ä¸º16ä½æ•´æ•°,ä½å­—èŠ‚åœ¨å‰
              *
-             * 360¡ã¶ÔÓ¦65535£º360 / 65535
-             * Êµ¼Ê½Ç¶ÈÓë¼ÆËã½Ç¶ÈÓĞ100µÄ¶¨±êÏµÊı
+             * 360Â°å¯¹åº”65535ï¼š360 / 65535
+             * å®é™…è§’åº¦ä¸è®¡ç®—è§’åº¦æœ‰100çš„å®šæ ‡ç³»æ•°
              */
             tmp = Angle_Fa_Q16;
             tmp = _IQmpy(tmp, _IQ(0.54931640625)); // 360/65536*100
@@ -84,9 +84,9 @@ void Can_Rt_Data(Uint16 Num) {
             CAN_BUFFER_RT[BORAD_NUM][1] = (tmp >> 8) & 0x00FF;
 
             /**
-             * Èí¼şÏŞÎ»
+             * è½¯ä»¶é™ä½
              *
-             * ´óÓÚ65000»òÕßĞ¡ÓÚ500
+             * å¤§äº65000æˆ–è€…å°äº500
              */
             if ((Angle_Fa_Q16 > POSMAX) || (Angle_Fa_Q16 < POSMIN)) {
                 Fault_Flag.bit.POS_LIMIT = 1;
@@ -96,34 +96,34 @@ void Can_Rt_Data(Uint16 Num) {
         }
 
         /**
-         * ¹ÊÕÏÎ»
+         * æ•…éšœä½
          */
         Fault_Flag.bit.STOP_VELO_FLAG = Ctrl_Flag.bit.STOP_VELO_FLAG;
         Fault_Flag.bit.STOP_PWM_Flag = Ctrl_Flag.bit.STOP_PWM_Flag;
 
-        /* Ä¸Ïß¹ıÁ÷¹ÊÕÏ */
+        /* æ¯çº¿è¿‡æµæ•…éšœ */
         Fault_Flag.bit.STOP_PWM_Flag_Id = Sys_Flag.bit.STOP_PWM_Flag_Id;
 
-        /* ³¬ËÙ¹ÊÕÏ */
+        /* è¶…é€Ÿæ•…éšœ */
         Fault_Flag.bit.STOP_PWM_Flag_Velo = Sys_Flag.bit.STOP_PWM_Flag_Velo;
 
-        /* Ó²¼ş±£»¤ */
+        /* ç¡¬ä»¶ä¿æŠ¤ */
         Fault_Flag.bit.STOP_PWM_Flag_Driv = Sys_Flag.bit.STOP_PWM_Flag_Driv;
 
-        Fault_Flag.bit.UDC_FLAG = Sys_Flag.bit.UDC_FLAG; /* Ä¸Ïß¹ıÑ¹¹ÊÕÏ */
+        Fault_Flag.bit.UDC_FLAG = Sys_Flag.bit.UDC_FLAG; /* æ¯çº¿è¿‡å‹æ•…éšœ */
         Fault_Flag.bit.Temp1Over_Flag = Ctrl_Flag.bit.Temp1Over_Flag;
         Fault_Flag.bit.Temp2Over_Flag = Ctrl_Flag.bit.Temp2Over_Flag;
 
-        Fault_Flag.bit.UdcLow_Flag = Ctrl_Flag.bit.UdcLow_Flag; /* Ç·Ñ¹¹ÊÕÏ */
+        Fault_Flag.bit.UdcLow_Flag = Ctrl_Flag.bit.UdcLow_Flag; /* æ¬ å‹æ•…éšœ */
         Fault_Flag.bit.CANERROR_FLAG = Ctrl_Flag.bit.CANERROR_FLAG;
         Fault_Flag.bit.RunAllow_Flag = RunAllow_Flag;
         CAN_BUFFER_RT[BORAD_NUM][2] = (Fault_Flag.all & 0x00FF);
         CAN_BUFFER_RT[BORAD_NUM][3] = ((Fault_Flag.all) >> 8) & 0x00FF;
 
         /**
-         * ¿ØÖÆÆ÷ÎÂ¶È
+         * æ§åˆ¶å™¨æ¸©åº¦
          *
-         * ÎÂ¶ÈÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+         * æ¸©åº¦å€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
          */
         if (Temperature5 <= _IQ(0)) {
             tmp = 0;
@@ -137,7 +137,7 @@ void Can_Rt_Data(Uint16 Num) {
         CAN_BUFFER_RT[BORAD_NUM][4] = tmp & 0x00FF;
         CAN_BUFFER_RT[BORAD_NUM][5] = (tmp >> 8) & 0x00FF;
 
-        // ½«Ä¸ÏßµçÑ¹±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+        // å°†æ¯çº¿ç”µå‹æ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
         if (Udc_Mche_1 <= _IQ(0)) {
             tmp = 0;
         } else {
@@ -155,7 +155,7 @@ void Can_Rt_Data(Uint16 Num) {
     }
 
     if (Num == 2) {
-        // ½«Ä¸ÏßµçÁ÷±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+        // å°†æ¯çº¿ç”µæµæ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
         tmp = _IQdiv(_IQabs(Idc), I_Base);
         tmp = _IQmpy(tmp, 100);
         if (tmp >= 65535) {
@@ -164,7 +164,7 @@ void Can_Rt_Data(Uint16 Num) {
         CAN_BUFFER_RT[BORAD_NUM][9] = tmp & 0x00FF;
         CAN_BUFFER_RT[BORAD_NUM][10] = (tmp >> 8) & 0x00FF;
 
-        // ½«AÏàµçÁ÷±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+        // å°†Aç›¸ç”µæµæ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
         tmp = _IQdiv(_IQabs(Isa), I_Base);
         tmp = _IQmpy(tmp, 100);
         if (tmp >= 65535) {
@@ -173,7 +173,7 @@ void Can_Rt_Data(Uint16 Num) {
         CAN_BUFFER_RT[BORAD_NUM][11] = tmp & 0x00FF;
         CAN_BUFFER_RT[BORAD_NUM][12] = (tmp >> 8) & 0x00FF;
 
-        // ½«BÏàµçÁ÷±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+        // å°†Bç›¸ç”µæµæ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
         tmp = _IQdiv(_IQabs(Isb), I_Base);
         tmp = _IQmpy(tmp, 100);
         if (tmp >= 65535) {
@@ -182,7 +182,7 @@ void Can_Rt_Data(Uint16 Num) {
         CAN_BUFFER_RT[BORAD_NUM][13] = tmp & 0x00FF;
         CAN_BUFFER_RT[BORAD_NUM][14] = (tmp >> 8) & 0x00FF;
 
-        // ½«CÏàµçÁ÷±êçÛÖµ×ª»»ÎªIQ15µÄÊµ¼ÊÖµ£¬ÔÙ½«Æä×ª»»Îªµ¥¾«¶È¸¡µãÊı¶ÔÓ¦µÄÊ®Áù½øÖÆ±íÊ¾
+        // å°†Cç›¸ç”µæµæ ‡å¹ºå€¼è½¬æ¢ä¸ºIQ15çš„å®é™…å€¼ï¼Œå†å°†å…¶è½¬æ¢ä¸ºå•ç²¾åº¦æµ®ç‚¹æ•°å¯¹åº”çš„åå…­è¿›åˆ¶è¡¨ç¤º
         tmp = _IQdiv(_IQabs(Isc), I_Base);
         tmp = _IQmpy(tmp, 100);
         if (tmp >= 65535) {
@@ -257,7 +257,7 @@ void Can_Ctrl(Uint16 Board) {
         }
     }
 
-    /* ÓÍ±Ãµç»úÖ÷CPUÖ´ĞĞ¿ØÖÆ¹¦ÄÜ */
+    /* æ²¹æ³µç”µæœºä¸»CPUæ‰§è¡Œæ§åˆ¶åŠŸèƒ½ */
     if (Board == 2) {
         Uint16 isStopPump = CAN_BUFFER_RX[2] == 0x11 && CAN_BUFFER_RX[3] == 0xA5;
         Uint16 isStopPwm = Ctrl_Flag.bit.STOP_PWM_Flag == 1;
@@ -267,10 +267,10 @@ void Can_Ctrl(Uint16 Board) {
             Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
             Ctrl_Flag.bit.CAN_Ctrl = 0;
         } else if (CAN_BUFFER_RX[2] == 0x10 && CAN_BUFFER_RX[3] == 0x55) {
-            /* Æô¶¯µç»ú */
+            /* å¯åŠ¨ç”µæœº */
             Ctrl_Flag.bit.CAN_Ctrl = 1;
         } else if (CAN_BUFFER_RX[2] == 0x14) {
-            /* ÉèÖÃµç»ú×ªËÙ */
+            /* è®¾ç½®ç”µæœºè½¬é€Ÿ */
             Isd_Set = 0;
             TorqueAngleA = 0;
             _iq speed = Hex_Float(CAN_BUFFER_RX[3], CAN_BUFFER_RX[4], CAN_BUFFER_RX[5], CAN_BUFFER_RX[6]);
@@ -279,12 +279,12 @@ void Can_Ctrl(Uint16 Board) {
                 Veloover_Set = maxSpeed;
             }
 
-            /* ÔËĞĞ·½Ïò */
+            /* è¿è¡Œæ–¹å‘ */
             if (Ctrl_Flag.bit.VelWay_Flag == 1) {
                 Veloover_Set = -Veloover_Set;
             }
 
-            /* ÔÊĞíÔËĞĞ±êÖ¾ */
+            /* å…è®¸è¿è¡Œæ ‡å¿— */
             if (RunAllow_Flag == 1) {
                 Ctrl_Flag.bit.VELO_CONTROL_FLAG = 1;
                 Ctrl_Flag.bit.POS_CONTROL_FLAG = 0;
@@ -386,7 +386,7 @@ void Can_Ctrl(Uint16 Board) {
 }
 /*--------------------------------------------------------------------------
  --------------------------------------------------------------------------------
- can·¢ËÍ³ÌĞò
+ canå‘é€ç¨‹åº
  -------------------------------------------------------------------------------*/
 void Can_Tx_Data() {
     DELAY_US(1000);
@@ -598,7 +598,7 @@ void Can_Tx11_Data() {
 interrupt void ECana_T(void) {
     volatile Uint16 i;
     volatile Uint16 Sum_Temp = 0;
-    if (ECanaRegs.CANRMP.bit.RMP0 == 1) /*µÈ´ıËùÓĞRMP0ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP0 == 1) /*ç­‰å¾…æ‰€æœ‰RMP0ç½®ä½*/
     {
         if (CANB.FLAG.bit.RX_FLAG == 0) // && CANB.FLAG.bit.TXBO_FLAG == 1)
         {
@@ -623,7 +623,7 @@ interrupt void ECana_T(void) {
                 CANB.p_Rx_Buffer = RX_BUFFER;
                 CANB.m_Rx_Length = 0;
             }
-            // ¼ì²é°üÍ·ÊÇ·ñÎªAA55,ÒÔ¼°»ñÈ¡Êı¾İ³¤¶È----------------------
+            // æ£€æŸ¥åŒ…å¤´æ˜¯å¦ä¸ºAA55,ä»¥åŠè·å–æ•°æ®é•¿åº¦----------------------
             else if (RX_BUFFER[0] == 0x00EB && RX_BUFFER[1] == 0x0090 &&
                      RX_BUFFER[4] <= (Uint16)(RX_BUFFER_LENGTH - 7)) {
                 CANB.m_Rx_Length = RX_BUFFER[4];
@@ -645,9 +645,9 @@ interrupt void ECana_T(void) {
             }
         }
 
-        ECanaRegs.CANRMP.bit.RMP0 = 1; /*Çå³ıËùÓĞRMP0Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP0 = 1; /*æ¸…é™¤æ‰€æœ‰RMP0ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
-    if (ECanaRegs.CANRMP.bit.RMP3 == 1) /*µÈ´ıËùÓĞRMP0ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP3 == 1) /*ç­‰å¾…æ‰€æœ‰RMP0ç½®ä½*/
     {
         if (CANB2.FLAG.bit.RX_FLAG == 0) // && CANB2.FLAG.bit.TXBO_FLAG == 1)
         {
@@ -672,7 +672,7 @@ interrupt void ECana_T(void) {
                 CANB2.p_Rx_Buffer = SCI_TX_BUFFER;
                 CANB2.m_Rx_Length = 0;
             }
-            // ¼ì²é°üÍ·ÊÇ·ñÎªAA55,ÒÔ¼°»ñÈ¡Êı¾İ³¤¶È----------------------
+            // æ£€æŸ¥åŒ…å¤´æ˜¯å¦ä¸ºAA55,ä»¥åŠè·å–æ•°æ®é•¿åº¦----------------------
             else if (SCI_TX_BUFFER[0] == 0x00EB && SCI_TX_BUFFER[1] == 0x0090 &&
                      SCI_TX_BUFFER[4] <= (Uint16)(RX_BUFFER_LENGTH - 7)) {
                 CANB2.m_Rx_Length = SCI_TX_BUFFER[4];
@@ -695,10 +695,10 @@ interrupt void ECana_T(void) {
             }
         }
 
-        ECanaRegs.CANRMP.bit.RMP3 = 1; /*Çå³ıËùÓĞRMP0Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP3 = 1; /*æ¸…é™¤æ‰€æœ‰RMP0ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    /*µÈ´ıËùÓĞRMP5ÖÃÎ»*/
+    /*ç­‰å¾…æ‰€æœ‰RMP5ç½®ä½*/
     if (ECanaRegs.CANRMP.bit.RMP5 == 1) {
         if (BORAD_NUM != 0) {
             CAN_BUFFER_RT[0][0] = ECanaMboxes.MBOX5.MDL.byte.BYTE4;
@@ -711,10 +711,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[0][7] = ECanaMboxes.MBOX5.MDH.byte.BYTE5;
             CAN_BUFFER_RT[0][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP5 = 1; /*Çå³ıËùÓĞRMP5Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP5 = 1; /*æ¸…é™¤æ‰€æœ‰RMP5ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    /*µÈ´ıËùÓĞRMP6ÖÃÎ»*/
+    /*ç­‰å¾…æ‰€æœ‰RMP6ç½®ä½*/
     if (ECanaRegs.CANRMP.bit.RMP6 == 1) {
         if (BORAD_NUM != 1) {
             CAN_BUFFER_RT[1][0] = ECanaMboxes.MBOX6.MDL.byte.BYTE4;
@@ -727,10 +727,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[1][7] = ECanaMboxes.MBOX6.MDH.byte.BYTE5;
             CAN_BUFFER_RT[1][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP6 = 1; /*Çå³ıËùÓĞRMP6Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP6 = 1; /*æ¸…é™¤æ‰€æœ‰RMP6ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    /*µÈ´ıËùÓĞRMP7ÖÃÎ»*/
+    /*ç­‰å¾…æ‰€æœ‰RMP7ç½®ä½*/
     if (ECanaRegs.CANRMP.bit.RMP7 == 1) {
         if (BORAD_NUM != 2) {
             CAN_BUFFER_RT[2][0] = ECanaMboxes.MBOX7.MDL.byte.BYTE4;
@@ -743,10 +743,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[2][7] = ECanaMboxes.MBOX7.MDH.byte.BYTE5;
             CAN_BUFFER_RT[2][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP7 = 1; /*Çå³ıËùÓĞRMP7Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP7 = 1; /*æ¸…é™¤æ‰€æœ‰RMP7ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    /*µÈ´ıËùÓĞRMP8ÖÃÎ»*/
+    /*ç­‰å¾…æ‰€æœ‰RMP8ç½®ä½*/
     if (ECanaRegs.CANRMP.bit.RMP8 == 1) {
         if (BORAD_NUM != 3) {
             CAN_BUFFER_RT[3][0] = ECanaMboxes.MBOX8.MDL.byte.BYTE4;
@@ -759,10 +759,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[3][7] = ECanaMboxes.MBOX8.MDH.byte.BYTE5;
             CAN_BUFFER_RT[3][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP8 = 1; /*Çå³ıËùÓĞRMP8Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP8 = 1; /*æ¸…é™¤æ‰€æœ‰RMP8ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    /*µÈ´ıËùÓĞRMP9ÖÃÎ»*/
+    /*ç­‰å¾…æ‰€æœ‰RMP9ç½®ä½*/
     if (ECanaRegs.CANRMP.bit.RMP9 == 1) {
         if (BORAD_NUM != 4) {
             CAN_BUFFER_RT[4][0] = ECanaMboxes.MBOX9.MDL.byte.BYTE4;
@@ -775,10 +775,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[4][7] = ECanaMboxes.MBOX9.MDH.byte.BYTE5;
             CAN_BUFFER_RT[4][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP9 = 1; /*Çå³ıËùÓĞRMP9Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP9 = 1; /*æ¸…é™¤æ‰€æœ‰RMP9ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP10 == 1) /*µÈ´ıËùÓĞRMP10ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP10 == 1) /*ç­‰å¾…æ‰€æœ‰RMP10ç½®ä½*/
     {
         if (BORAD_NUM != 5) {
             CAN_BUFFER_RT[5][0] = ECanaMboxes.MBOX10.MDL.byte.BYTE4;
@@ -791,10 +791,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[5][7] = ECanaMboxes.MBOX10.MDH.byte.BYTE5;
             CAN_BUFFER_RT[5][8] = 0;
         }
-        ECanaRegs.CANRMP.bit.RMP10 = 1; /*Çå³ıËùÓĞRMP10Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP10 = 1; /*æ¸…é™¤æ‰€æœ‰RMP10ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP12 == 1) /*µÈ´ıËùÓĞRMP10ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP12 == 1) /*ç­‰å¾…æ‰€æœ‰RMP10ç½®ä½*/
     {
         /*if(Sys_Flag.bit.CAN_FLAG == 0)
          {
@@ -822,10 +822,10 @@ interrupt void ECana_T(void) {
 
         CAN_BUFFER_CTRL_Num++;
 
-        ECanaRegs.CANRMP.bit.RMP12 = 1; /*Çå³ıËùÓĞRMP10Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP12 = 1; /*æ¸…é™¤æ‰€æœ‰RMP10ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP14 == 1) /*µÈ´ıËùÓĞRMP14ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP14 == 1) /*ç­‰å¾…æ‰€æœ‰RMP14ç½®ä½*/
     {
         if (BORAD_NUM != 0) {
             CAN_BUFFER_RT[0][9] = ECanaMboxes.MBOX14.MDL.byte.BYTE4;
@@ -837,10 +837,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[0][15] = ECanaMboxes.MBOX14.MDH.byte.BYTE6;
             CAN_BUFFER_RT[0][16] = ECanaMboxes.MBOX14.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP14 = 1; /*Çå³ıËùÓĞRMP14Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP14 = 1; /*æ¸…é™¤æ‰€æœ‰RMP14ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP15 == 1) /*µÈ´ıËùÓĞRMP15ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP15 == 1) /*ç­‰å¾…æ‰€æœ‰RMP15ç½®ä½*/
     {
         if (BORAD_NUM != 1) {
             CAN_BUFFER_RT[1][9] = ECanaMboxes.MBOX15.MDL.byte.BYTE4;
@@ -852,10 +852,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[1][15] = ECanaMboxes.MBOX15.MDH.byte.BYTE6;
             CAN_BUFFER_RT[1][16] = ECanaMboxes.MBOX15.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP15 = 1; /*Çå³ıËùÓĞRMP15Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP15 = 1; /*æ¸…é™¤æ‰€æœ‰RMP15ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP16 == 1) /*µÈ´ıËùÓĞRMP16ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP16 == 1) /*ç­‰å¾…æ‰€æœ‰RMP16ç½®ä½*/
     {
         if (BORAD_NUM != 2) {
             CAN_BUFFER_RT[2][9] = ECanaMboxes.MBOX16.MDL.byte.BYTE4;
@@ -867,10 +867,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[2][15] = ECanaMboxes.MBOX16.MDH.byte.BYTE6;
             CAN_BUFFER_RT[2][16] = ECanaMboxes.MBOX16.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP16 = 1; /*Çå³ıËùÓĞRMP16Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP16 = 1; /*æ¸…é™¤æ‰€æœ‰RMP16ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP17 == 1) /*µÈ´ıËùÓĞRMP17ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP17 == 1) /*ç­‰å¾…æ‰€æœ‰RMP17ç½®ä½*/
     {
         if (BORAD_NUM != 3) {
             CAN_BUFFER_RT[3][9] = ECanaMboxes.MBOX17.MDL.byte.BYTE4;
@@ -882,10 +882,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[3][15] = ECanaMboxes.MBOX17.MDH.byte.BYTE6;
             CAN_BUFFER_RT[3][16] = ECanaMboxes.MBOX17.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP17 = 1; /*Çå³ıËùÓĞRMP17Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP17 = 1; /*æ¸…é™¤æ‰€æœ‰RMP17ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP18 == 1) /*µÈ´ıËùÓĞRMP18ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP18 == 1) /*ç­‰å¾…æ‰€æœ‰RMP18ç½®ä½*/
     {
         if (BORAD_NUM != 4) {
             CAN_BUFFER_RT[4][9] = ECanaMboxes.MBOX18.MDL.byte.BYTE4;
@@ -897,10 +897,10 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[4][15] = ECanaMboxes.MBOX18.MDH.byte.BYTE6;
             CAN_BUFFER_RT[4][16] = ECanaMboxes.MBOX18.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP18 = 1; /*Çå³ıËùÓĞRMP18Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP18 = 1; /*æ¸…é™¤æ‰€æœ‰RMP18ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
-    if (ECanaRegs.CANRMP.bit.RMP19 == 1) /*µÈ´ıËùÓĞRMP19ÖÃÎ»*/
+    if (ECanaRegs.CANRMP.bit.RMP19 == 1) /*ç­‰å¾…æ‰€æœ‰RMP19ç½®ä½*/
     {
         if (BORAD_NUM != 5) {
             CAN_BUFFER_RT[5][9] = ECanaMboxes.MBOX19.MDL.byte.BYTE4;
@@ -912,17 +912,17 @@ interrupt void ECana_T(void) {
             CAN_BUFFER_RT[5][15] = ECanaMboxes.MBOX19.MDH.byte.BYTE6;
             CAN_BUFFER_RT[5][16] = ECanaMboxes.MBOX19.MDH.byte.BYTE5;
         }
-        ECanaRegs.CANRMP.bit.RMP19 = 1; /*Çå³ıËùÓĞRMP19Î»²¢¿ªÊ¼½ÓÊÕÏûÏ¢*/
+        ECanaRegs.CANRMP.bit.RMP19 = 1; /*æ¸…é™¤æ‰€æœ‰RMP19ä½å¹¶å¼€å§‹æ¥æ”¶æ¶ˆæ¯*/
     }
 
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;
 }
 
 //----------------------------------------------------------------------------------------
-// ·¢ËÍÊı¾İ´ò°ü³ÌĞò
-// ½«ĞèÒª·¢ËÍµÄÊı¾İ°´ÕÕÍ¨Ñ¶¹æÔ¼´ò°ü³ÉÊıİè?
-// Èë¿Ú²ÎÊı:ĞèÒª·¢ËÍµÄÊı¾İµØÖ·¡¢·¢ËÍµÄÃüÁî×Ö¡¢·¢ËÍµÄÊı¾İ³¤¶È(×Ö)
-// ³ö¿Ú²ÎÊı:ÎŞ
+// å‘é€æ•°æ®æ‰“åŒ…ç¨‹åº
+// å°†éœ€è¦å‘é€çš„æ•°æ®æŒ‰ç…§é€šè®¯è§„çº¦æ‰“åŒ…æˆæ•°è“?
+// å…¥å£å‚æ•°:éœ€è¦å‘é€çš„æ•°æ®åœ°å€ã€å‘é€çš„å‘½ä»¤å­—ã€å‘é€çš„æ•°æ®é•¿åº¦(å­—)
+// å‡ºå£å‚æ•°:æ— 
 //----------------------------------------------------------------------------------------
 void CAN_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_length_L) {
     volatile Uint16 i;
@@ -932,7 +932,7 @@ void CAN_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_len
     *CANB.p_Tx_Buffer++ = 0x0090;
     *CANB.p_Tx_Buffer++ = m_tx_command_L & 0x00FF;
 
-    // ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+    // å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
     *CANB.p_Tx_Buffer++ = ((m_tx_length_L << 2)) >> 8;
     *CANB.p_Tx_Buffer++ = ((m_tx_length_L << 2)) & 0x00FF;
 
@@ -948,8 +948,8 @@ void CAN_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_len
     }
 
     Data_Temp = CalCRC16_Byte(TX_BUFFER, (m_tx_length_L << 2) + 5);
-    *CANB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-    *CANB.p_Tx_Buffer = (Data_Temp >> 8);       /* ÀÛ¼ÓóĞ§Ñéº?*/
+    *CANB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+    *CANB.p_Tx_Buffer = (Data_Temp >> 8);       /* ç´¯åŠ ç¬®Ğ°æ¥¹?*/
     CANB.p_Tx_Buffer = (Uint16 *)TX_BUFFER;
     CANB.m_Tx_Length = (m_tx_length_L << 2) + 2 + 5;
 }
@@ -962,7 +962,7 @@ void CAN2_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_le
     *CANB2.p_Tx_Buffer++ = 0x0090;
     *CANB2.p_Tx_Buffer++ = m_tx_command_L & 0x00FF;
 
-    // ·¢ËÍµÄÊı¾İ×Ö½ÚÊı¼ÓÉÏĞ§Ñé×Ö½Ú
+    // å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
     *CANB2.p_Tx_Buffer++ = ((m_tx_length_L << 2)) >> 8;
     *CANB2.p_Tx_Buffer++ = ((m_tx_length_L << 2)) & 0x00FF;
 
@@ -978,8 +978,8 @@ void CAN2_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_le
     }
 
     Data_Temp = CalCRC16_Byte(SCI_RX_BUFFER, (m_tx_length_L << 2) + 5);
-    *CANB2.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
-    *CANB2.p_Tx_Buffer = (Data_Temp >> 8);       /* ÀÛ¼ÓÇóĞ§ÑéºÍ*/
+    *CANB2.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+    *CANB2.p_Tx_Buffer = (Data_Temp >> 8);       /* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
     CANB2.p_Tx_Buffer = (Uint16 *)SCI_RX_BUFFER;
     CANB2.m_Tx_Length = (m_tx_length_L << 2) + 2 + 5;
 }
@@ -1021,7 +1021,7 @@ void Can_Deal(void) {
     command = (RX_BUFFER[2]);
 
     switch (command) {
-    case 0x0000: // ³õÊ¼»¯¼ì²â¿ØÖÆÆ÷Ö¸Áî			lxy
+    case 0x0000: // åˆå§‹åŒ–æ£€æµ‹æ§åˆ¶å™¨æŒ‡ä»¤			lxy
         SendData[0] = ReceData[1];
         SendData[1] = BORAD_NUM;
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1029,10 +1029,10 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0001:                             // Çå³ı¹ÊÕÏ±êÖ¾Ö¸Áî			lxy
-        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;   // "1"±íÃ÷µç»ú¹ıÁ÷±£»¤
-        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0; // "1"±íÃ÷³¬ËÙ±£»¤
-        Sys_Flag.bit.UDC_FLAG = 0;           // "1"±íÃ÷Ö±Á÷µçÑ¹¹ÊÕÏ
+    case 0x0001:                             // æ¸…é™¤æ•…éšœæ ‡å¿—æŒ‡ä»¤			lxy
+        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;   // "1"è¡¨æ˜ç”µæœºè¿‡æµä¿æŠ¤
+        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0; // "1"è¡¨æ˜è¶…é€Ÿä¿æŠ¤
+        Sys_Flag.bit.UDC_FLAG = 0;           // "1"è¡¨æ˜ç›´æµç”µå‹æ•…éšœ
         Sys_Flag.bit.STOP_PWM_Flag_Driv = 0;
 
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1094,17 +1094,17 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0004: // Ğ´µç»ú²ÎÊıºÍ»ùÖµÏµÍ³Ö¸Áî			lxy
+    case 0x0004: // å†™ç”µæœºå‚æ•°å’ŒåŸºå€¼ç³»ç»ŸæŒ‡ä»¤			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         getMotorParams(ReceData);
 
         Velo_PerAdd = _IQmpy(Velo_Add, Per_Ctrl);
         Velo_Duty = _IQdiv(3750000, Control_Period);
 
-        p = _IQdiv(Mp, Rp); /* µç»úÓëĞı±äµÄ¼«¶ÔÊı±È */
+        p = _IQdiv(Mp, Rp); /* ç”µæœºä¸æ—‹å˜çš„æå¯¹æ•°æ¯” */
         Udc_Mche_realvalue = _IQdiv(_IQ(1), Udc_Setg);
         K_Velo_Cal = _IQdiv(_IQ(62.83185307179586476925286766559), V_Base);
-        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0); // ¶¨Ê±Æ÷ÖÜÆÚÎª100us
+        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0); // å®šæ—¶å™¨å‘¨æœŸä¸º100us
         K_Velo_Cal = _IQdiv(K_Velo_Cal, Velo_Calc_Num << 20);
         K_Velo_Cal = _IQmpy(K_Velo_Cal, p);
         Is_PerAdd = _IQmpy(Is_Add, Per_Ctrl);
@@ -1122,7 +1122,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0005: // ¶Áµç»ú²ÎÊıºÍ»ùÖµÏµÍ³Ö¸Áî		lxy
+    case 0x0005: // è¯»ç”µæœºå‚æ•°å’ŒåŸºå€¼ç³»ç»ŸæŒ‡ä»¤		lxy
         SendData[0] = Rs;
         SendData[1] = Ld;
         SendData[2] = Lq;
@@ -1132,7 +1132,7 @@ void Can_Deal(void) {
         SendData[6] = Udc_Setg;
         SendData[7] = U_Base;
         SendData[8] = I_Base;
-        SendData[9] = V_Base; // µçĞµËÙ¶È»ùÖµ(rad/s)
+        SendData[9] = V_Base; // ç”µæ¢°é€Ÿåº¦åŸºå€¼(rad/s)
         SendData[10] = Angle_Init_Digital;
         SendData[11] = Velo_Max;
         SendData[12] = id_Max;
@@ -1159,7 +1159,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0006: // Î»ÖÃ¿ØÖÆÖ¸Áî			lxy
+    case 0x0006: // ä½ç½®æ§åˆ¶æŒ‡ä»¤			lxy
 
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
             SendData[0] = 1;
@@ -1187,7 +1187,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0007: // ËÙ¶È¿ØÖÆÖ¸Áî			lxy
+    case 0x0007: // é€Ÿåº¦æ§åˆ¶æŒ‡ä»¤			lxy
 
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
             SendData[0] = 1;
@@ -1217,7 +1217,7 @@ void Can_Deal(void) {
         }
 
         break;
-    case 0x0008: // ×ª¾Ø¿ØÖÆÖ¸Áî			lxy
+    case 0x0008: // è½¬çŸ©æ§åˆ¶æŒ‡ä»¤			lxy
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Choose_Mode = ReceData[1];
@@ -1232,7 +1232,7 @@ void Can_Deal(void) {
                 Isd_Set = ReceData[2];
                 Isdq_Set1 = -ReceData[3];
                 TorqueAngleA = ReceData[4];
-                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1; // ÖÃ×ª¾Ø¿ØÖÆ±êÖ¾
+                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1; // ç½®è½¬çŸ©æ§åˆ¶æ ‡å¿—
                 Ctrl_Flag.bit.VELO_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.POS_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.STOP_VELO_FLAG = 0;
@@ -1268,7 +1268,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0009: // ¶ÁÈëµç»ú´«¸ĞÆ÷Ö¸Áî			lxy
+    case 0x0009: // è¯»å…¥ç”µæœºä¼ æ„Ÿå™¨æŒ‡ä»¤
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Sys_Flag.bit.RDC_FAULT = rdc1.FAULT;
@@ -1296,7 +1296,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000A: // µç»úÍ£×ªÖ¸Áî			lxy
+    case 0x000A: // ç”µæœºåœè½¬æŒ‡ä»¤
         CAN_DataCombine_Rx(RX_BUFFER);
         Choose_Mche = ReceData[0];
         Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
@@ -1306,7 +1306,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000B: // Ğ´¿ØÖÆ²ÎÊıÖ¸Áî
+    case 0x000B: // å†™æ§åˆ¶å‚æ•°æŒ‡ä»¤
         CAN_DataCombine_Rx(RX_BUFFER);
         getControlParams(ReceData);
 
@@ -1315,14 +1315,14 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000C: // ¶Á²ÎÊıÖ¸Áî
+    case 0x000C: // è¯»å‚æ•°æŒ‡ä»¤
         setControlParams(SendData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
             CAN_DataPackage_Tx(SendData, 0x007C, 30);
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0010: // Ğ´Ä£ÄâÖ¸Áî
+    case 0x0010: // å†™æ¨¡æ‹ŸæŒ‡ä»¤
         CAN_DataCombine_Rx(RX_BUFFER);
         getAnalogParams(ReceData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1330,7 +1330,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0011: // ¶Á²ÎÊıÖ¸Áî
+    case 0x0011: // è¯»å‚æ•°æŒ‡ä»¤
         SendData[0] = K_Udc;
         SendData[1] = Off_Udc;
         SendData[2] = K_Isa;
@@ -1351,7 +1351,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0012: // Ğ´ÆäËû²ÎÊıÖ¸Áî
+    case 0x0012: // å†™å…¶ä»–å‚æ•°æŒ‡ä»¤
         CAN_DataCombine_Rx(RX_BUFFER);
         getOtherParams(ReceData);
         if (CANB.FLAG.bit.TXBO_FLAG == 1) {
@@ -1359,7 +1359,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0013: // ¶ÁÆäËû²ÎÊıÖ¸Áî
+    case 0x0013: // è¯»å…¶ä»–å‚æ•°æŒ‡ä»¤
         SendData[0] = Temperature1_K;
         SendData[1] = UdcLimit1_Set;
         // SendData[2] = TemperatureB1_K;
@@ -1375,10 +1375,10 @@ void Can_Deal(void) {
         SendData[12] = Ctrl_Flag.bit.RotorWay_Flag;
         // SendData[13] = Sys_Flag.bit.RotorWay_Flag;
         SendData[14] = UdcLimit_Set;
-        SendData[15] = Velo_Start; // Æô¶¯ËÙ¶È
+        SendData[15] = Velo_Start; // å¯åŠ¨é€Ÿåº¦
         SendData[16] = maxSpeed;
         SendData[17] = Ctrl_Flag.bit.VelWay_Flag;
-        SendData[18] = TorquetoIs; // ×ª¾ØµçÁ÷±È
+        SendData[18] = TorquetoIs; // è½¬çŸ©ç”µæµæ¯”
         SendData[19] = IdProtectNum;
         SendData[20] = VeloProtectNum;
         SendData[21] = Velo_Calc_Num;
@@ -1396,7 +1396,7 @@ void Can_Deal(void) {
             CANB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0060: // Ğ´ÈëEEPROMÖ¸Áî
+    case 0x0060: // å†™å…¥EEPROMæŒ‡ä»¤
 
         WriteEEProm_Flag = 1;
 

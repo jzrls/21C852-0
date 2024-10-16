@@ -1,10 +1,10 @@
 ******************************************************************************
              TMS320C2000 Linker PC v5.2.1                      
 ******************************************************************************
->> Linked Sat Oct 12 16:25:01 2024
+>> Linked Wed Oct 16 12:05:52 2024
 
 OUTPUT FILE NAME:   <./Debug/Based.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00325a3a
+ENTRY POINT SYMBOL: "_c_int00"  address: 003259eb
 
 
 MEMORY CONFIGURATION
@@ -12,9 +12,9 @@ MEMORY CONFIGURATION
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
 PAGE 0:
-  PRAML01234            00008000   00005000  00002692  0000296e  RWIX
+  PRAML01234            00008000   00005000  00002636  000029ca  RWIX
   FLASHE                00318000   00008000  00000806  000077fa  RWIX
-  FLASHCD               00320000   00010000  000063a2  00009c5e  RWIX
+  FLASHCD               00320000   00010000  00006366  00009c9a  RWIX
   FLASHA                00338000   00007f80  00000000  00007f80  RWIX
   CSM_RSVD              0033ff80   00000076  00000076  00000000  RWIX
   BEGIN                 0033fff6   00000002  00000002  00000000  RWIX
@@ -98,62 +98,62 @@ section   page    origin      length       input sections
 .table     0    00318000    00000806     
                   00318000    00000806     Table.obj (.table)
 
-ramfuncs   0    00320000    00002562     RUN ADDR = 00008000
-                  00320000    00000eb5     App_Control.obj (ramfuncs)
-                  00320eb5    000008b0     F2812_eCAN.obj (ramfuncs)
-                  00321765    0000053a     App_Scib.obj (ramfuncs)
-                  00321c9f    000003ae     App_Ev.obj (ramfuncs)
-                  0032204d    0000014e     App_Spi.obj (ramfuncs)
-                  0032219b    00000118     App_Ref_Trans.obj (ramfuncs)
-                  003222b3    000000cb     App_AD_RDC.obj (ramfuncs)
-                  0032237e    0000009a     App_Arith.obj (ramfuncs)
-                  00322418    0000006f     App_PI.obj (ramfuncs)
-                  00322487    0000006d     F28335_Initialize.obj (ramfuncs)
-                  003224f4    0000006a     App_IsrFunction.obj (ramfuncs)
-                  0032255e    00000004     F28335_AsmCode.obj (ramfuncs)
+ramfuncs   0    00320000    00002506     RUN ADDR = 00008000
+                  00320000    00000e59     App_Control.obj (ramfuncs)
+                  00320e59    000008b0     F2812_eCAN.obj (ramfuncs)
+                  00321709    0000053a     App_Scib.obj (ramfuncs)
+                  00321c43    000003ae     App_Ev.obj (ramfuncs)
+                  00321ff1    0000014e     App_Spi.obj (ramfuncs)
+                  0032213f    00000118     App_Ref_Trans.obj (ramfuncs)
+                  00322257    000000cb     App_AD_RDC.obj (ramfuncs)
+                  00322322    0000009a     App_Arith.obj (ramfuncs)
+                  003223bc    0000006f     App_PI.obj (ramfuncs)
+                  0032242b    0000006d     F28335_Initialize.obj (ramfuncs)
+                  00322498    0000006a     App_IsrFunction.obj (ramfuncs)
+                  00322502    00000004     F28335_AsmCode.obj (ramfuncs)
 
-.text      0    00322562    0000363a     
-                  00322562    00001355     App_MainLoop.obj (.text)
-                  003238b7    00000edd     F2812_eCAN.obj (.text)
-                  00324794    00000a23     App_Scib.obj (.text)
-                  003251b7    00000242     F28335_InitECan.obj (.text)
-                  003253f9    00000218     F28335_InitGpio.obj (.text)
-                  00325611    000001bc     F28335_Initialize.obj (.text)
-                  003257cd    00000141     F28335_InitEPwm.obj (.text)
-                  0032590e    00000087     Mk_CRC.obj (.text)
-                  00325995    0000005a     rts2800_ml.lib : fs_mpy.obj (.text)
-                  003259ef    0000004b                    : exit.obj (.text)
-                  00325a3a    00000046                    : boot.obj (.text)
-                  00325a80    00000040     App_Main.obj (.text)
-                  00325ac0    0000003d     F28335_InitPie.obj (.text)
-                  00325afd    0000003b     rts2800_ml.lib : fs_tol.obj (.text)
-                  00325b38    00000024     App_Ev.obj (.text)
-                  00325b5c    00000020     rts2800_ml.lib : fd_tofs.obj (.text)
-                  00325b7c    0000000f     App_IsrFunction.obj (.text)
-                  00325b8b    00000009     rts2800_ml.lib : _lock.obj (.text)
-                  00325b94    00000008     F28335_AsmCode.obj (.text)
+.text      0    00322506    00003645     
+                  00322506    0000135a     App_MainLoop.obj (.text)
+                  00323860    00000ee1     F2812_eCAN.obj (.text)
+                  00324741    00000a27     App_Scib.obj (.text)
+                  00325168    00000242     F28335_InitECan.obj (.text)
+                  003253aa    00000218     F28335_InitGpio.obj (.text)
+                  003255c2    000001bc     F28335_Initialize.obj (.text)
+                  0032577e    00000141     F28335_InitEPwm.obj (.text)
+                  003258bf    00000087     Mk_CRC.obj (.text)
+                  00325946    0000005a     rts2800_ml.lib : fs_mpy.obj (.text)
+                  003259a0    0000004b                    : exit.obj (.text)
+                  003259eb    00000046                    : boot.obj (.text)
+                  00325a31    0000003e     App_Main.obj (.text)
+                  00325a6f    0000003d     F28335_InitPie.obj (.text)
+                  00325aac    0000003b     rts2800_ml.lib : fs_tol.obj (.text)
+                  00325ae7    00000024     App_Ev.obj (.text)
+                  00325b0b    00000020     rts2800_ml.lib : fd_tofs.obj (.text)
+                  00325b2b    0000000f     App_IsrFunction.obj (.text)
+                  00325b3a    00000009     rts2800_ml.lib : _lock.obj (.text)
+                  00325b43    00000008     F28335_AsmCode.obj (.text)
 
-.cinit     0    00325b9c    00000686     
-                  00325b9c    00000645     App_Main.obj (.cinit)
-                  003261e1    0000001d     App_Control.obj (.cinit)
-                  003261fe    0000000e     rts2800_ml.lib : exit.obj (.cinit)
-                  0032620c    0000000a     App_AD_RDC.obj (.cinit)
-                  00326216    0000000a     rts2800_ml.lib : _lock.obj (.cinit)
-                  00326220    00000002     --HOLE-- [fill = 0]
+.cinit     0    00325b4b    0000069b     
+                  00325b4b    00000645     App_Main.obj (.cinit)
+                  00326190    00000032     App_Control.obj (.cinit)
+                  003261c2    0000000e     rts2800_ml.lib : exit.obj (.cinit)
+                  003261d0    0000000a     App_AD_RDC.obj (.cinit)
+                  003261da    0000000a     rts2800_ml.lib : _lock.obj (.cinit)
+                  003261e4    00000002     --HOLE-- [fill = 0]
 
-IQmath     0    00326222    00000130     RUN ADDR = 0000a562
-                  00326222    00000060     IQmath.lib : IQ20mag.obj (IQmath)
-                  00326282    00000047                : IQ20div.obj (IQmath)
-                  003262c9    00000029                : IQ20sinPU.obj (IQmath)
-                  003262f2    00000027                : IQ20cosPU.obj (IQmath)
-                  00326319    00000014                : IQ15toF.obj (IQmath)
-                  0032632d    00000011                : IQ20mpyI32int.obj (IQmath)
-                  0032633e    0000000b                : IQ20frac.obj (IQmath)
-                  00326349    00000009                : IQ20int.obj (IQmath)
+IQmath     0    003261e6    00000130     RUN ADDR = 0000a506
+                  003261e6    00000060     IQmath.lib : IQ20mag.obj (IQmath)
+                  00326246    00000047                : IQ20div.obj (IQmath)
+                  0032628d    00000029                : IQ20sinPU.obj (IQmath)
+                  003262b6    00000027                : IQ20cosPU.obj (IQmath)
+                  003262dd    00000014                : IQ15toF.obj (IQmath)
+                  003262f1    00000011                : IQ20mpyI32int.obj (IQmath)
+                  00326302    0000000b                : IQ20frac.obj (IQmath)
+                  0032630d    00000009                : IQ20int.obj (IQmath)
 
-.switch    0    00326352    00000050     
-                  00326352    00000028     App_Scib.obj (.switch)
-                  0032637a    00000028     F2812_eCAN.obj (.switch)
+.switch    0    00326316    00000050     
+                  00326316    00000028     App_Scib.obj (.switch)
+                  0032633e    00000028     F2812_eCAN.obj (.switch)
 
 csm_rsvd   0    0033ff80    00000076     
                   0033ff80    00000076     F28335_CSMPasswords.obj (csm_rsvd)
@@ -379,11 +379,11 @@ I2caRegsFile
 
 .ebss      1    0000e000    00000bc0     UNINITIALIZED
                   0000e000    00000b1c     App_Main.obj (.ebss)
-                  0000eb1c    00000008     App_Control.obj (.ebss)
-                  0000eb24    00000004     App_AD_RDC.obj (.ebss)
-                  0000eb28    00000004     rts2800_ml.lib : _lock.obj (.ebss)
-                  0000eb2c    00000003     App_Spi.obj (.ebss)
-                  0000eb2f    00000011     --HOLE--
+                  0000eb1c    0000000e     App_Control.obj (.ebss)
+                  0000eb2a    00000004     App_AD_RDC.obj (.ebss)
+                  0000eb2e    00000004     rts2800_ml.lib : _lock.obj (.ebss)
+                  0000eb32    00000003     App_Spi.obj (.ebss)
+                  0000eb35    0000000b     --HOLE--
                   0000eb40    00000080     rts2800_ml.lib : exit.obj (.ebss)
 
 CsmPwlFile 
@@ -399,12 +399,12 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address    name
 --------   ----
-00322562   .text
-00325a15   C$$EXIT
-00325b5c   FD$$TOFS
-00325995   FS$$MPY
-00325afd   FS$$TOL
-0000a19b   _ABC2DQ_CALC
+00322506   .text
+003259c6   C$$EXIT
+00325b0b   FD$$TOFS
+00325946   FS$$MPY
+00325aac   FS$$TOL
+0000a13f   _ABC2DQ_CALC
 00380080   _ADC_cal
 0000e012   _ADc_Idc
 0000e017   _ADc_Isa
@@ -416,10 +416,10 @@ address    name
 0000e00d   _ADc_Udc
 00000b00   _AdcMirror
 00007100   _AdcRegs
-0000a408   _Adc_Arith
-0000a3f8   _Adc_Temp
+0000a3ac   _Adc_Arith
+0000a39c   _Adc_Temp
 0000e01c   _Angle0_Q16
-0000a3df   _AngleAdjust
+0000a383   _AngleAdjust
 0000e046   _Angle_Elec
 0000e10e   _Angle_ElecOpen
 0000e020   _Angle_Fa_Q16
@@ -428,8 +428,8 @@ address    name
 0000e01e   _Angle_Q16
 0000e006   _Board2_Num
 0000e001   _Board_Num
-00323d03   _CAN2_DataCombine_Rx
-00323c09   _CAN2_DataPackage_Tx
+00323cac   _CAN2_DataCombine_Rx
+00323bb2   _CAN2_DataPackage_Tx
 0000e18a   _CANB
 0000e16e   _CANB2
 0000e146   _CAN_BUFFER_CTRL
@@ -442,43 +442,43 @@ address    name
 0000e380   _CAN_BUFFER_TX
 0000e15e   _CAN_CHANGE_CTRL
 0000e00a   _CAN_CONTROL
-00323c88   _CAN_DataCombine_Rx
-00323b8a   _CAN_DataPackage_Tx
+00323c31   _CAN_DataCombine_Rx
+00323b33   _CAN_DataPackage_Tx
 0000e00b   _CAN_Index
 0000e156   _CAN_SET_VALUE
-0032596b   _CalCRC16_Byte
+0032591c   _CalCRC16_Byte
 0000e00c   _CanStop_Time
-003238b7   _Can_Ctrl
-00323d7e   _Can_Deal
-0032474a   _Can_Receive
-00008eb5   _Can_Rt_Data
-0032475e   _Can_Send
-00009270   _Can_Tx11_Data
-0000920f   _Can_Tx13_Data
-00009108   _Can_Tx2_Data
-000091ae   _Can_Tx4_Data
-00009062   _Can_Tx_Data
+00323860   _Can_Ctrl
+00323d27   _Can_Deal
+003246f7   _Can_Receive
+00008e59   _Can_Rt_Data
+0032470b   _Can_Send
+00009214   _Can_Tx11_Data
+000091b3   _Can_Tx13_Data
+000090ac   _Can_Tx2_Data
+00009152   _Can_Tx4_Data
+00009006   _Can_Tx_Data
 0000e005   _Choose_Mche
 0000e000   _Choose_Mode
-003247ef   _Cmd_Deal
+0032479c   _Cmd_Deal
 0000e04e   _Com_angle_I
 0000e04c   _Com_angle_U
-00008dba   _Control
-00008cb9   _ControlA
+00008d5e   _Control
+00008c5d   _ControlA
 0000e019   _Control_Period
 00000c00   _CpuTimer0Regs
 00000c08   _CpuTimer1Regs
 00000c10   _CpuTimer2Regs
-0000a4f4   _Cpu_Timer0_ISR
+0000a498   _Cpu_Timer0_ISR
 0033fff8   _CsmPwl
 00000ae0   _CsmRegs
-003256d9   _CsmUnlock
+0032568a   _CsmUnlock
 00008178   _Ctrl_Change
 0000e002   _Ctrl_Flag
-0000a214   _DQ2ABC_CALC
+0000a1b8   _DQ2ABC_CALC
 0000e014   _Deadtime
 00000880   _DevEmuRegs
-00325639   _DisableDog
+003255ea   _DisableDog
 00001000   _DmaRegs
 00006040   _ECanaLAMRegs
 000060c0   _ECanaMOTORegs
@@ -486,7 +486,7 @@ address    name
 00006100   _ECanaMboxes
 00006000   _ECanaRegs
 0000e340   _ECanaShadow
-000092d4   _ECana_T
+00009278   _ECana_T
 00006240   _ECanbLAMRegs
 000062c0   _ECanbMOTORegs
 00006280   _ECanbMOTSRegs
@@ -499,28 +499,28 @@ address    name
 00006a80   _ECap5Regs
 00006aa0   _ECap6Regs
 0000e740   _EEPROM_BUFFER
-00324794   _EEPROM_DataPackage
-0000a51a   _EPWM1_INT_ISR
+00324741   _EEPROM_DataPackage
+0000a4be   _EPWM1_INT_ISR
 00006800   _EPwm1Regs
 00006840   _EPwm2Regs
 00006880   _EPwm3Regs
 000068c0   _EPwm4Regs
 00006900   _EPwm5Regs
 00006940   _EPwm6Regs
-003258fd   _EPwmInt
+003258ae   _EPwmInt
 00006b00   _EQep1Regs
 00006b40   _EQep2Regs
-0000a55e   _F28335_usDelay
+0000a502   _F28335_usDelay
 0000e004   _Fault_Flag
 00000a80   _FlashRegs
-0032595d   _Float_Hex
-0000a022   _Forbid_PWMA
+0032590e   _Float_Hex
+00009fc6   _Forbid_PWMA
 0000e112   _Freq_OpenLoop
 00006f80   _GpioCtrlRegs
 00006fc0   _GpioDataRegs
 00006fe0   _GpioIntRegs
-0032590e   _Hex_Double
-0032593c   _Hex_Float
+003258bf   _Hex_Double
+003258ed   _Hex_Float
 00007900   _I2caRegs
 0000e118   _IGBTProtect1
 003fead8   _IQ10mpyRndSatTable
@@ -587,28 +587,28 @@ address    name
 0000e120   _IdcOverProtect1
 0000e100   _Idq_Kc
 0000e0fa   _IgbtTM
-0032573c   _InitAdc
-00325726   _InitCpuTimer0
-00325738   _InitCpuTimers
-003251b7   _InitECan
-003257cc   _InitECap
-003257cd   _InitEPwm
-00325822   _InitEPwmTimer
-0032573b   _InitEQep
-0000a4d9   _InitFlash
-003253f9   _InitGpio
-0032568f   _InitPeripheralClocks
-0032570b   _InitPeripherals
-00325ac0   _InitPieCtrl
-00325ae1   _InitPieVectTable
-00325641   _InitPll
-0032578a   _InitSci
-0000a04d   _InitSpi
-00325626   _InitSysCtrl
-003258e2   _InitTzGpio
-0032579e   _InitXIntrupt
-0000a487   _InitXintf
-0000a2b3   _Init_AD1210
+003256ed   _InitAdc
+003256d7   _InitCpuTimer0
+003256e9   _InitCpuTimers
+00325168   _InitECan
+0032577d   _InitECap
+0032577e   _InitEPwm
+003257d3   _InitEPwmTimer
+003256ec   _InitEQep
+0000a47d   _InitFlash
+003253aa   _InitGpio
+00325640   _InitPeripheralClocks
+003256bc   _InitPeripherals
+00325a6f   _InitPieCtrl
+00325a90   _InitPieVectTable
+003255f2   _InitPll
+0032573b   _InitSci
+00009ff1   _InitSpi
+003255d7   _InitSysCtrl
+00325893   _InitTzGpio
+0032574f   _InitXIntrupt
+0000a42b   _InitXintf
+0000a257   _Init_AD1210
 0000e0a4   _Iq
 0000e142   _Iq0
 0000e09a   _IqZ_Set
@@ -637,12 +637,12 @@ address    name
 0000e0c2   _Ld
 00008000   _Loop_Ctrl
 0000e0c4   _Lq
-00322562   _MainLoop
-000088dd   _Main_ControlA
+00322506   _MainLoop
+00008881   _Main_ControlA
 00005000   _McbspaRegs
 00005040   _McbspbRegs
 00008254   _MeasureInitDigital
-00325611   _MemCopy
+003255c2   _MemCopy
 0000e104   _MotorTM
 0000e0ae   _Mp
 0000e062   _Off_Idc
@@ -652,7 +652,7 @@ address    name
 0000e06a   _Off_Udc
 00008284   _OpenLoop
 0000e0b2   _PHI
-00009fc0   _PWMA_Update
+00009f64   _PWMA_Update
 0000e066   _PWMA_a
 0000e068   _PWMA_b
 0000e092   _PWMA_c
@@ -663,22 +663,22 @@ address    name
 0000e05e   _Pos_Set
 0000e058   _ProtectNum
 00008216   _RCFilter
-0000a2ee   _RDC_READ
-0000a05c   _RDSR_X25040
-0000a148   _READ_X25040
+0000a292   _RDC_READ
+0000a000   _RDSR_X25040
+0000a0ec   _READ_X25040
 0000e840   _RX_BUFFER
 0000e144   _Radq
-00322562   _RamfuncsLoadEnd0
-00326352   _RamfuncsLoadEnd1
+00322506   _RamfuncsLoadEnd0
+00326316   _RamfuncsLoadEnd1
 00320000   _RamfuncsLoadStart0
-00326222   _RamfuncsLoadStart1
+003261e6   _RamfuncsLoadStart1
 00008000   _RamfuncsRunStart0
-0000a562   _RamfuncsRunStart1
+0000a506   _RamfuncsRunStart1
 0000e01b   _Rdc2Protect
 0000e11c   _Rdc2Protect1
 0000e021   _RdcProtect
 0000e116   _RdcProtect1
-000088bc   _Ready_Data
+00008860   _Ready_Data
 00008313   _Ready_DataA
 0000e480   _ReceData
 0000e0b0   _Rp
@@ -686,33 +686,33 @@ address    name
 0000e01d   _RunAllow_Flag
 000081ca   _RunLed
 0000e011   _Run_Led_Index
-0000eb2c   _RxBUF
+0000eb32   _RxBUF
 0000e180   _SCIB
 0000e640   _SCI_RX_ALLBUFFER
 0000e540   _SCI_RX_BUFFER
 0000e400   _SCI_ReceData
 0000e3c0   _SCI_SendData
 0000e940   _SCI_TX_BUFFER
-0000eb2e   _SPIBUF
-0000eb2d   _SRBUF
-00009c9f   _SVPWMA_Gen
-000099ac   _Sci_DataCombine_Rx
-00009910   _Sci_DataPackage_Tx
+0000eb34   _SPIBUF
+0000eb33   _SRBUF
+00009c43   _SVPWMA_Gen
+00009950   _Sci_DataCombine_Rx
+000098b4   _Sci_DataPackage_Tx
 00007050   _SciaRegs
 00007750   _ScibRegs
-0000979a   _ScibRxCheck
-0000999d   _ScibRxIsr
-00009765   _ScibTxCheck
-00009990   _ScibTxIsr
+0000973e   _ScibRxCheck
+00009941   _ScibRxIsr
+00009709   _ScibTxCheck
+00009934   _ScibTxIsr
 00007770   _ScicRegs
 0000e440   _SendData
-0032562f   _ServiceDog
+003255e0   _ServiceDog
 00007040   _SpiaRegs
 00007010   _SysCtrlRegs
 0000e003   _Sys_Flag
-0000a295   _THREE2TWO_CALC
+0000a239   _THREE2TWO_CALC
 0000ea40   _TX_BUFFER
-00325b38   _TZ2_Fault_Isr
+00325ae7   _TZ2_Fault_Isr
 0000e02a   _Temp1OverProtect
 0000e124   _Temp1OverProtect1
 0000e028   _Temp2OverProtect
@@ -786,47 +786,47 @@ address    name
 0000e0ce   _Velo_Start
 0000e048   _Veloover_Set
 0000e052   _Velotmp
-0000a0a7   _WRDI_X25040
-0000a087   _WREN_X25040
-0000a0ea   _WRITE_X25040
-0000a0c7   _WRSR_X25040
-00009a24   _WriteEEProm
+0000a04b   _WRDI_X25040
+0000a02b   _WREN_X25040
+0000a08e   _WRITE_X25040
+0000a06b   _WRSR_X25040
+000099c8   _WriteEEProm
 0000e023   _WriteEEProm_Flag
-0000a555   _XINT1_Fault_Isr
+0000a4f9   _XINT1_Fault_Isr
 00007070   _XIntruptRegs
 00000b20   _XintfRegs
-0000a659   __IQ15toF
-0000a632   __IQ20cosPU
-0000a5c2   __IQ20div
-0000a67e   __IQ20frac
-0000a689   __IQ20int
-0000a562   __IQ20mag
-0000a66d   __IQ20mpyI32int
-0000a609   __IQ20sinPU
-0000a37e   __IQasin4PU
-0000a3ae   __IQasinPU
+0000a5fd   __IQ15toF
+0000a5d6   __IQ20cosPU
+0000a566   __IQ20div
+0000a622   __IQ20frac
+0000a62d   __IQ20int
+0000a506   __IQ20mag
+0000a611   __IQ20mpyI32int
+0000a5ad   __IQ20sinPU
+0000a322   __IQasin4PU
+0000a352   __IQasinPU
 00000800   __STACK_END
 00000400   __STACK_SIZE
 ffffffff   ___binit__
 ffffffff   ___c_args__
-00325b9c   ___cinit__
-00325b9c   ___etext__
+00325b4b   ___cinit__
+00325b4b   ___etext__
 ffffffff   ___pinit__
-00322562   ___text__
+00322506   ___text__
 0000eb44   __cleanup_ptr
 0000eb42   __dtors_ptr
-0000eb2a   __lock
-00325b8b   __nop
-00325b8c   __register_lock
-00325b90   __register_unlock
-0000eb28   __unlock
+0000eb30   __lock
+00325b3a   __nop
+00325b3b   __register_lock
+00325b3f   __register_unlock
+0000eb2e   __unlock
 0000e19e   _abctodq
-00325a39   _abort
+003259ea   _abort
 00318000   _asine
-00325a17   _atexit
-00325a3a   _c_int00
+003259c8   _atexit
+003259eb   _c_int00
 0000e1aa   _dqtoabc
-003259ef   _exit
+003259a0   _exit
 0000d080   _g_pusCrc16
 0000e0d2   _idSet_Max
 0000e126   _id_Filter
@@ -834,29 +834,29 @@ ffffffff   ___pinit__
 0000e0fc   _idc_Max
 0000d040   _m_PT_T
 0000d000   _m_PT_V
-00325a80   _main
+00325a31   _main
 0000e0ba   _p
 0000e0f4   _pArcSin
-0000eb26   _pRdcAddr1
-0000eb24   _pRdcAddr2
+0000eb2c   _pRdcAddr1
+0000eb2a   _pRdcAddr2
 0000e0f0   _p_EEProm_Buffer
 0000e194   _phase_trans
 0000e2c0   _pi_Id_Kc
 0000e280   _pi_Iq_Kc
 0000e240   _pi_Pos
-0000a418   _pi_reg_calc
+0000a3bc   _pi_reg_calc
 0000e1c0   _pi_usLimit
 0000e200   _pi_velo
 0000e0a6   _prevSpeed
 0000e166   _pwma
 0000e0ea   _rdc1
 0000e0e8   _rdc2
-00325b7c   _rsvd_ISR
+00325b2b   _rsvd_ISR
 0000e05a   _setSpeed
 ffffffff   binit
-00325b9c   cinit
+00325b4b   cinit
 0033fff6   code_start
-00325b9c   etext
+00325b4b   etext
 ffffffff   pinit
 
 
@@ -922,60 +922,60 @@ address    name
 00008254   _MeasureInitDigital
 00008284   _OpenLoop
 00008313   _Ready_DataA
-000088bc   _Ready_Data
-000088dd   _Main_ControlA
-00008cb9   _ControlA
-00008dba   _Control
-00008eb5   _Can_Rt_Data
-00009062   _Can_Tx_Data
-00009108   _Can_Tx2_Data
-000091ae   _Can_Tx4_Data
-0000920f   _Can_Tx13_Data
-00009270   _Can_Tx11_Data
-000092d4   _ECana_T
-00009765   _ScibTxCheck
-0000979a   _ScibRxCheck
-00009910   _Sci_DataPackage_Tx
-00009990   _ScibTxIsr
-0000999d   _ScibRxIsr
-000099ac   _Sci_DataCombine_Rx
-00009a24   _WriteEEProm
-00009c9f   _SVPWMA_Gen
-00009fc0   _PWMA_Update
-0000a022   _Forbid_PWMA
-0000a04d   _InitSpi
-0000a05c   _RDSR_X25040
-0000a087   _WREN_X25040
-0000a0a7   _WRDI_X25040
-0000a0c7   _WRSR_X25040
-0000a0ea   _WRITE_X25040
-0000a148   _READ_X25040
-0000a19b   _ABC2DQ_CALC
-0000a214   _DQ2ABC_CALC
-0000a295   _THREE2TWO_CALC
-0000a2b3   _Init_AD1210
-0000a2ee   _RDC_READ
-0000a37e   __IQasin4PU
-0000a3ae   __IQasinPU
-0000a3df   _AngleAdjust
-0000a3f8   _Adc_Temp
-0000a408   _Adc_Arith
-0000a418   _pi_reg_calc
-0000a487   _InitXintf
-0000a4d9   _InitFlash
-0000a4f4   _Cpu_Timer0_ISR
-0000a51a   _EPWM1_INT_ISR
-0000a555   _XINT1_Fault_Isr
-0000a55e   _F28335_usDelay
-0000a562   _RamfuncsRunStart1
-0000a562   __IQ20mag
-0000a5c2   __IQ20div
-0000a609   __IQ20sinPU
-0000a632   __IQ20cosPU
-0000a659   __IQ15toF
-0000a66d   __IQ20mpyI32int
-0000a67e   __IQ20frac
-0000a689   __IQ20int
+00008860   _Ready_Data
+00008881   _Main_ControlA
+00008c5d   _ControlA
+00008d5e   _Control
+00008e59   _Can_Rt_Data
+00009006   _Can_Tx_Data
+000090ac   _Can_Tx2_Data
+00009152   _Can_Tx4_Data
+000091b3   _Can_Tx13_Data
+00009214   _Can_Tx11_Data
+00009278   _ECana_T
+00009709   _ScibTxCheck
+0000973e   _ScibRxCheck
+000098b4   _Sci_DataPackage_Tx
+00009934   _ScibTxIsr
+00009941   _ScibRxIsr
+00009950   _Sci_DataCombine_Rx
+000099c8   _WriteEEProm
+00009c43   _SVPWMA_Gen
+00009f64   _PWMA_Update
+00009fc6   _Forbid_PWMA
+00009ff1   _InitSpi
+0000a000   _RDSR_X25040
+0000a02b   _WREN_X25040
+0000a04b   _WRDI_X25040
+0000a06b   _WRSR_X25040
+0000a08e   _WRITE_X25040
+0000a0ec   _READ_X25040
+0000a13f   _ABC2DQ_CALC
+0000a1b8   _DQ2ABC_CALC
+0000a239   _THREE2TWO_CALC
+0000a257   _Init_AD1210
+0000a292   _RDC_READ
+0000a322   __IQasin4PU
+0000a352   __IQasinPU
+0000a383   _AngleAdjust
+0000a39c   _Adc_Temp
+0000a3ac   _Adc_Arith
+0000a3bc   _pi_reg_calc
+0000a42b   _InitXintf
+0000a47d   _InitFlash
+0000a498   _Cpu_Timer0_ISR
+0000a4be   _EPWM1_INT_ISR
+0000a4f9   _XINT1_Fault_Isr
+0000a502   _F28335_usDelay
+0000a506   _RamfuncsRunStart1
+0000a506   __IQ20mag
+0000a566   __IQ20div
+0000a5ad   __IQ20sinPU
+0000a5d6   __IQ20cosPU
+0000a5fd   __IQ15toF
+0000a611   __IQ20mpyI32int
+0000a622   __IQ20frac
+0000a62d   __IQ20int
 0000d000   _m_PT_V
 0000d040   _m_PT_T
 0000d080   _g_pusCrc16
@@ -1194,78 +1194,78 @@ address    name
 0000e840   _RX_BUFFER
 0000e940   _SCI_TX_BUFFER
 0000ea40   _TX_BUFFER
-0000eb24   _pRdcAddr2
-0000eb26   _pRdcAddr1
-0000eb28   __unlock
-0000eb2a   __lock
-0000eb2c   _RxBUF
-0000eb2d   _SRBUF
-0000eb2e   _SPIBUF
+0000eb2a   _pRdcAddr2
+0000eb2c   _pRdcAddr1
+0000eb2e   __unlock
+0000eb30   __lock
+0000eb32   _RxBUF
+0000eb33   _SRBUF
+0000eb34   _SPIBUF
 0000eb42   __dtors_ptr
 0000eb44   __cleanup_ptr
 00318000   _asine
 00320000   _RamfuncsLoadStart0
-00322562   .text
-00322562   _MainLoop
-00322562   _RamfuncsLoadEnd0
-00322562   ___text__
-003238b7   _Can_Ctrl
-00323b8a   _CAN_DataPackage_Tx
-00323c09   _CAN2_DataPackage_Tx
-00323c88   _CAN_DataCombine_Rx
-00323d03   _CAN2_DataCombine_Rx
-00323d7e   _Can_Deal
-0032474a   _Can_Receive
-0032475e   _Can_Send
-00324794   _EEPROM_DataPackage
-003247ef   _Cmd_Deal
-003251b7   _InitECan
-003253f9   _InitGpio
-00325611   _MemCopy
-00325626   _InitSysCtrl
-0032562f   _ServiceDog
-00325639   _DisableDog
-00325641   _InitPll
-0032568f   _InitPeripheralClocks
-003256d9   _CsmUnlock
-0032570b   _InitPeripherals
-00325726   _InitCpuTimer0
-00325738   _InitCpuTimers
-0032573b   _InitEQep
-0032573c   _InitAdc
-0032578a   _InitSci
-0032579e   _InitXIntrupt
-003257cc   _InitECap
-003257cd   _InitEPwm
-00325822   _InitEPwmTimer
-003258e2   _InitTzGpio
-003258fd   _EPwmInt
-0032590e   _Hex_Double
-0032593c   _Hex_Float
-0032595d   _Float_Hex
-0032596b   _CalCRC16_Byte
-00325995   FS$$MPY
-003259ef   _exit
-00325a15   C$$EXIT
-00325a17   _atexit
-00325a39   _abort
-00325a3a   _c_int00
-00325a80   _main
-00325ac0   _InitPieCtrl
-00325ae1   _InitPieVectTable
-00325afd   FS$$TOL
-00325b38   _TZ2_Fault_Isr
-00325b5c   FD$$TOFS
-00325b7c   _rsvd_ISR
-00325b8b   __nop
-00325b8c   __register_lock
-00325b90   __register_unlock
-00325b9c   ___cinit__
-00325b9c   ___etext__
-00325b9c   cinit
-00325b9c   etext
-00326222   _RamfuncsLoadStart1
-00326352   _RamfuncsLoadEnd1
+00322506   .text
+00322506   _MainLoop
+00322506   _RamfuncsLoadEnd0
+00322506   ___text__
+00323860   _Can_Ctrl
+00323b33   _CAN_DataPackage_Tx
+00323bb2   _CAN2_DataPackage_Tx
+00323c31   _CAN_DataCombine_Rx
+00323cac   _CAN2_DataCombine_Rx
+00323d27   _Can_Deal
+003246f7   _Can_Receive
+0032470b   _Can_Send
+00324741   _EEPROM_DataPackage
+0032479c   _Cmd_Deal
+00325168   _InitECan
+003253aa   _InitGpio
+003255c2   _MemCopy
+003255d7   _InitSysCtrl
+003255e0   _ServiceDog
+003255ea   _DisableDog
+003255f2   _InitPll
+00325640   _InitPeripheralClocks
+0032568a   _CsmUnlock
+003256bc   _InitPeripherals
+003256d7   _InitCpuTimer0
+003256e9   _InitCpuTimers
+003256ec   _InitEQep
+003256ed   _InitAdc
+0032573b   _InitSci
+0032574f   _InitXIntrupt
+0032577d   _InitECap
+0032577e   _InitEPwm
+003257d3   _InitEPwmTimer
+00325893   _InitTzGpio
+003258ae   _EPwmInt
+003258bf   _Hex_Double
+003258ed   _Hex_Float
+0032590e   _Float_Hex
+0032591c   _CalCRC16_Byte
+00325946   FS$$MPY
+003259a0   _exit
+003259c6   C$$EXIT
+003259c8   _atexit
+003259ea   _abort
+003259eb   _c_int00
+00325a31   _main
+00325a6f   _InitPieCtrl
+00325a90   _InitPieVectTable
+00325aac   FS$$TOL
+00325ae7   _TZ2_Fault_Isr
+00325b0b   FD$$TOFS
+00325b2b   _rsvd_ISR
+00325b3a   __nop
+00325b3b   __register_lock
+00325b3f   __register_unlock
+00325b4b   ___cinit__
+00325b4b   ___etext__
+00325b4b   cinit
+00325b4b   etext
+003261e6   _RamfuncsLoadStart1
+00326316   _RamfuncsLoadEnd1
 0033fff6   code_start
 0033fff8   _CsmPwl
 00380080   _ADC_cal

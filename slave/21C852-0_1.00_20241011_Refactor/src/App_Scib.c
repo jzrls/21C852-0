@@ -14,8 +14,8 @@
 void ScibTxCheck(void) {
     if (SCIB.FLAG.bit.TXBO_FLAG == 0) {
         if (SCIB.m_Tx_Length > 0) {
-            // ÌîÐ´ FIFOÊý¾Ý£¬ Ò»´ÎÌîÐ´×î¶àÌîÐ´12¸ö
-            // ×î¶à·¢ËÍ12¸ö×Ö·û,16¸öÈÝÒ×¶ª×Ö·û
+            // å¡«å†™ FIFOæ•°æ®ï¼Œ ä¸€æ¬¡å¡«å†™æœ€å¤šå¡«å†™12ä¸ª
+            // æœ€å¤šå‘é€12ä¸ªå­—ç¬¦,16ä¸ªå®¹æ˜“ä¸¢å­—ç¬¦
             for (Uint16 i = ScicRegs.SCIFFTX.bit.TXFFST; i < 12; i++) {
                 ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer;
                 SCIB.p_Tx_Buffer++;
@@ -35,14 +35,14 @@ void ScibTxCheck(void) {
 }
 
 /**
- * ´®¿ÚÊý¾Ý½âÎö
+ * ä¸²å£æ•°æ®è§£æž
  */
 void ScibRxCheck(void) {
     volatile Uint16 Fi_Number;
     volatile Uint16 Store_Temp = 1;
     volatile Uint16 Sum_Temp = 0;
 
-    /* Êý¾Ý½ÓÊÕ¼ä¶Ï */
+    /* æ•°æ®æŽ¥æ”¶é—´æ–­ */
     if (ScicRegs.SCIRXST.bit.BRKDT == 1) {
         ScicRegs.SCICTL1.bit.SWRESET = 0;
         ScicRegs.SCICTL1.bit.SWRESET = 1;
@@ -57,87 +57,87 @@ void ScibRxCheck(void) {
     }
 
     /**
-     * ÖÁÉÙ½ÓÊÕµ½5¸ö×Ö½Ú²Å½øÐÐÊý¾Ý½âÎö£¬
-     * Êý¾Ý¸ñÊ½£º°üÍ·1+°üÍ·2+°üÀàÐÍ+°ü¼ÆÊý+Êý¾Ý³¤¶È+Êý¾Ý+...+Ð£ÑéÎ»1+Ð£ÑéÎ»2
+     * è‡³å°‘æŽ¥æ”¶åˆ°5ä¸ªå­—èŠ‚æ‰è¿›è¡Œæ•°æ®è§£æžï¼Œ
+     * æ•°æ®æ ¼å¼ï¼šåŒ…å¤´1+åŒ…å¤´2+åŒ…ç±»åž‹+åŒ…è®¡æ•°+æ•°æ®é•¿åº¦+æ•°æ®+...+æ ¡éªŒä½1+æ ¡éªŒä½2
      */
     Uint16 isNotInSciRx = SCIB.FLAG.bit.RX_FLAG == 0;
     Uint16 isSciTxFinish = SCIB.FLAG.bit.TXBO_FLAG == 1;
     Uint16 isSciRxHaveData = SCIB.p_Rx_AllBuffer > (Uint16 *)(SCI_RX_ALLBUFFER + 4);
     if (isNotInSciRx && isSciTxFinish && isSciRxHaveData) {
-        SCIB.FLAG.bit.RXTIME_FLAG = 1; /* ÕýÔÚ½øÐÐÊý¾Ý½âÎö */
+        SCIB.FLAG.bit.RXTIME_FLAG = 1; /* æ­£åœ¨è¿›è¡Œæ•°æ®è§£æž */
 
-        /* Ö¸ÁîÀàÐÍÅÐ¶Ï */
+        /* æŒ‡ä»¤ç±»åž‹åˆ¤æ–­ */
         Uint16 isCustomCmd = SCI_RX_ALLBUFFER[2] == 0x0000;
         Uint16 isSelfCheckCmd = SCI_RX_ALLBUFFER[2] == 0x00A0;
         Uint16 isCtrlCmd = SCI_RX_ALLBUFFER[2] == 0x00A1;
         Uint16 isTelemetryCmd = SCI_RX_ALLBUFFER[2] == 0x00A2;
         if (isCustomCmd) {
-            /* ×Ô¶¨ÒåÐ­ÒéÊý¾Ý */
+            /* è‡ªå®šä¹‰åè®®æ•°æ® */
             SCIB.FLAG.bit.PC_FLAG = 1;
         } else if (isSelfCheckCmd || isCtrlCmd || isTelemetryCmd) {
-            /* Ð­ÒéÊý¾Ý */
+            /* åè®®æ•°æ® */
             SCIB.FLAG.bit.PC_FLAG = 0;
         }
 
         if (SCI_RX_ALLBUFFER[0] != 0x00EB) {
-            /* Èç¹û²»ÊÇ°üÍ·1£¬ÏòÇ°ÒÆ¶¯»º³åÇøÖÐµÄÊý¾Ý£¬ÎªÐÂÊý¾ÝÌÚ³ö¿Õ¼ä */
+            /* å¦‚æžœä¸æ˜¯åŒ…å¤´1ï¼Œå‘å‰ç§»åŠ¨ç¼“å†²åŒºä¸­çš„æ•°æ®ï¼Œä¸ºæ–°æ•°æ®è…¾å‡ºç©ºé—´ */
             SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
-            /* Ñ­»·½«ËùÓÐÊý¾ÝÏòÇ°ÒÆ¶¯Ò»Î» */
+            /* å¾ªçŽ¯å°†æ‰€æœ‰æ•°æ®å‘å‰ç§»åŠ¨ä¸€ä½ */
             for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                 SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
             }
         } else if (SCI_RX_ALLBUFFER[1] != 0x0090) {
-            /* °üÍ·2 */
+            /* åŒ…å¤´2 */
             SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
             for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                 SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
             }
         } else if (SCIB.FLAG.bit.PC_FLAG == 0 && !isSelfCheckCmd && !isCtrlCmd && !isTelemetryCmd) {
-            /* Î´Æð×÷ÓÃ£¿£¿£¿ */
+            /* æœªèµ·ä½œç”¨ï¼Ÿï¼Ÿï¼Ÿ */
             SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
             for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                 SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
             }
         } else {
-            /* Êý¾Ý½âÎö */
+            /* æ•°æ®è§£æž */
             SCIB.m_Rx_Length = SCI_RX_ALLBUFFER[4];
             if ((SCI_RX_ALLBUFFER[2] == 0x00A0 || SCI_RX_ALLBUFFER[2] == 0x00A2) && (SCIB.m_Rx_Length != 1)) {
-                /* ×Ô¼ìÖ¸Áî»òÒ£²âÖ¸ÁîÊý¾Ý³¤¶È²»ÕýÈ·£¬¶ªÆúÊý¾Ý */
+                /* è‡ªæ£€æŒ‡ä»¤æˆ–é¥æµ‹æŒ‡ä»¤æ•°æ®é•¿åº¦ä¸æ­£ç¡®ï¼Œä¸¢å¼ƒæ•°æ® */
                 SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
                 for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                     SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
                 }
             } else if (SCI_RX_ALLBUFFER[2] == 0x00A1 && SCIB.m_Rx_Length != 5) {
-                /* ¿ØÖÆÖ¸ÁîÊý¾Ý³¤¶È²»ÕýÈ·£¬¶ªÆúÊý¾Ý */
+                /* æŽ§åˆ¶æŒ‡ä»¤æ•°æ®é•¿åº¦ä¸æ­£ç¡®ï¼Œä¸¢å¼ƒæ•°æ® */
                 SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
                 for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                     SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
                 }
             } else if (SCIB.m_Rx_Length > (Uint16)(RX_BUFFER_LENGTH - 0x0007)) {
-                /* Êý¾Ý³¤¶È¹ý³¤£¬¶ªÆúÊý¾Ý  */
+                /* æ•°æ®é•¿åº¦è¿‡é•¿ï¼Œä¸¢å¼ƒæ•°æ®  */
                 SCIB.p_Rx_AllBuffer = SCIB.p_Rx_AllBuffer - 1;
                 for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                     SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
                 }
             } else if (SCIB.p_Rx_AllBuffer >= (Uint16 *)(SCI_RX_ALLBUFFER + SCIB.m_Rx_Length + 7)) {
-                /* Êý¾Ý³¤¶ÈÕýÈ·£¬½«Êý¾Ý¿½±´µ½»º³åÇøÖÐ£¬ +7 =
-                 * 5£¨°üÍ·1+°üÍ·2+°üÀàÐÍ+°ü¼ÆÊý+Êý¾Ý³¤¶È£© + 2£¨CRC£©£¿£¿£¿ */
+                /* æ•°æ®é•¿åº¦æ­£ç¡®ï¼Œå°†æ•°æ®æ‹·è´åˆ°ç¼“å†²åŒºä¸­ï¼Œ +7 =
+                 * 5ï¼ˆåŒ…å¤´1+åŒ…å¤´2+åŒ…ç±»åž‹+åŒ…è®¡æ•°+æ•°æ®é•¿åº¦ï¼‰ + 2ï¼ˆCRCï¼‰ï¼Ÿï¼Ÿï¼Ÿ */
                 for (Uint16 i = 0; i < SCIB.m_Rx_Length + 7; i++) {
                     SCI_RX_BUFFER[i] = SCI_RX_ALLBUFFER[i];
                 }
                 Sum_Temp = CalCRC16_Byte(SCI_RX_BUFFER, SCIB.m_Rx_Length + 0x0005);
 
                 if (Sum_Temp == SCI_RX_BUFFER[SCIB.m_Rx_Length + 5] + (SCI_RX_BUFFER[SCIB.m_Rx_Length + 6] << 8)) {
-                    /* CRC¼ìÑéÍ¨¹ý£¬½øÐÐÊý¾Ý·Ö·¢ */
+                    /* CRCæ£€éªŒé€šè¿‡ï¼Œè¿›è¡Œæ•°æ®åˆ†å‘ */
                     SCIB.FLAG.bit.RX_FLAG = 1;
 
-                    /* Êý¾Ý½ÓÊÕÖ¸Õë×óÒÆ£¬²¢Çå³ýÒÑ½âÎöÊý¾Ý */
+                    /* æ•°æ®æŽ¥æ”¶æŒ‡é’ˆå·¦ç§»ï¼Œå¹¶æ¸…é™¤å·²è§£æžæ•°æ® */
                     SCIB.p_Rx_AllBuffer = (SCIB.p_Rx_AllBuffer - SCIB.m_Rx_Length - 7);
                     for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                         SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + SCIB.m_Rx_Length + 7];
                     }
                 } else {
-                    /* CRC¼ìÑéÊ§°Ü£¬¶ªÆúÊý¾Ý */
+                    /* CRCæ£€éªŒå¤±è´¥ï¼Œä¸¢å¼ƒæ•°æ® */
                     SCIB.p_Rx_AllBuffer = (SCIB.p_Rx_AllBuffer - 1);
                     for (Uint16 i = 0; i < (SCIB.p_Rx_AllBuffer - SCI_RX_ALLBUFFER); i++) {
                         SCI_RX_ALLBUFFER[i] = SCI_RX_ALLBUFFER[i + 1];
@@ -153,10 +153,10 @@ void ScibRxCheck(void) {
 }
 
 /*----------------------------------------------------------------------------------------
- ·¢ËÍÊý¾Ý´ò°ü³ÌÐò
- ½«ÐèÒª·¢ËÍµÄÊý¾Ý°´ÕÕÍ¨Ñ¶¹æÔ¼´ò°ü³ÉÊý¾Ýèå
- Èë¿Ú²ÎÊý:ÐèÒª·¢ËÍµÄÊý¾ÝµØÖ·¡¢·¢ËÍµÄÃüÁî×Ö¡¢·¢ËÍµÄÊý¾Ý³¤¶È(×Ö)
- ³ö¿Ú²ÎÊý:ÎÞ
+ å‘é€æ•°æ®æ‰“åŒ…ç¨‹åº
+ å°†éœ€è¦å‘é€çš„æ•°æ®æŒ‰ç…§é€šè®¯è§„çº¦æ‰“åŒ…æˆæ•°æ®æ¡¢
+ å…¥å£å‚æ•°:éœ€è¦å‘é€çš„æ•°æ®åœ°å€ã€å‘é€çš„å‘½ä»¤å­—ã€å‘é€çš„æ•°æ®é•¿åº¦(å­—)
+ å‡ºå£å‚æ•°:æ— 
  ----------------------------------------------------------------------------------------*/
 void Sci_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_length_L) {
     volatile Uint16 i;
@@ -166,7 +166,7 @@ void Sci_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_len
     *SCIB.p_Tx_Buffer++ = 0x0090;
     *SCIB.p_Tx_Buffer++ = m_tx_command_L & 0x00FF;
 
-    // ·¢ËÍµÄÊý¾Ý×Ö½ÚÊý¼ÓÉÏÐ§Ñé×Ö½Ú
+    // å‘é€çš„æ•°æ®å­—èŠ‚æ•°åŠ ä¸Šæ•ˆéªŒå­—èŠ‚
     *SCIB.p_Tx_Buffer++ = ((m_tx_length_L << 2)) >> 8;
     *SCIB.p_Tx_Buffer++ = ((m_tx_length_L << 2)) & 0x00FF;
 
@@ -184,14 +184,14 @@ void Sci_DataPackage_Tx(_iq *p_tx_data_L, Uint16 m_tx_command_L, Uint16 m_tx_len
     }
 
     Data_Temp = CalCRC16_Byte(SCI_TX_BUFFER, (m_tx_length_L << 2) + 5);
-    *SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ÀÛ¼ÓÇóÐ§ÑéºÍ*/
-    *SCIB.p_Tx_Buffer = (Data_Temp >> 8);       /* ÀÛ¼ÓÇóÐ§ÑéºÍ*/
+    *SCIB.p_Tx_Buffer++ = (Data_Temp & 0x00FF); /* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
+    *SCIB.p_Tx_Buffer = (Data_Temp >> 8);       /* ç´¯åŠ æ±‚æ•ˆéªŒå’Œ*/
     SCIB.p_Tx_Buffer = SCI_TX_BUFFER;
     SCIB.m_Tx_Length = (m_tx_length_L << 2) + 2 + 5;
 }
 
 /*--------------------------------------------------------------------------------
- ´®¿Ú·¢ËÍÖÐ¶Ï·þÎñ×Ó³ÌÐò
+ ä¸²å£å‘é€ä¸­æ–­æœåŠ¡å­ç¨‹åº
  -------------------------------------------------------------------------------*/
 interrupt void ScibTxIsr(void) {
     ScicRegs.SCIFFTX.bit.TXFFINTCLR = 1;
@@ -199,7 +199,7 @@ interrupt void ScibTxIsr(void) {
 }
 
 /*--------------------------------------------------------------------------------
- ´®¿Ú½ÓÊÕÖÐ¶Ï·þÎñ×Ó³ÌÐò
+ ä¸²å£æŽ¥æ”¶ä¸­æ–­æœåŠ¡å­ç¨‹åº
  -------------------------------------------------------------------------------*/
 interrupt void ScibRxIsr(void) {
     ScicRegs.SCIFFRX.bit.RXFFOVRCLR = 1;
@@ -208,9 +208,9 @@ interrupt void ScibRxIsr(void) {
 }
 
 /**
- * ½«½ÓÊÕµ½µÄÊý¾Ý½øÐÐ×éºÏ£¬Ã¿ËÄ¸ö×Ö½Ú×éºÏ³ÉÒ»¸öUint32ÀàÐÍµÄÊý¾Ý¡£
+ * å°†æŽ¥æ”¶åˆ°çš„æ•°æ®è¿›è¡Œç»„åˆï¼Œæ¯å››ä¸ªå­—èŠ‚ç»„åˆæˆä¸€ä¸ªUint32ç±»åž‹çš„æ•°æ®ã€‚
  *
- * @param p_Rx Ö¸Ïò½ÓÊÕÊý¾ÝµÄÖ¸Õë£¬ÆäÖÐp_Rx[4]Ö¸Ê¾ÁËÐèÒª×éºÏµÄÊý¾Ý×éÊý¡£
+ * @param p_Rx æŒ‡å‘æŽ¥æ”¶æ•°æ®çš„æŒ‡é’ˆï¼Œå…¶ä¸­p_Rx[4]æŒ‡ç¤ºäº†éœ€è¦ç»„åˆçš„æ•°æ®ç»„æ•°ã€‚
  */
 void Sci_DataCombine_Rx(Uint16 *p_Rx) {
     volatile Uint16 i = 0, j = 0;
@@ -229,10 +229,10 @@ void Sci_DataCombine_Rx(Uint16 *p_Rx) {
 }
 
 //----------------------------------------------------------------------------------------
-// EPROMµÄ´ò°ü³ÌÐò
-// ½«ÐèÒªÐ´ÈëEEPROMµÄÊý¾Ý°´ÕÕÍ¨Ñ¶¹æÔ¼´ò°ü³ÉÊý¾Ýèå
-// Èë¿Ú²ÎÊý:ÐèÒªÐ´ÈëµÄÊý¾ÝµØÖ·¡¢·¢ËÍµÄÃüÁî×Ö¡¢·¢ËÍµÄÊý¾Ý³¤¶È(×Ö)
-// ³ö¿Ú²ÎÊý:ÎÞ
+// EPROMçš„æ‰“åŒ…ç¨‹åº
+// å°†éœ€è¦å†™å…¥EEPROMçš„æ•°æ®æŒ‰ç…§é€šè®¯è§„çº¦æ‰“åŒ…æˆæ•°æ®æ¡¢
+// å…¥å£å‚æ•°:éœ€è¦å†™å…¥çš„æ•°æ®åœ°å€ã€å‘é€çš„å‘½ä»¤å­—ã€å‘é€çš„æ•°æ®é•¿åº¦(å­—)
+// å‡ºå£å‚æ•°:æ— 
 //----------------------------------------------------------------------------------------
 
 void EEPROM_DataPackage(_iq *p_tx_data_L, Uint16 m_tx_length_L) {
@@ -263,7 +263,7 @@ void Cmd_Deal(void) {
     Uint16 command = SCI_RX_BUFFER[2];
 
     switch (command) {
-    case 0x0000: /*³õÊ¼»¯¼ì²â¿ØÖÆÆ÷Ö¸Áî*/
+    case 0x0000: /*åˆå§‹åŒ–æ£€æµ‹æŽ§åˆ¶å™¨æŒ‡ä»¤*/
         SCI_SendData[0] = Board_Num;
         SCI_SendData[1] = BORAD_NUM;
         if (SCIB.FLAG.bit.TXBO_FLAG == 1) {
@@ -271,10 +271,10 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0001:                              // Çå³ý¹ÊÕÏ±êÖ¾Ö¸Áî
-        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;    // "1"±íÃ÷µç»ú¹ýÁ÷±£»¤
-        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0;  // "1"±íÃ÷³¬ËÙ±£»¤
-        Sys_Flag.bit.UDC_FLAG = 0;            // "1"±íÃ÷Ö±Á÷µçÑ¹¹ÊÕÏ
+    case 0x0001:                             // æ¸…é™¤æ•…éšœæ ‡å¿—æŒ‡ä»¤
+        Sys_Flag.bit.STOP_PWM_Flag_Id = 0;   // "1"è¡¨æ˜Žç”µæœºè¿‡æµä¿æŠ¤
+        Sys_Flag.bit.STOP_PWM_Flag_Velo = 0; // "1"è¡¨æ˜Žè¶…é€Ÿä¿æŠ¤
+        Sys_Flag.bit.UDC_FLAG = 0;           // "1"è¡¨æ˜Žç›´æµç”µåŽ‹æ•…éšœ
         Sys_Flag.bit.STOP_PWM_Flag_Driv = 0;
 
         if (SCIB.FLAG.bit.TXBO_FLAG == 1) {
@@ -282,7 +282,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000D:  // LOCK
+    case 0x000D: // LOCK
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
         Usa_Lock = SCI_ReceData[0];
         Usb_Lock = SCI_ReceData[1];
@@ -296,7 +296,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0002:  // Read Position
+    case 0x0002: // Read Position
         SCI_SendData[0] = Isa;
         SCI_SendData[1] = Isb;
         SCI_SendData[2] = Isc;
@@ -309,7 +309,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0003:  // Openloop
+    case 0x0003: // Openloop
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
         Um_OpenLoop = SCI_ReceData[0];
         Freq_OpenLoop = SCI_ReceData[1];
@@ -322,7 +322,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x000E:  // Release LOCK
+    case 0x000E: // Release LOCK
         Choose_Mche = SCI_ReceData[0];
         Ctrl_Flag.bit.LOCK_FLAG = 0;
         Ctrl_Flag.bit.OPEN_LOOP_FLAG = 0;
@@ -332,16 +332,16 @@ void Cmd_Deal(void) {
         }
         break;
     case 0x0004:
-        /* »ñÈ¡µç»ú²ÎÊý */
+        /* èŽ·å–ç”µæœºå‚æ•° */
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
         getMotorParams(SCI_ReceData);
 
-        p = _IQdiv(Mp, Rp); /* µç»úÓëÐý±äµÄ¼«¶ÔÊý±È */
+        p = _IQdiv(Mp, Rp); /* ç”µæœºä¸Žæ—‹å˜çš„æžå¯¹æ•°æ¯” */
         Udc_Mche_realvalue = _IQdiv(_IQ(1), Udc_Setg);
         Velo_PerAdd = _IQmpy(Velo_Add, Per_Ctrl);
         Velo_Duty = _IQdiv(3750000, Control_Period);
         K_Velo_Cal = _IQdiv(_IQ(62.83185307179586476925286766559), V_Base);
-        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0);  // ¶¨Ê±Æ÷ÖÜÆÚÎª100us
+        K_Velo_Cal = _IQmpy(K_Velo_Cal, Velo_Duty0); // å®šæ—¶å™¨å‘¨æœŸä¸º100us
         K_Velo_Cal = _IQdiv(K_Velo_Cal, Velo_Calc_Num << 20);
         K_Velo_Cal = _IQmpy(K_Velo_Cal, p);
         Is_PerAdd = _IQmpy(Is_Add, Per_Ctrl);
@@ -369,7 +369,7 @@ void Cmd_Deal(void) {
         SCI_SendData[6] = Udc_Setg;
         SCI_SendData[7] = U_Base;
         SCI_SendData[8] = I_Base;
-        SCI_SendData[9] = V_Base;  // µçÐµËÙ¶È»ùÖµ(rad/s)
+        SCI_SendData[9] = V_Base; // ç”µæ¢°é€Ÿåº¦åŸºå€¼(rad/s)
         SCI_SendData[10] = Angle_Init_Digital;
         SCI_SendData[11] = Velo_Max;
         SCI_SendData[12] = id_Max;
@@ -395,7 +395,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0006:  // Î»ÖÃ¿ØÖÆÖ¸Áî
+    case 0x0006: // ä½ç½®æŽ§åˆ¶æŒ‡ä»¤
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
 
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
@@ -424,7 +424,7 @@ void Cmd_Deal(void) {
         }
 
         break;
-    case 0x0007:  // ËÙ¶È¿ØÖÆÖ¸Áî
+    case 0x0007: // é€Ÿåº¦æŽ§åˆ¶æŒ‡ä»¤
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
         if (Sys_Flag.bit.STOP_PWM_Flag_Driv == 1) {
             SCI_SendData[0] = 1;
@@ -466,7 +466,7 @@ void Cmd_Deal(void) {
                 Isd_Set = SCI_ReceData[2];
                 Isdq_Set1 = -SCI_ReceData[3];
                 TorqueAngleA = SCI_ReceData[4];
-                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1;  // ÖÃ×ª¾Ø¿ØÖÆ±êÖ¾
+                Ctrl_Flag.bit.TORQ_CONTROL_FLAG = 1; // ç½®è½¬çŸ©æŽ§åˆ¶æ ‡å¿—
                 Ctrl_Flag.bit.VELO_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.POS_CONTROL_FLAG = 0;
                 Ctrl_Flag.bit.STOP_VELO_FLAG = 0;
@@ -538,7 +538,7 @@ void Cmd_Deal(void) {
             Sci_DataPackage_Tx(SCI_SendData, 0x0079, 22);
             SCIB.FLAG.bit.TXBO_FLAG = 0;
             // ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖÐ¶Ï
+            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
         }
         break;
     case 0x000A:
@@ -550,7 +550,7 @@ void Cmd_Deal(void) {
             Sci_DataPackage_Tx(SCI_SendData, 0x007A, 0);
             SCIB.FLAG.bit.TXBO_FLAG = 0;
             // ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖÐ¶Ï
+            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
         }
         break;
     case 0x000B:
@@ -560,7 +560,7 @@ void Cmd_Deal(void) {
             Sci_DataPackage_Tx(SCI_SendData, 0x007B, 0);
             SCIB.FLAG.bit.TXBO_FLAG = 0;
             // ScicRegs.SCITXBUF = *SCIB.p_Tx_Buffer++;
-            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//Ê¹ÄÜ·¢ËÍÖÐ¶Ï
+            // ScicRegs.SCIFFTX.bit.TXFFIENA = 1;//ä½¿èƒ½å‘é€ä¸­æ–­
         }
         break;
     case 0x000C:
@@ -571,7 +571,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0010: /* »ñÈ¡Ä£ÄâÍ¨µÀ²ÎÊý */
+    case 0x0010: /* èŽ·å–æ¨¡æ‹Ÿé€šé“å‚æ•° */
         Sci_DataCombine_Rx(SCI_RX_BUFFER);
         getAnalogParams(SCI_ReceData);
 
@@ -636,10 +636,10 @@ void Cmd_Deal(void) {
         SCI_SendData[12] = Ctrl_Flag.bit.RotorWay_Flag;
         // SCI_SendData[13] = Sys_Flag.bit.RotorWay_Flag;
         SCI_SendData[14] = UdcLimit_Set;
-        SCI_SendData[15] = Velo_Start;  // Æô¶¯ËÙ¶È
+        SCI_SendData[15] = Velo_Start; // å¯åŠ¨é€Ÿåº¦
         SCI_SendData[16] = maxSpeed;
         SCI_SendData[17] = Ctrl_Flag.bit.VelWay_Flag;
-        SCI_SendData[18] = TorquetoIs;  // ×ª¾ØµçÁ÷±È
+        SCI_SendData[18] = TorquetoIs; // è½¬çŸ©ç”µæµæ¯”
         SCI_SendData[19] = IdProtectNum;
         SCI_SendData[20] = VeloProtectNum;
         SCI_SendData[21] = Velo_Calc_Num;
@@ -657,7 +657,7 @@ void Cmd_Deal(void) {
             SCIB.FLAG.bit.TXBO_FLAG = 0;
         }
         break;
-    case 0x0060:  // Ð´ÈëEEPROMÖ¸Áî
+    case 0x0060: // å†™å…¥EEPROMæŒ‡ä»¤
         WriteEEProm_Flag = 1;
         if (SCIB.FLAG.bit.TXBO_FLAG == 1) {
             Sci_DataPackage_Tx(SCI_SendData, 0x00D0, 0);
@@ -687,7 +687,7 @@ void WriteEEProm(void) {
     SCI_SendData[6] = Udc_Setg;
     SCI_SendData[7] = U_Base;
     SCI_SendData[8] = I_Base;
-    SCI_SendData[9] = V_Base;  // µçÐµËÙ¶È»ùÖµ(rad/s)
+    SCI_SendData[9] = V_Base; // ç”µæ¢°é€Ÿåº¦åŸºå€¼(rad/s)
     SCI_SendData[10] = Angle_Init_Digital;
     SCI_SendData[11] = Velo_Max;
     SCI_SendData[12] = id_Max;
@@ -745,7 +745,8 @@ void WriteEEProm(void) {
     // SCI_SendData[24] 	=	pi_Id_5.ctrl_period;
 
     EEPROM_DataPackage(SCI_SendData, 30);
-    for (i = 0; i < 127; i++) WRITE_X25040(&EEPROM_BUFFER[0 + i], 0 + i, 1, 0);
+    for (i = 0; i < 127; i++)
+        WRITE_X25040(&EEPROM_BUFFER[0 + i], 0 + i, 1, 0);
 
     SCI_SendData[0] = K_Udc;
     SCI_SendData[1] = Off_Udc;
@@ -794,10 +795,10 @@ void WriteEEProm(void) {
     SCI_SendData[12] = Ctrl_Flag.bit.RotorWay_Flag;
     // SCI_SendData[13] = Sys_Flag.bit.RotorWay_Flag;
     SCI_SendData[14] = UdcLimit_Set;
-    SCI_SendData[15] = Velo_Start;  // Æô¶¯ËÙ¶È
+    SCI_SendData[15] = Velo_Start; // å¯åŠ¨é€Ÿåº¦
     SCI_SendData[16] = maxSpeed;
     SCI_SendData[17] = Ctrl_Flag.bit.VelWay_Flag;
-    SCI_SendData[18] = TorquetoIs;  // ×ª¾ØµçÁ÷±È
+    SCI_SendData[18] = TorquetoIs; // è½¬çŸ©ç”µæµæ¯”
     SCI_SendData[19] = IdProtectNum;
     SCI_SendData[20] = VeloProtectNum;
     SCI_SendData[21] = Velo_Calc_Num;
@@ -811,7 +812,8 @@ void WriteEEProm(void) {
     SCI_SendData[29] = Temperature5_Off;
 
     EEPROM_DataPackage(SCI_SendData, 30);
-    for (i = 0; i < 127; i++) WRITE_X25040(&EEPROM_BUFFER[0 + i], 128 + i, 1, 8);
+    for (i = 0; i < 127; i++)
+        WRITE_X25040(&EEPROM_BUFFER[0 + i], 128 + i, 1, 8);
     EN_WP = 1;
 
     EINT;

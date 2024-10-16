@@ -30,108 +30,108 @@ Uint16 g_pusCrc16[256] = {
     0x4100, 0x81C1, 0x8081, 0x4040};
 
 //======================================================================================================
-/*  SCI±äÁ¿¶¨Òå		*/
+/*  SCIå˜é‡å®šä¹‰		*/
 //======================================================================================================
 SCIB_REGS SCIB = SCIB_REGS_DEFAULTS;
-Uint16 SCI_RX_BUFFER[RX_BUFFER_LENGTH] = {0};       // ´®¿Ú½ÓÊÕ»º³åÇø
-Uint16 SCI_RX_ALLBUFFER[RX_ALLBUFFER_LENGTH] = {0}; // ´®¿Ú½ÓÊÕ»º³åÇø
-Uint16 SCI_TX_BUFFER[TX_BUFFER_LENGTH] = {0};       // ´®¿Ú·¢ËÍ»º³åÇø
-_iq SCI_ReceData[30];                               // ´®¿Ú½ÓÊÕµÄÊı¾İ
-_iq SCI_SendData[30];                               // ´®¿Ú·¢ËÍµÄÊı¾İ
-volatile Uint32 Time_Cal = 0;                       // ¿ØÖÆËã·¨Ê±¼ä
+Uint16 SCI_RX_BUFFER[RX_BUFFER_LENGTH] = {0};       // ä¸²å£æ¥æ”¶ç¼“å†²åŒº
+Uint16 SCI_RX_ALLBUFFER[RX_ALLBUFFER_LENGTH] = {0}; // ä¸²å£æ¥æ”¶ç¼“å†²åŒº
+Uint16 SCI_TX_BUFFER[TX_BUFFER_LENGTH] = {0};       // ä¸²å£å‘é€ç¼“å†²åŒº
+_iq SCI_ReceData[30];                               // ä¸²å£æ¥æ”¶çš„æ•°æ®
+_iq SCI_SendData[30];                               // ä¸²å£å‘é€çš„æ•°æ®
+volatile Uint32 Time_Cal = 0;                       // æ§åˆ¶ç®—æ³•æ—¶é—´
 
 //======================================================================================================
-/*  CAN±äÁ¿¶¨Òå		*/
+/*  CANå˜é‡å®šä¹‰		*/
 //======================================================================================================
-// È«¾Ö±äÁ¿»ò½á¹¹ÌåµÄ¶¨Òå
-Uint16 EEPROM_BUFFER[RX_BUFFER_LENGTH] = {0}; // EEPROMÊı¾İ»º³åÇø
+// å…¨å±€å˜é‡æˆ–ç»“æ„ä½“çš„å®šä¹‰
+Uint16 EEPROM_BUFFER[RX_BUFFER_LENGTH] = {0}; // EEPROMæ•°æ®ç¼“å†²åŒº
 volatile Uint16 *p_EEProm_Buffer = EEPROM_BUFFER;
 
-Uint16 RX_BUFFER[RX_BUFFER_LENGTH] = {0}; // ´®¿Ú½ÓÊÕ»º³åÇø
-Uint16 TX_BUFFER[TX_BUFFER_LENGTH] = {0}; // ´®¿Ú·¢ËÍ»º³åÇø
-_iq ReceData[30];                         // ´®¿Ú½ÓÊÕµÄÊı¾İ
-_iq SendData[30];                         // ´®¿Ú·¢ËÍµÄÊı¾İ
+Uint16 RX_BUFFER[RX_BUFFER_LENGTH] = {0}; // ä¸²å£æ¥æ”¶ç¼“å†²åŒº
+Uint16 TX_BUFFER[TX_BUFFER_LENGTH] = {0}; // ä¸²å£å‘é€ç¼“å†²åŒº
+_iq ReceData[30];                         // ä¸²å£æ¥æ”¶çš„æ•°æ®
+_iq SendData[30];                         // ä¸²å£å‘é€çš„æ•°æ®
 
 volatile struct ECAN_REGS ECanaShadow = {0};
 CAN_REGS CANB = CAN_REGS_DEFAULTS;
 CAN_REGS CANB2 = CAN2_REGS_DEFAULTS;
-volatile Uint16 CanStop_Time = 13333; // 150us*13333=2s£¬can³¬Ê±Ê±¼ä2s
+volatile Uint16 CanStop_Time = 13333; // 150us*13333=2sï¼Œcanè¶…æ—¶æ—¶é—´2s
 
-Uint16 CAN_BUFFER_RX[8] = {0};     // CAN»º³åÇø
-Uint16 CAN_BUFFER_RT[6][17] = {0}; // CAN»º³åÇø
-Uint16 CAN_BUFFER_TX[52] = {0};    // CAN»º³åÇø
+Uint16 CAN_BUFFER_RX[8] = {0};     // CANç¼“å†²åŒº
+Uint16 CAN_BUFFER_RT[6][17] = {0}; // CANç¼“å†²åŒº
+Uint16 CAN_BUFFER_TX[52] = {0};    // CANç¼“å†²åŒº
 
-Uint16 CAN_BUFFER_CTRL_N[6][8] = {0}; // CAN»º³åÇø
+Uint16 CAN_BUFFER_CTRL_N[6][8] = {0}; // CANç¼“å†²åŒº
 Uint16 CAN_BUFFER_CTRL_N_index = 0;
 Uint16 CAN_BUFFER_CTRL_index = 0;
 Uint16 CAN_BUFFER_CTRL_Num = 0;
-Uint16 CAN_BUFFER_CTRL[8] = {0}; // CAN»º³åÇø
-Uint16 CAN_CHANGE_CTRL[8] = {0}; // CAN»º³åÇø
-Uint16 CAN_SET_VALUE[8] = {0};   // CAN»º³åÇø
-Uint16 CAN_CONTROL = 0;          // ¿ØÖÆ×´Ì¬
+Uint16 CAN_BUFFER_CTRL[8] = {0}; // CANç¼“å†²åŒº
+Uint16 CAN_CHANGE_CTRL[8] = {0}; // CANç¼“å†²åŒº
+Uint16 CAN_SET_VALUE[8] = {0};   // CANç¼“å†²åŒº
+Uint16 CAN_CONTROL = 0;          // æ§åˆ¶çŠ¶æ€
 
 volatile Uint16 CAN_Index = 0;
-volatile _iq maxSpeed = _IQ(0);  // ¸ßËÙÄ£Ê½×ªËÙ
-volatile Uint16 Choose_Mche = 0; // Ñ¡Ôñµç»ú
-volatile Uint16 Choose_Mode = 0; // Ñ¡ÔñÄ£Ê½
+volatile _iq maxSpeed = _IQ(0);  // é«˜é€Ÿæ¨¡å¼è½¬é€Ÿ
+volatile Uint16 Choose_Mche = 0; // é€‰æ‹©ç”µæœº
+volatile Uint16 Choose_Mode = 0; // é€‰æ‹©æ¨¡å¼
 
-volatile Uint16 Board_Num = 0; // ¿ØÖÆ°å
+volatile Uint16 Board_Num = 0; // æ§åˆ¶æ¿
 
-volatile Uint16 Board2_Num = 0; // ¿ØÖÆ°å
-// CAN±äÁ¿¶¨Òå½áÊø
+volatile Uint16 Board2_Num = 0; // æ§åˆ¶æ¿
+// CANå˜é‡å®šä¹‰ç»“æŸ
 //======================================================================================================
 //======================================================================================================
-/* RDCÏà¹ØµÄ±äÁ¿¶¨Òå	*/
+/* RDCç›¸å…³çš„å˜é‡å®šä¹‰	*/
 //======================================================================================================
-// È«¾Ö±äÁ¿»ò½á¹¹ÌåµÄ¶¨Òå
-_iq30 *pArcSin = (_iq30 *)0x00318000; // Ö¸Ïò·´ÕıÏÒº¯Êı±í£¬Q30
+// å…¨å±€å˜é‡æˆ–ç»“æ„ä½“çš„å®šä¹‰
+_iq30 *pArcSin = (_iq30 *)0x00318000; // æŒ‡å‘åæ­£å¼¦å‡½æ•°è¡¨ï¼ŒQ30
 RDC_DRIVER rdc1 = RDC_READ_DEFAULT;
 RDC_DRIVER rdc2 = RDC_READ_DEFAULT;
-// RDCÏà¹ØµÄ±äÁ¿¶¨Òå½áÊø
+// RDCç›¸å…³çš„å˜é‡å®šä¹‰ç»“æŸ
 //======================================================================================================
 
 //======================================================================================================
-/*  PWMÏà¹Ø±äÁ¿¶¨Òå		*/
+/*  PWMç›¸å…³å˜é‡å®šä¹‰		*/
 //======================================================================================================
-// ¶¨ÒåPWMAºÍPWMBÇı¶¯Æ÷
-PWMGEN pwma = PWMAGEN_DEFAULTS;             // ÓÃÓÚÄæ±äÆ÷
-volatile Uint16 Control_Period = CARRY_A_P; // Q16 ¿ØÖÆÖÜÆÚ¼ÆÊıÖµ
-volatile Uint16 Deadtime = PWM_DeadTime;    // Q16 ËÀÇø¼ÆÊıÖµ
-volatile _iq Velo_Duty = _IQ(1000);         // QG ×ªËÙÔØ²¨ÏµÊı
-volatile _iq Velo_Duty0 = _IQ(1000);        // QG ×ªËÙÔØ²¨ÏµÊı
-volatile _iq K_Velo_Cal = K_VELO_CALC;      // ËÙ¶È¼ÆËã²ÎÊı
+// å®šä¹‰PWMAå’ŒPWMBé©±åŠ¨å™¨
+PWMGEN pwma = PWMAGEN_DEFAULTS;             // ç”¨äºé€†å˜å™¨
+volatile Uint16 Control_Period = CARRY_A_P; // Q16 æ§åˆ¶å‘¨æœŸè®¡æ•°å€¼
+volatile Uint16 Deadtime = PWM_DeadTime;    // Q16 æ­»åŒºè®¡æ•°å€¼
+volatile _iq Velo_Duty = _IQ(1000);         // QG è½¬é€Ÿè½½æ³¢ç³»æ•°
+volatile _iq Velo_Duty0 = _IQ(1000);        // QG è½¬é€Ÿè½½æ³¢ç³»æ•°
+volatile _iq K_Velo_Cal = K_VELO_CALC;      // é€Ÿåº¦è®¡ç®—å‚æ•°
 
-// PWMÏà¹Ø±äÁ¿¶¨Òå½áÊø
+// PWMç›¸å…³å˜é‡å®šä¹‰ç»“æŸ
 //======================================================================================================
 
 //======================================================================================================
-/*  ×ø±ê±ä»»±äÁ¿¶¨Òå		*/
+/*  åæ ‡å˜æ¢å˜é‡å®šä¹‰		*/
 //======================================================================================================
-// È«¾Ö±äÁ¿»ò½á¹¹ÌåµÄ¶¨Òå
+// å…¨å±€å˜é‡æˆ–ç»“æ„ä½“çš„å®šä¹‰
 Ref_ABCtoDQ abctodq = Ref_ABCtoDQ_DEFAULTS;         // ABC->DQ
 Ref_DQtoABC dqtoabc = Ref_DQtoABC_DEFAULTS;         // DQ->ABC
 Ref_THREE2TWO phase_trans = Ref_THREE2TWO_DEFAULTS; // ABC->a,b
-//  ×ø±ê±ä»»±äÁ¿¶¨Òå½áÊø
+//  åæ ‡å˜æ¢å˜é‡å®šä¹‰ç»“æŸ
 //======================================================================================================
 
 //======================================================================================================
-/*  PI±äÁ¿¶¨Òå		*/
+/*  PIå˜é‡å®šä¹‰		*/
 //======================================================================================================
-// È«¾Ö±äÁ¿»ò½á¹¹ÌåµÄ¶¨Òå
-PIREG pi_Pos = PIREG_VELO_DEFAULTS;  // Î»ÖÃ»·µÄPI
-PIREG pi_velo = PIREG_VELO_DEFAULTS; // ËÙ¶È»·µÄPI
-PIREG pi_Id_Kc = PIREG_ID_DEFAULTS;  // IdµçÑ¹PI
-PIREG pi_Iq_Kc = PIREG_IQ_DEFAULTS;  // IqµçÑ¹PI
+// å…¨å±€å˜é‡æˆ–ç»“æ„ä½“çš„å®šä¹‰
+PIREG pi_Pos = PIREG_VELO_DEFAULTS;  // ä½ç½®ç¯çš„PI
+PIREG pi_velo = PIREG_VELO_DEFAULTS; // é€Ÿåº¦ç¯çš„PI
+PIREG pi_Id_Kc = PIREG_ID_DEFAULTS;  // Idç”µå‹PI
+PIREG pi_Iq_Kc = PIREG_IQ_DEFAULTS;  // Iqç”µå‹PI
 PIREG pi_usLimit = PIREG_IQ_DEFAULTS;
 volatile _iq Idq_Kc = 0;
 volatile _iq Radq = 0;
-// PI±äÁ¿¶¨Òå½áÊø
+// PIå˜é‡å®šä¹‰ç»“æŸ
 //======================================================================================================
 
 //======================================================================================================
-/*  Ö÷ÒªÏà¹ØÈ«¾Ö±äÁ¿µÄ¶¨Òå		*/
+/*  ä¸»è¦ç›¸å…³å…¨å±€å˜é‡çš„å®šä¹‰		*/
 //======================================================================================================
-volatile Uint16 Run_Led_Index = 0; // ÔËĞĞµÆÔËĞĞµÄ¿ØÖÆÖÜÆÚµÄÖ¸Êı
+volatile Uint16 Run_Led_Index = 0; // è¿è¡Œç¯è¿è¡Œçš„æ§åˆ¶å‘¨æœŸçš„æŒ‡æ•°
 
 _iq m_PT_V[31] = {
     _IQ(0.740967870), _IQ(0.775266557), _IQ(0.809245477), _IQ(0.842909081), _IQ(0.876261737),
@@ -153,8 +153,8 @@ volatile _iq Velo_Max = Velo_MAX;
 volatile _iq id_Max = IsMAX;
 volatile _iq idc_Max = IsMAX;
 volatile _iq idSet_Max = IsMAX;
-volatile _iq UdcLimit_Set = 0;  // QG Ö±Á÷²àµçÑ¹µÄÉè¶¨Öµ
-volatile _iq UdcLimit1_Set = 0; // QG Ö±Á÷²àµçÑ¹µÄÉè¶¨Öµ
+volatile _iq UdcLimit_Set = 0;  // QG ç›´æµä¾§ç”µå‹çš„è®¾å®šå€¼
+volatile _iq UdcLimit1_Set = 0; // QG ç›´æµä¾§ç”µå‹çš„è®¾å®šå€¼
 
 volatile _iq IsLimit_Set = 0;
 volatile _iq Us_M = _IQ(1.1);
@@ -165,7 +165,7 @@ volatile _iq UsSet = _IQ(0);
 volatile _iq Is_DownAdd = _IQ(0.000004);
 volatile _iq Is_DownPerAdd = _IQ(0.000004);
 
-volatile _iq Udc_Setg = _IQ(1); // QG Ö±Á÷²àµçÑ¹µÄ²âÁ¿Öµ
+volatile _iq Udc_Setg = _IQ(1); // QG ç›´æµä¾§ç”µå‹çš„æµ‹é‡å€¼
 volatile _iq IstoTorque = _IQ(0.78);
 volatile _iq TorquetoIs = _IQ(1.2820512820512820512820512820513);
 volatile _iq TorqueAngle = _IQ(0.52359877559829887307710723054658); //  pi/6
@@ -174,78 +174,78 @@ volatile _iq Is_Add = _IQ(0.000004);
 volatile _iq Is_PerAdd = _IQ(0.000004);
 volatile _iq Velo_Add = _IQ(0.00001);
 volatile _iq Velo_PerAdd = _IQ(0.00001);
-volatile _iq Per_Ctrl = _IQ(0.0001); // ¿ØÖÆÖÜÆÚ
+volatile _iq Per_Ctrl = _IQ(0.0001); // æ§åˆ¶å‘¨æœŸ
 
-/*ÂË²¨½ØÖ¹ÆµÂÊ±äÁ¿¶¨Òå*/
+/*æ»¤æ³¢æˆªæ­¢é¢‘ç‡å˜é‡å®šä¹‰*/
 volatile _iq Temp_Filter = _IQ(1); //
 volatile _iq IsSet_Filter = _IQ(1);
 volatile _iq id_Filter = _IQ(20);
 volatile _iq Velo_Filter = _IQ(20);
 volatile _iq Udc_Filter = _IQ(5);
-// ÓÃÓÚÂË²¨³ÌĞòµÄÁ¿
-volatile _iq Id0 = 0;        // QG ÉÏ´ÎµÄId±êçÛÖµ
-volatile _iq Iq0 = 0;        // QG ÉÏ´ÎµÄIq±êçÛÖµ
-volatile _iq Velo_Elec0 = 0; // QG ÉÏ´Î¼ÆËãµÄµçËÙ¶ÈµÄ±êçÛÖµ
+// ç”¨äºæ»¤æ³¢ç¨‹åºçš„é‡
+volatile _iq Id0 = 0;        // QG ä¸Šæ¬¡çš„Idæ ‡å¹ºå€¼
+volatile _iq Iq0 = 0;        // QG ä¸Šæ¬¡çš„Iqæ ‡å¹ºå€¼
+volatile _iq Velo_Elec0 = 0; // QG ä¸Šæ¬¡è®¡ç®—çš„ç”µé€Ÿåº¦çš„æ ‡å¹ºå€¼
 
 volatile _iq Usa_Lock = 0;
 volatile _iq Usb_Lock = 0;
 volatile _iq Usc_Lock = 0;
 volatile _iq Udc_Lock = 0;
-volatile _iq Angle_ElecOpen = 0; // QG ×ª×ÓÎ»ÖÃµç½ÇµÄ±êçÛÖµ
+volatile _iq Angle_ElecOpen = 0; // QG è½¬å­ä½ç½®ç”µè§’çš„æ ‡å¹ºå€¼
 volatile _iq Um_OpenLoop = 0;
 volatile _iq Freq_OpenLoop = 0;
 volatile _iq Udc_OpenLoop = 0;
 
-volatile Uint32 VeloProtect1 = 0;             // QG ±£»¤ÓÃIq±ê×Ó
-volatile Uint32 IdProtect1 = 0;               // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 UdcOverProtect1 = 0;          // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 IdcOverProtect1 = 0;          // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 IdProtect = 0;                // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 VeloProtect = 0;              // QG ±£»¤ÓÃIq±ê×Ó
-volatile Uint16 IdProtectNum = IsMAXNUM;      // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 VeloProtectNum = VELO_MAXNUM; // QG ±£»¤ÓÃIq±ê×Ó
-volatile Uint16 UdcLowProtect = 0;            // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 UdcLowEnable = 0;             // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 UdcOverProtect = 0;           // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 IdcOverProtect = 0;           // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 Temp1OverProtect = 0;         // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 Temp2OverProtect = 0;         // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 Temp1OverProtect1 = 0;        // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 Temp2OverProtect1 = 0;        // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 IGBTProtect1 = 0;             // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 RdcProtect = 0;               // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 RdcProtect1 = 0;              // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint16 Rdc2Protect = 0;              // QG ±£»¤ÓÃId±ê×Ó
-volatile Uint32 Rdc2Protect1 = 0;             // QG ±£»¤ÓÃId±ê×Ó
+volatile Uint32 VeloProtect1 = 0;             // QG ä¿æŠ¤ç”¨Iqæ ‡å­
+volatile Uint32 IdProtect1 = 0;               // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 UdcOverProtect1 = 0;          // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 IdcOverProtect1 = 0;          // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 IdProtect = 0;                // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 VeloProtect = 0;              // QG ä¿æŠ¤ç”¨Iqæ ‡å­
+volatile Uint16 IdProtectNum = IsMAXNUM;      // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 VeloProtectNum = VELO_MAXNUM; // QG ä¿æŠ¤ç”¨Iqæ ‡å­
+volatile Uint16 UdcLowProtect = 0;            // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 UdcLowEnable = 0;             // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 UdcOverProtect = 0;           // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 IdcOverProtect = 0;           // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 Temp1OverProtect = 0;         // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 Temp2OverProtect = 0;         // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 Temp1OverProtect1 = 0;        // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 Temp2OverProtect1 = 0;        // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 IGBTProtect1 = 0;             // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 RdcProtect = 0;               // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 RdcProtect1 = 0;              // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint16 Rdc2Protect = 0;              // QG ä¿æŠ¤ç”¨Idæ ‡å­
+volatile Uint32 Rdc2Protect1 = 0;             // QG ä¿æŠ¤ç”¨Idæ ‡å­
 
-volatile Uint32 ProtectNum = PROTECT_NUM; // QG ¹ÊÕÏ»Ö¸´Ê±¼ä
+volatile Uint32 ProtectNum = PROTECT_NUM; // QG æ•…éšœæ¢å¤æ—¶é—´
 
 //------------------------------------------------------
-// ÆµÂÊ¡¢ËÙ¶ÈÒÔ¼°½Ç¶È
-volatile Uint16 Angle_Q16 = 0;                   // Q16 Ğı±ä²âÈ¡µÄµ±Ç°Î»ÖÃ½ÇHEX
-volatile Uint16 Angle0_Q16 = 0;                  // Q16 Ğı±ä²âÈ¡µÄÉÏÒ»´ÎÎ»ÖÃ½ÇHEX
-volatile Uint16 Angle_Init_Digital = INIT_ANGLE; // Q0 ÓÃÓÚĞı±ä²âÁ¿µÄ×ª×Ó³õÎ»ÖÃ½Ç(HEX)
-volatile Uint16 Angle_Init_Fa = 0;               // Q0 ÓÃÓÚĞı±ä²âÁ¿µÄ×ª×Ó³õÎ»ÖÃ½Ç(HEX)
-volatile Uint16 Angle_Fa_Q16 = 0;                // Q16 Ğı±ä²âÈ¡µÄµ±Ç°Î»ÖÃ½ÇHEX
+// é¢‘ç‡ã€é€Ÿåº¦ä»¥åŠè§’åº¦
+volatile Uint16 Angle_Q16 = 0;                   // Q16 æ—‹å˜æµ‹å–çš„å½“å‰ä½ç½®è§’HEX
+volatile Uint16 Angle0_Q16 = 0;                  // Q16 æ—‹å˜æµ‹å–çš„ä¸Šä¸€æ¬¡ä½ç½®è§’HEX
+volatile Uint16 Angle_Init_Digital = INIT_ANGLE; // Q0 ç”¨äºæ—‹å˜æµ‹é‡çš„è½¬å­åˆä½ç½®è§’(HEX)
+volatile Uint16 Angle_Init_Fa = 0;               // Q0 ç”¨äºæ—‹å˜æµ‹é‡çš„è½¬å­åˆä½ç½®è§’(HEX)
+volatile Uint16 Angle_Fa_Q16 = 0;                // Q16 æ—‹å˜æµ‹å–çš„å½“å‰ä½ç½®è§’HEX
 
-volatile _iq Angle_Elec = 0;  // QG ×ª×ÓÎ»ÖÃµç½ÇµÄ±êçÛÖµ
-volatile _iq Com_angle_I = 0; // ¼ÆËãdqÖáµçÁ÷Ê±µÄ²¹³¥½Ç
-volatile _iq Com_angle_U = 0; // ¼ÆËãdqÖáµçÑ¹Ê±µÄ²¹³¥½Ç
+volatile _iq Angle_Elec = 0;  // QG è½¬å­ä½ç½®ç”µè§’çš„æ ‡å¹ºå€¼
+volatile _iq Com_angle_I = 0; // è®¡ç®—dqè½´ç”µæµæ—¶çš„è¡¥å¿è§’
+volatile _iq Com_angle_U = 0; // è®¡ç®—dqè½´ç”µå‹æ—¶çš„è¡¥å¿è§’
 
-volatile _iq Velo_Elec = 0;     // QG ¼ì²âµÃµ½µÄ×ª×ÓËÙ¶ÈµÄÊµ¼ÊÖµ
-volatile _iq Velo_Elec_Cal = 0; // QG ¼ì²âµÃµ½µÄ×ª×ÓËÙ¶ÈµÄ¼ÆËãÖµ
-volatile _iq Velo_Elec_abs = 0; // QG µçËÙ¶ÈµÄ±êçÛÖµ
-volatile _iq Velo_Set = 0;      // QG ¸ø¶¨µÄ×ª×ÓËÙ¶ÈµÄ½ÇÆµÂÊ±íÊ¾
+volatile _iq Velo_Elec = 0;     // QG æ£€æµ‹å¾—åˆ°çš„è½¬å­é€Ÿåº¦çš„å®é™…å€¼
+volatile _iq Velo_Elec_Cal = 0; // QG æ£€æµ‹å¾—åˆ°çš„è½¬å­é€Ÿåº¦çš„è®¡ç®—å€¼
+volatile _iq Velo_Elec_abs = 0; // QG ç”µé€Ÿåº¦çš„æ ‡å¹ºå€¼
+volatile _iq Velo_Set = 0;      // QG ç»™å®šçš„è½¬å­é€Ÿåº¦çš„è§’é¢‘ç‡è¡¨ç¤º
 volatile _iq Veloover_Set = _IQ(0);
-volatile _iq Pos_Set = 0; // QG ¸ø¶¨µÄÎ»ÖÃ
+volatile _iq Pos_Set = 0; // QG ç»™å®šçš„ä½ç½®
 
-volatile long Velo_Calc_Num = 10;   // ËÙ¶ÈÆ½¾ù´ÎÊı
-volatile Uint16 Velo_Avg_Index = 0; // ËÙ¶ÈÆ½¾ùÖ¸Êı
+volatile long Velo_Calc_Num = 10;   // é€Ÿåº¦å¹³å‡æ¬¡æ•°
+volatile Uint16 Velo_Avg_Index = 0; // é€Ÿåº¦å¹³å‡æŒ‡æ•°
 volatile _iq Velotmp = _IQ(0);
 volatile Uint16 Velo_Calc_flag = 0;
 //----------------------------------------------------------
 
-// ÓÃÓÚ´æ´¢Ö±½ÓADC²ÉÑùµÄµ½Êı×ÖÁ¿,ĞèÒª½øĞĞĞ£Õı
+// ç”¨äºå­˜å‚¨ç›´æ¥ADCé‡‡æ ·çš„åˆ°æ•°å­—é‡,éœ€è¦è¿›è¡Œæ ¡æ­£
 volatile Uint16 ADc_Isa = 0;
 volatile Uint16 ADc_Isb = 0;
 volatile Uint16 ADc_Isc = 0;
@@ -256,67 +256,67 @@ volatile Uint16 ADc_Temp2 = 0;
 volatile Uint16 ADc_Temp4 = 0;
 //------------------------------------------------------------
 
-// µç»ú¶¨×ÓµçÑ¹¡¢µçÁ÷µÄ±êçÛÖµ
-volatile _iq Isa = 0; // QG IsaµÄ±êçÛÖµ
-volatile _iq Isb = 0; // QG IsbµÄ±êçÛÖµ
-volatile _iq Isc = 0; // QG IscµÄ±êçÛÖµ
-volatile _iq Is = 0;  // QG Id±êçÛÖµ
+// ç”µæœºå®šå­ç”µå‹ã€ç”µæµçš„æ ‡å¹ºå€¼
+volatile _iq Isa = 0; // QG Isaçš„æ ‡å¹ºå€¼
+volatile _iq Isb = 0; // QG Isbçš„æ ‡å¹ºå€¼
+volatile _iq Isc = 0; // QG Iscçš„æ ‡å¹ºå€¼
+volatile _iq Is = 0;  // QG Idæ ‡å¹ºå€¼
 
-volatile _iq Usa = 0; // QG UsaµÄ±êçÛÖµ
-volatile _iq Usb = 0; // QG UsbµÄ±êçÛÖµ
-volatile _iq Usc = 0; // QG UscµÄ±êçÛÖµ
-volatile _iq Us = 0;  // QG Us=mag(ud,uq)µÄ±êçÛÖµ
+volatile _iq Usa = 0; // QG Usaçš„æ ‡å¹ºå€¼
+volatile _iq Usb = 0; // QG Usbçš„æ ‡å¹ºå€¼
+volatile _iq Usc = 0; // QG Uscçš„æ ‡å¹ºå€¼
+volatile _iq Us = 0;  // QG Us=mag(ud,uq)çš„æ ‡å¹ºå€¼
 
-volatile _iq Udc_Mche = _IQ(1);           // QG Ö±Á÷²àµçÑ¹µÄ²âÁ¿Öµ,ÉÏÎ»»ú¸ø¹ıÀ´µÄÊÇÖ±Á÷²àµçÑ¹¸ø¶¨ÖµµÄµ¹Êı
-volatile _iq Udc_Mche_realvalue = _IQ(1); // QG Ö±Á÷²àµçÑ¹µÄ²âÁ¿Öµ,
-volatile _iq Udc_Mche_1 = _IQ(1);         // QG Ö±Á÷²àµçÑ¹µÄ²âÁ¿Öµ
-volatile _iq Udc_Mche0 = 0;               // QG Ö±Á÷²àµçÑ¹µÄ²âÁ¿Öµ
-volatile _iq Idc = 0;                     // QG IdcµÄ±êçÛÖµ
-volatile _iq Idc0 = 0;                    // QG IdcµÄ±êçÛÖµ
+volatile _iq Udc_Mche = _IQ(1);           // QG ç›´æµä¾§ç”µå‹çš„æµ‹é‡å€¼,ä¸Šä½æœºç»™è¿‡æ¥çš„æ˜¯ç›´æµä¾§ç”µå‹ç»™å®šå€¼çš„å€’æ•°
+volatile _iq Udc_Mche_realvalue = _IQ(1); // QG ç›´æµä¾§ç”µå‹çš„æµ‹é‡å€¼,
+volatile _iq Udc_Mche_1 = _IQ(1);         // QG ç›´æµä¾§ç”µå‹çš„æµ‹é‡å€¼
+volatile _iq Udc_Mche0 = 0;               // QG ç›´æµä¾§ç”µå‹çš„æµ‹é‡å€¼
+volatile _iq Idc = 0;                     // QG Idcçš„æ ‡å¹ºå€¼
+volatile _iq Idc0 = 0;                    // QG Idcçš„æ ‡å¹ºå€¼
 
-volatile _iq Id = 0;     // QG Id±êçÛÖµ
-volatile _iq Iq = 0;     // QG Iq±êçÛÖµ
-volatile _iq Id_Set = 0; // QG dÖáµçÁ÷¸ø¶¨µÄ±êçÛÖµ
-volatile _iq Iq_Set = 0; // QG IqµÄÉè¶¨±êçÛÖµ
+volatile _iq Id = 0;     // QG Idæ ‡å¹ºå€¼
+volatile _iq Iq = 0;     // QG Iqæ ‡å¹ºå€¼
+volatile _iq Id_Set = 0; // QG dè½´ç”µæµç»™å®šçš„æ ‡å¹ºå€¼
+volatile _iq Iq_Set = 0; // QG Iqçš„è®¾å®šæ ‡å¹ºå€¼
 volatile _iq Isdq_Set = _IQ(0);
-volatile _iq Isd_Set = _IQ(0); // ÉÏÎ»»ú·¢ËÍ¹ıÀ´µÄid
+volatile _iq Isd_Set = _IQ(0); // ä¸Šä½æœºå‘é€è¿‡æ¥çš„id
 volatile _iq Isdq_Set1 = _IQ(0);
 volatile _iq Isdq_Set2 = _IQ(0);
 volatile _iq IdSet = _IQ(0);
 
-volatile _iq IdZ_Set = 0; // QG dÖáµçÁ÷¸ø¶¨µÄ±êçÛÖµ
-volatile _iq IqZ_Set = 0; // QG IqµÄÉè¶¨±êçÛÖµ
+volatile _iq IdZ_Set = 0; // QG dè½´ç”µæµç»™å®šçš„æ ‡å¹ºå€¼
+volatile _iq IqZ_Set = 0; // QG Iqçš„è®¾å®šæ ‡å¹ºå€¼
 
-volatile _iq Ud = 0;           // QG ¿ØÖÆµÃ³öµÄUd
-volatile _iq Uq = 0;           // QG ¿ØÖÆµÃ³öµÄUq
-volatile _iq Us_Max = 0;       // QG Ud£¬UqµÄÏŞ·ù k*0.612Udc (ºã¹¦ÂÊ±ä»»)
-volatile _iq Us_Alfa_Mche = 0; // QG aÖáµçÑ¹µÄ±êçÛÖµ
-volatile _iq Us_Beta_Mche = 0; // QG bÖáµçÑ¹µÄ±êçÛÖµ
+volatile _iq Ud = 0;           // QG æ§åˆ¶å¾—å‡ºçš„Ud
+volatile _iq Uq = 0;           // QG æ§åˆ¶å¾—å‡ºçš„Uq
+volatile _iq Us_Max = 0;       // QG Udï¼ŒUqçš„é™å¹… k*0.612Udc (æ’åŠŸç‡å˜æ¢)
+volatile _iq Us_Alfa_Mche = 0; // QG aè½´ç”µå‹çš„æ ‡å¹ºå€¼
+volatile _iq Us_Beta_Mche = 0; // QG bè½´ç”µå‹çš„æ ‡å¹ºå€¼
 //-------------------------------------------------------------
 
-// µç»ú²ÎÊı
-volatile _iq Ld = K_LD;   // µç»údÖáµç¸ĞµÄ±êçÛÖµ
-volatile _iq Lq = K_LQ;   // µç»úqÖáµç¸ĞµÄ±êçÛÖµ
-volatile _iq PHI = K_PHI; // µç»ú´ÅÁ´µÄ±êçÛÖµ
-volatile _iq Rs = K_RS;   // µç»úµç×èµÄ±êçÛÖµ
-volatile _iq Mp = K_MP;   // µç»úµÄ¼«¶ÔÊı
-volatile _iq Rp = K_RP;   // µç»úµÄ¼«¶ÔÊı
-volatile _iq p = K_P;     // µç»úÓëĞı±äµÄ¼«¶ÔÊı±È
-// »ùÖµÏµÍ³
-volatile _iq U_Base = U_BASE; // µçÑ¹»ùÖµ
-volatile _iq I_Base = I_BASE; // µçÁ÷»ùÖµ
-volatile _iq V_Base = V_BASE; // ËÙ¶È»ùÖµ
+// ç”µæœºå‚æ•°
+volatile _iq Ld = K_LD;   // ç”µæœºdè½´ç”µæ„Ÿçš„æ ‡å¹ºå€¼
+volatile _iq Lq = K_LQ;   // ç”µæœºqè½´ç”µæ„Ÿçš„æ ‡å¹ºå€¼
+volatile _iq PHI = K_PHI; // ç”µæœºç£é“¾çš„æ ‡å¹ºå€¼
+volatile _iq Rs = K_RS;   // ç”µæœºç”µé˜»çš„æ ‡å¹ºå€¼
+volatile _iq Mp = K_MP;   // ç”µæœºçš„æå¯¹æ•°
+volatile _iq Rp = K_RP;   // ç”µæœºçš„æå¯¹æ•°
+volatile _iq p = K_P;     // ç”µæœºä¸æ—‹å˜çš„æå¯¹æ•°æ¯”
+// åŸºå€¼ç³»ç»Ÿ
+volatile _iq U_Base = U_BASE; // ç”µå‹åŸºå€¼
+volatile _iq I_Base = I_BASE; // ç”µæµåŸºå€¼
+volatile _iq V_Base = V_BASE; // é€Ÿåº¦åŸºå€¼
 
-// Ö÷ÒªÏà¹ØÈ«¾Ö±äÁ¿µÄ¶¨Òå½áÊø
+// ä¸»è¦ç›¸å…³å…¨å±€å˜é‡çš„å®šä¹‰ç»“æŸ
 //======================================================================================================
 
 //======================================================================================================
-/*  ÏµÍ³±êÖ¾±äÁ¿¶¨Òå		*/
+/*  ç³»ç»Ÿæ ‡å¿—å˜é‡å®šä¹‰		*/
 //======================================================================================================
 volatile union FAULT_FLAG_REG Fault_Flag = FAULT_FLAG_DEFAULT;
 volatile union SYS_FLAG_REG Sys_Flag = SYS_FLAG_DEFAULT;
 volatile union CTRL_FLAG_REG Ctrl_Flag = CTRL_FLAG_DEFAULT;
-//  ÏµÍ³±êÖ¾±äÁ¿¶¨Òå½áÊø
+//  ç³»ç»Ÿæ ‡å¿—å˜é‡å®šä¹‰ç»“æŸ
 //====================================================================================
 
 volatile _iq17 Off_Isc = _IQ17(0);
@@ -330,21 +330,21 @@ volatile _iq17 K_Udc = _IQ17(1);
 volatile _iq17 Off_Idc = _IQ17(0);
 volatile _iq17 K_Idc = _IQ17(1);
 
-volatile _iq PWMA_a = _IQ(0); // QG aÏà²¹³¥
-volatile _iq PWMA_b = _IQ(0); // QG bÏà²¹³¥
-volatile _iq PWMA_c = _IQ(0); // QG cÏà²¹³¥
+volatile _iq PWMA_a = _IQ(0); // QG aç›¸è¡¥å¿
+volatile _iq PWMA_b = _IQ(0); // QG bç›¸è¡¥å¿
+volatile _iq PWMA_c = _IQ(0); // QG cç›¸è¡¥å¿
 
-volatile _iq Temperature1 = 0;     // ÎÂ¶ÈĞÅºÅ1
-volatile _iq Temperature3 = 0;     // ÎÂ¶ÈĞÅºÅ3
-volatile _iq Temperature5 = 0;     // ÎÂ¶ÈĞÅºÅ4
-volatile _iq Temperature10 = 0;    // ÎÂ¶ÈÅº?1
-volatile _iq Temperature30 = 0;    // ÎÂ¶ÈĞÅºÅ3
-volatile _iq Temperature50 = 0;    // ÎÂ¶ÈĞÅºÅ4
-volatile _iq Temperature1_Off = 0; // ÎÂ¶ÈĞÅºÅ1
-volatile _iq Temperature3_Off = 0; // ÎÂ¶ÈĞÅºÅ3
-volatile _iq Temperature5_Off = 0; // ÎÂ¶ÈĞÅºÅ4
-volatile _iq Temperature1_K = 0;   // ÎÂ¶ÈĞÅºÅ1
-volatile _iq Temperature3_K = 0;   // ÎÂ¶ÈĞÅºÅ3
-volatile _iq Temperature5_K = 0;   // ÎÂ¶ÈĞÅºÅ4
+volatile _iq Temperature1 = 0;     // æ¸©åº¦ä¿¡å·1
+volatile _iq Temperature3 = 0;     // æ¸©åº¦ä¿¡å·3
+volatile _iq Temperature5 = 0;     // æ¸©åº¦ä¿¡å·4
+volatile _iq Temperature10 = 0;    // æ¸©åº¦è—•?1
+volatile _iq Temperature30 = 0;    // æ¸©åº¦ä¿¡å·3
+volatile _iq Temperature50 = 0;    // æ¸©åº¦ä¿¡å·4
+volatile _iq Temperature1_Off = 0; // æ¸©åº¦ä¿¡å·1
+volatile _iq Temperature3_Off = 0; // æ¸©åº¦ä¿¡å·3
+volatile _iq Temperature5_Off = 0; // æ¸©åº¦ä¿¡å·4
+volatile _iq Temperature1_K = 0;   // æ¸©åº¦ä¿¡å·1
+volatile _iq Temperature3_K = 0;   // æ¸©åº¦ä¿¡å·3
+volatile _iq Temperature5_K = 0;   // æ¸©åº¦ä¿¡å·4
 
 #endif

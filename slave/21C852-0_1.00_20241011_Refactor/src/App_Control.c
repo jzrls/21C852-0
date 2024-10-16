@@ -118,13 +118,13 @@ void Loop_Ctrl(Uint16 Board) {
 void Ctrl_Change(void) {
     volatile Uint16 CAN_CONTROL_PRE = 0x07; // 0000,0111
 
-    /* CAN_CHANGE_CTRL[2] ÎªÃüÁîÂë£¬ 0x11£ºÍ£Ö¹ */
+    /* CAN_CHANGE_CTRL[2] ä¸ºå‘½ä»¤ç ï¼Œ 0x11ï¼šåœæ­¢ */
     if (CAN_CHANGE_CTRL[2] == 0x11 || CAN_CHANGE_CTRL[2] == 0x00) {
         return;
     }
 
-    // ÏÈÑ¡Ôñ´Ó°å,Èç¹ûÖ÷°åÎŞ¹ÊÕÏ£¬ÇÒ´Ó°å²»ÔÚÔËĞĞÖĞ£¬ÔòÑ¡ÔñÖ÷°åÔËĞĞ
-    // CAN_BUFFER_RT[BORAD_NUM][2] + CAN_BUFFER_RT[BORAD_NUM][3]: ¹ÊÕÏÎ»
+    // å…ˆé€‰æ‹©ä»æ¿,å¦‚æœä¸»æ¿æ— æ•…éšœï¼Œä¸”ä»æ¿ä¸åœ¨è¿è¡Œä¸­ï¼Œåˆ™é€‰æ‹©ä¸»æ¿è¿è¡Œ
+    // CAN_BUFFER_RT[BORAD_NUM][2] + CAN_BUFFER_RT[BORAD_NUM][3]: æ•…éšœä½
     if ((CAN_BUFFER_RT[0][2] & 0x02) == 0x00 && (CAN_BUFFER_RT[1][2] & 0x01) == 0x01) {
         CAN_CONTROL_PRE &= 0xFE; // 0000,0110
     }
@@ -137,7 +137,7 @@ void Ctrl_Change(void) {
         CAN_CONTROL_PRE &= 0xFB; // 0000,0011
     }
 
-    /* µû·§1Ö÷°åÔËĞĞ */
+    /* è¶é˜€1ä¸»æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x01) == 0x01 && (BORAD_NUM == 0 || BORAD_NUM == 1)) {
         if (BORAD_NUM == 0) {
             ET_IO_OUT1_L;
@@ -153,7 +153,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* µû·§1¸±°åÔËĞĞ */
+    /* è¶é˜€1å‰¯æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x01) == 0x00 && (BORAD_NUM == 0 || BORAD_NUM == 1)) {
         if (BORAD_NUM == 0) {
             ET_IO_OUT1_H;
@@ -170,7 +170,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* ±Ãµç»úÖ÷°åÔËĞĞ */
+    /* æ³µç”µæœºä¸»æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x02) == 0x02 && (BORAD_NUM == 2 || BORAD_NUM == 3)) {
         if (BORAD_NUM == 2) {
             ET_IO_OUT1_L;
@@ -184,7 +184,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* ±Ãµç»ú¸±°åÔËĞĞ */
+    /* æ³µç”µæœºå‰¯æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x02) == 0x00 && (BORAD_NUM == 2 || BORAD_NUM == 3)) {
         if (BORAD_NUM == 2) {
             ET_IO_OUT1_L;
@@ -198,7 +198,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* µû·§2Ö÷°åÔËĞĞ */
+    /* è¶é˜€2ä¸»æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x04) == 0x04 && (BORAD_NUM == 4 || BORAD_NUM == 5)) {
         if (BORAD_NUM == 4) {
             ET_IO_OUT1_L;
@@ -214,7 +214,7 @@ void Ctrl_Change(void) {
         }
     }
 
-    /* µû·§2¸±°åÔËĞĞ */
+    /* è¶é˜€2å‰¯æ¿è¿è¡Œ */
     if ((CAN_CONTROL_PRE & 0x04) == 0x00 && (BORAD_NUM == 4 || BORAD_NUM == 5)) {
         if (BORAD_NUM == 4) {
             ET_IO_OUT1_H;
@@ -243,11 +243,11 @@ void RunLed(void) {
         LED1 = 1;
     }
 
-    /* ½ÓÊÕ´®¿ÚÊı¾İ£¬ËùÓĞÊı¾İ´æ·ÅÓÚSCI_RX_ALLBUFFER[]Êı×éÖĞ */
+    /* æ¥æ”¶ä¸²å£æ•°æ®ï¼Œæ‰€æœ‰æ•°æ®å­˜æ”¾äºSCI_RX_ALLBUFFER[]æ•°ç»„ä¸­ */
     if (ScicRegs.SCIFFRX.bit.RXFFST > 0 && SCIB.FLAG.bit.RXTIME_FLAG == 0) {
         Fi_Number = ScicRegs.SCIFFRX.bit.RXFFST;
         for (i = 0; i < Fi_Number; i++) {
-            /* ¼ì²â½ÓÊÕ»º³åÇøÊÇ·ñÒç³ö£¬Òç³ö½«½ÓÊÕÖ¸ÕëÖ¸ÏòSCI_RX_ALLBUFFER[]Êı×éµÄÆğÊ¼Î»ÖÃ
+            /* æ£€æµ‹æ¥æ”¶ç¼“å†²åŒºæ˜¯å¦æº¢å‡ºï¼Œæº¢å‡ºå°†æ¥æ”¶æŒ‡é’ˆæŒ‡å‘SCI_RX_ALLBUFFER[]æ•°ç»„çš„èµ·å§‹ä½ç½®
              */
             if (SCIB.p_Rx_AllBuffer >= (Uint16 *)(SCI_RX_ALLBUFFER + RX_ALLBUFFER_LENGTH)) {
                 SCIB.p_Rx_AllBuffer = SCI_RX_ALLBUFFER;
@@ -264,13 +264,13 @@ void RunLed(void) {
 }
 //------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
-// Ò»½×RCÂË²¨³ÌĞò
-// Ëã·¨ Y(k) = a*X(k)+(1-a)*Y(k-1);
-// ½ØÖ¹ÆµÂÊ f=filta/(2*pi*T)
+// ä¸€é˜¶RCæ»¤æ³¢ç¨‹åº
+// ç®—æ³• Y(k) = a*X(k)+(1-a)*Y(k-1);
+// æˆªæ­¢é¢‘ç‡ f=filta/(2*pi*T)
 //---------------------------------------------------------------------------------
 _iq RCFilter(volatile _iq filtout, volatile _iq filtin, volatile _iq Freq_cut) {
     volatile _iq filta = 0, tmp = 0;
-    // ¿ØÖÆÖÜÆÚÎª	100us
+    // æ§åˆ¶å‘¨æœŸä¸º	100us
     filta = _IQmpy(Freq_cut, _IQmpy(_IQ(6.283185307179586476925286766559), Per_Ctrl));
 
     if (filta >= _IQ(1)) {
@@ -292,7 +292,7 @@ _iq RCFilter(volatile _iq filtout, volatile _iq filtin, volatile _iq Freq_cut) {
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// ²âÁ¿Ğı±äµÄ³õÊ¼Î»ÖÃ½Ç
+// æµ‹é‡æ—‹å˜çš„åˆå§‹ä½ç½®è§’
 //----------------------------------------------------------------------
 void MeasureInitDigital(void) {
     Udc_Mche = Udc_Lock;
@@ -312,16 +312,16 @@ void MeasureInitDigital(void) {
 void OpenLoop(void) {
     volatile _iq sin_anga, sin_angb, sin_angc;
 
-    // Per_CtrlÊÇ¿ØÖÆÖÜÆÚ£¬f*T
+    // Per_Ctrlæ˜¯æ§åˆ¶å‘¨æœŸï¼Œf*T
     Angle_ElecOpen += _IQmpy(Freq_OpenLoop, Per_Ctrl);
     Angle_ElecOpen = AngleAdjust(Angle_ElecOpen);
     sin_anga = _IQcosPU(Angle_ElecOpen);
 
-    // ÕâÀïµÄ1/3¶ÔÓ¦120¶È
+    // è¿™é‡Œçš„1/3å¯¹åº”120åº¦
     sin_angb = _IQcosPU(Angle_ElecOpen - _IQ(0.3333333333));
     sin_angc = _IQcosPU(Angle_ElecOpen + _IQ(0.3333333333));
 
-    //    Udc_OpenLoopÓ¦Îªµ¹Êı
+    //    Udc_OpenLoopåº”ä¸ºå€’æ•°
     pwma.mDuty1 = _IQ(0.5) + _IQmpy(_IQmpy(Um_OpenLoop, sin_anga), Udc_OpenLoop);
     if (pwma.mDuty1 > _IQ(1)) {
         pwma.mDuty1 = _IQ(1);
@@ -347,26 +347,26 @@ void OpenLoop(void) {
 _iq __getCurrent(Uint16 currentAdcValue, _iq17 sacle, _iq17 offset) {
     _iq17 current = Adc_Arith(currentAdcValue);
     current = _IQ17mpy((current - offset), sacle);
-    current = _IQmpy(current << 3, I_Base); // Isa->±êçÛÖµ
+    current = _IQmpy(current << 3, I_Base); // Isa->æ ‡å¹ºå€¼
     return current;
 }
 
 void getAdc() {
-    ADc_Isa = AdcRegs.ADCRESULT0;   /* aÏàµçÁ÷ */
-    ADc_Isb = AdcRegs.ADCRESULT1;   /* bÏàµçÁ÷ */
-    ADc_Isc = AdcRegs.ADCRESULT2;   /* cÏàµçÁ÷ */
-    ADc_Udc = AdcRegs.ADCRESULT3;   /* Ä¸ÏßµçÑ¹ */
-    ADc_Temp4 = AdcRegs.ADCRESULT4; /* Çı¶¯°åÎÂ¶È */
-    ADc_Idc = AdcRegs.ADCRESULT5;   /* Ä¸ÏßµçÁ÷ */
+    ADc_Isa = AdcRegs.ADCRESULT0;   /* aç›¸ç”µæµ */
+    ADc_Isb = AdcRegs.ADCRESULT1;   /* bç›¸ç”µæµ */
+    ADc_Isc = AdcRegs.ADCRESULT2;   /* cç›¸ç”µæµ */
+    ADc_Udc = AdcRegs.ADCRESULT3;   /* æ¯çº¿ç”µå‹ */
+    ADc_Temp4 = AdcRegs.ADCRESULT4; /* é©±åŠ¨æ¿æ¸©åº¦ */
+    ADc_Idc = AdcRegs.ADCRESULT5;   /* æ¯çº¿ç”µæµ */
 
-    Isa = __getCurrent(ADc_Isa, K_Isa, Off_Isa); /* »ñÈ¡AÏàµçÁ÷ */
-    Isb = __getCurrent(ADc_Isb, K_Isb, Off_Isb); /* »ñÈ¡BÏàµçÁ÷ */
-    Isc = __getCurrent(ADc_Isc, K_Isc, Off_Isc); /* »ñÈ¡CÏàµçÁ÷ */
-    /* »ñÈ¡Ä¸ÏßµçÑ¹,Í¬µçÁ÷±ÈÀı»¹Ô­ */
+    Isa = __getCurrent(ADc_Isa, K_Isa, Off_Isa); /* è·å–Aç›¸ç”µæµ */
+    Isb = __getCurrent(ADc_Isb, K_Isb, Off_Isb); /* è·å–Bç›¸ç”µæµ */
+    Isc = __getCurrent(ADc_Isc, K_Isc, Off_Isc); /* è·å–Cç›¸ç”µæµ */
+    /* è·å–æ¯çº¿ç”µå‹,åŒç”µæµæ¯”ä¾‹è¿˜åŸ */
     Udc_Mche_1 = __getCurrent(ADc_Udc, K_Udc, Off_Udc);
-    Idc = __getCurrent(ADc_Idc, K_Idc, Off_Idc); /* »ñÈ¡Ä¸ÏßµçÁ÷ */
+    Idc = __getCurrent(ADc_Idc, K_Idc, Off_Idc); /* è·å–æ¯çº¿ç”µæµ */
 
-    /* ÂË²¨´¦Àí */
+    /* æ»¤æ³¢å¤„ç† */
     Udc_Mche_1 = RCFilter(Udc_Mche0, Udc_Mche_1, Udc_Filter);
     Udc_Mche0 = Udc_Mche_1;
     Idc = RCFilter(Idc0, Idc, Udc_Filter);
@@ -391,13 +391,13 @@ void getAdc() {
 }
 
 void getAngle() {
-    /* Angle_Q16 = ±Ãµç»úÊµÊ±½Ç¶È */
+    /* Angle_Q16 = æ³µç”µæœºå®æ—¶è§’åº¦ */
     _iq angle = (long)(Angle_Q16);
     if (Ctrl_Flag.bit.RotorWay_Flag == 1) {
-        // µç½Ç¶È:µ¥¶Ô¼«,p=µç»ú¼«¶ÔÊı;¶à¶Ô¼«p=1
+        // ç”µè§’åº¦:å•å¯¹æ,p=ç”µæœºæå¯¹æ•°;å¤šå¯¹æp=1
         angle = _IQmpy(_IQ16toIQ(angle), p);
     } else {
-        // µç½Ç¶È:µ¥Ô¼?,p=µç»ú¼«¶ÔÊı;¶à¶Ô¼«p=1
+        // ç”µè§’åº¦:å•çº¦?,p=ç”µæœºæå¯¹æ•°;å¤šå¯¹æp=1
         angle = -_IQmpy(_IQ16toIQ(angle), p);
     }
 
@@ -405,16 +405,16 @@ void getAngle() {
 }
 
 void getMotorSpeed() {
-    /*Angle_Q16£ºµ±Ç°½Ç¶È£¬Angle0_Q16£ºÉÏ´Î½Ç¶È*/
+    /*Angle_Q16ï¼šå½“å‰è§’åº¦ï¼ŒAngle0_Q16ï¼šä¸Šæ¬¡è§’åº¦*/
     Velo_Calc_flag = Angle_Q16 - Angle0_Q16;
-    // ÕâÀïÁ½¸öÎŞ·ûºÅµÄ16Î»ÊıÏà¼õ£¬·´×ªÎª¸º£¿ÈôÔÚÕı×ªÊ±±ä»¯0x8000£¨¼´32768£©
-    // 7000r/min¶ÔÓ¦µÄÊÇ0.07330383rad/100us£¬ ÓëpiÏà²î42±¶£¡£¡£¡
+    // è¿™é‡Œä¸¤ä¸ªæ— ç¬¦å·çš„16ä½æ•°ç›¸å‡ï¼Œåè½¬ä¸ºè´Ÿï¼Ÿè‹¥åœ¨æ­£è½¬æ—¶å˜åŒ–0x8000ï¼ˆå³32768ï¼‰
+    // 7000r/minå¯¹åº”çš„æ˜¯0.07330383rad/100usï¼Œ ä¸piç›¸å·®42å€ï¼ï¼ï¼
     Velo_Calc_flag = Velo_Calc_flag & 0x8000 == 0 ? 0 : 1;
     if (Velo_Calc_flag == 0) {
-        // Õı×ª
+        // æ­£è½¬
         Velo_Calc_flag = 0;
     } else {
-        // ·´×ª
+        // åè½¬
         Velo_Calc_flag = 1;
     }
 
@@ -426,27 +426,27 @@ void getMotorSpeed() {
     }
     Angle0_Q16 = Angle_Q16;
 
-    tmp2 = (tmp2 << 4); // TODO£º×óÒÆ4Î»µÄÄ¿µÄ???
+    tmp2 = (tmp2 << 4); // TODOï¼šå·¦ç§»4ä½çš„ç›®çš„???
 
-    // Î»ÖÃµÄÀÛ¼Ó
+    // ä½ç½®çš„ç´¯åŠ 
     if (Ctrl_Flag.bit.RotorWay_Flag == 1 && Velo_Calc_flag > 0) {
-        /* Ğı±ä·½ÏòÓë×ªËÙ·½Ïò¶¼ÎªÕıÏò */
+        /* æ—‹å˜æ–¹å‘ä¸è½¬é€Ÿæ–¹å‘éƒ½ä¸ºæ­£å‘ */
         Velotmp -= (_iq)tmp2;
     } else if (Ctrl_Flag.bit.RotorWay_Flag == 0 && Velo_Calc_flag == 0) {
-        /* Ğı±ä·½ÏòÓë×ªËÙ·½Ïò¶¼Îª·´Ïò */
+        /* æ—‹å˜æ–¹å‘ä¸è½¬é€Ÿæ–¹å‘éƒ½ä¸ºåå‘ */
         Velotmp -= (_iq)tmp2;
     } else {
         Velotmp += (_iq)tmp2;
     }
 
-    // ÅĞ¶ÏÊÇ·ñĞèÒª¼ÆËãËÙ¶È£¬Velo_Calc_Num²»ÊÇQ20µÄÊı£¡£¡£¡
+    // åˆ¤æ–­æ˜¯å¦éœ€è¦è®¡ç®—é€Ÿåº¦ï¼ŒVelo_Calc_Numä¸æ˜¯Q20çš„æ•°ï¼ï¼ï¼
     Velo_Avg_Index++;
     if (Velo_Avg_Index >= Velo_Calc_Num) {
         Velo_Avg_Index = 0;
         Velo_Elec_Cal = _IQmpy(Velotmp, K_Velo_Cal);
         Velotmp = _IQ(0);
 
-        /* ³¬ËÙ±£»¤ */
+        /* è¶…é€Ÿä¿æŠ¤ */
         if (Velo_Elec_abs >= Velo_Max) {
             VeloProtect++;
             if (VeloProtect >= VeloProtectNum) {
@@ -458,7 +458,7 @@ void getMotorSpeed() {
             VeloProtect = 0;
         }
 
-        /* ³¬ËÙ±£»¤»Ö¸´ */
+        /* è¶…é€Ÿä¿æŠ¤æ¢å¤ */
         Uint16 isSpeedOverProtection = Sys_Flag.bit.STOP_PWM_Flag_Velo == 1;
         Uint16 isSpeedLessMaxSpeed = Velo_Elec_abs < Velo_Max;
         Uint16 isSpeedLessStartSpeed = Velo_Elec_abs < Velo_Start;
@@ -473,7 +473,7 @@ void getMotorSpeed() {
         }
     }
 
-    // ËÙ¶ÈÂË²¨
+    // é€Ÿåº¦æ»¤æ³¢
     Velo_Elec = RCFilter(Velo_Elec0, Velo_Elec_Cal, Velo_Filter);
     Velo_Elec0 = Velo_Elec;
     Velo_Elec_abs = _IQabs(Velo_Elec);
@@ -484,7 +484,7 @@ void getDqCurrent() {
     abctodq.bs = Isb;
     abctodq.cs = Isc;
     abctodq.ang = Angle_Elec + _IQmpy(Com_angle_I, Velo_Elec);
-    ABC2DQ_CALC(); /* clark+park, ÇóId, Iq */
+    ABC2DQ_CALC(); /* clark+park, æ±‚Id, Iq */
     Id = abctodq.dr;
     Iq = abctodq.qr;
     Id = RCFilter(Id0, Id, id_Filter);
@@ -496,7 +496,7 @@ void getDqCurrent() {
 void idcOverProtection() {
     Is = _IQmag(Id, Iq);
     if ((BORAD_NUM == 2 || BORAD_NUM == 3)) {
-        /* id_Max:µçÁ÷±£»¤Öµ£¬idSet_Max:×î´óµçÁ÷ */
+        /* id_Max:ç”µæµä¿æŠ¤å€¼ï¼ŒidSet_Max:æœ€å¤§ç”µæµ */
         Uint16 isIsOverIdProtectionValue = Is >= id_Max;
         Uint16 isIsOverIdMax = _IQmag(IdZ_Set, IqZ_Set) >= (idSet_Max >> 3);
         Uint16 isIsOweIdSetMax = Is <= (idSet_Max >> 5);
@@ -526,7 +526,7 @@ void idcOverProtection() {
         }
     }
 
-    /* ¹ıÁ÷»Ö¸´ */
+    /* è¿‡æµæ¢å¤ */
     Uint16 isIdOverProtection = Sys_Flag.bit.STOP_PWM_Flag_Id == 1;
     Uint16 isIsLessIdMax = Is < id_Max;
     Uint16 isSpeedLessStartSpeed = Velo_Elec_abs < Velo_Start;
@@ -554,7 +554,7 @@ void udcOverProtection() {
     }
 
     /**
-     * Ä¸Ïß¹ıÑ¹»Ö¸´
+     * æ¯çº¿è¿‡å‹æ¢å¤
      */
     if (Sys_Flag.bit.UDC_FLAG == 1 && _IQabs(Udc_Mche_1) < UdcLimit_Set && Velo_Elec_abs < Velo_Start) {
         UdcOverProtect1++;
@@ -580,7 +580,7 @@ void udcOweProtection() {
         UdcLowProtect = 0;
     }
 
-    /* Ä¸ÏßÇ·Ñ¹»Ö¸´ */
+    /* æ¯çº¿æ¬ å‹æ¢å¤ */
     if (Ctrl_Flag.bit.UdcLow_Flag == 1 && _IQabs(Udc_Mche_1) > UdcLimit1_Set && Velo_Elec_abs < Velo_Start) {
         UdcLowEnable++;
         if (UdcLowEnable >= PROTECT_NUM) {
@@ -649,7 +649,7 @@ void driverTempOverProtection() {
 }
 
 void rdcFaultDection() {
-    // Ğı±ä¹ÊÕÏ
+    // æ—‹å˜æ•…éšœ
     if ((rdc1.FAULT & 0x40) == 0x40) {
         RdcProtect++;
         if (RdcProtect >= IdProtectNum) {
@@ -671,7 +671,7 @@ void rdcFaultDection() {
         RdcProtect1 = 0;
     }
 
-    // Ğı±ä¹ÊÕÏ
+    // æ—‹å˜æ•…éšœ
     if ((rdc2.FAULT & 0x40) == 0x40) {
         Rdc2Protect++;
         if (Rdc2Protect >= IdProtectNum) {
@@ -695,23 +695,23 @@ void rdcFaultDection() {
 }
 
 //---------------------------------------------------------------------------
-// ¿ØÖÆÖÜÆÚ³ÌĞòĞèÒªµÄµçÑ¹¡¢µçÁ÷¡¢ËÙ¶È¡¢½Ç¶ÈµÄ²É¼¯¼ÆËã¡£
-// ÇóµÃËùĞèÊı¾İµÄ±êçÛÖµ
+// æ§åˆ¶å‘¨æœŸç¨‹åºéœ€è¦çš„ç”µå‹ã€ç”µæµã€é€Ÿåº¦ã€è§’åº¦çš„é‡‡é›†è®¡ç®—ã€‚
+// æ±‚å¾—æ‰€éœ€æ•°æ®çš„æ ‡å¹ºå€¼
 //---------------------------------------------------------------------------
 void Ready_DataA(void) {
-    /* »ñÈ¡µç»ú½Ç¶È */
+    /* è·å–ç”µæœºè§’åº¦ */
     getAngle();
 
-    // ¼ÆËãËÙ¶È
+    // è®¡ç®—é€Ÿåº¦
     getMotorSpeed();
 
-    /* Ö´ĞĞAD²É¼¯£¬»ñÈ¡ÈıÏà¡¢Ä¸ÏßµçÁ÷¡¢Ä¸ÏßµçÑ¹¡¢Çı¶¯°åÎÂ¶È */
+    /* æ‰§è¡ŒADé‡‡é›†ï¼Œè·å–ä¸‰ç›¸ã€æ¯çº¿ç”µæµã€æ¯çº¿ç”µå‹ã€é©±åŠ¨æ¿æ¸©åº¦ */
     getAdc();
 
-    /* clark + park ±ä»»£¬ÇóId¡¢Iq */
+    /* clark + park å˜æ¢ï¼Œæ±‚Idã€Iq */
     getDqCurrent();
 
-    /* ¹ÊÕÏ¼ì²âÓë±£»¤ */
+    /* æ•…éšœæ£€æµ‹ä¸ä¿æŠ¤ */
     idcOverProtection();
     udcOverProtection();
     udcOweProtection();
@@ -729,7 +729,7 @@ void Ready_Data(void) {
     AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1;
     AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1;
 
-    RDC_READ(); // ¶ÁĞı±äÎ»ÖÃ
+    RDC_READ(); // è¯»æ—‹å˜ä½ç½®
     Angle_Q16 = rdc1.DATA_BUFFER - Angle_Init_Digital;
     Angle_Fa_Q16 = rdc2.DATA_BUFFER - Angle_Init_Fa;
 
@@ -752,8 +752,8 @@ void positionControl() {
 }
 
 void speedControl() {
-    /* ËÙ¶È»· */
-    /* Veloover_Set£ºÄ¿±ê×ªËÙ */
+    /* é€Ÿåº¦ç¯ */
+    /* Veloover_Setï¼šç›®æ ‡è½¬é€Ÿ */
     if (Veloover_Set - Velo_Set > Velo_PerAdd) {
         Velo_Set = Velo_Set + Velo_PerAdd;
     } else if (Velo_Set - Veloover_Set > Velo_PerAdd) {
@@ -763,7 +763,7 @@ void speedControl() {
     }
 
     pi_velo.ctrl_index++;
-    /* pi_velo.ctrl_period = 10£¬ 10 * 150us = 1.5ms¿ØÖÆÒ»´Î£¿£¿£¿ */
+    /* pi_velo.ctrl_period = 10ï¼Œ 10 * 150us = 1.5msæ§åˆ¶ä¸€æ¬¡ï¼Ÿï¼Ÿï¼Ÿ */
     if (pi_velo.ctrl_index >= pi_velo.ctrl_period) {
         pi_velo.ctrl_index = 0;
         pi_velo.pi_ref_reg = Velo_Set;
@@ -771,7 +771,7 @@ void speedControl() {
         pi_velo.calc(&pi_velo);
     }
 
-    // ¿ØÖÆµçÁ÷ÉÏÉı¡¢ÏÂ½µĞ±ÂÊ
+    // æ§åˆ¶ç”µæµä¸Šå‡ã€ä¸‹é™æ–œç‡
     if (IdSet >= 0) {
         // TODO: Isd_Set === 0 ???
         if (Isd_Set - IdSet > Is_PerAdd) {
@@ -791,12 +791,12 @@ void speedControl() {
         }
     }
 
-    // TODO: TorqueAngleA === 0 ???£¬ Id_Set === 0 ???
+    // TODO: TorqueAngleA === 0 ???ï¼Œ Id_Set === 0 ???
     Id_Set = -_IQmpy(_IQabs(pi_velo.pi_out_reg), _IQsinPU(TorqueAngleA)) + IdSet;
 
-    // TODO:: Iq_Set = ËÙ¶È»·PiÊä³ö
+    // TODO:: Iq_Set = é€Ÿåº¦ç¯Piè¾“å‡º
     Iq_Set = -_IQmpy(pi_velo.pi_out_reg, _IQcosPU(TorqueAngleA));
-    Isdq_Set2 = Iq_Set; // Isdq_Set2 Ö»ÔÚ__speedControl()ÖĞÊ¹ÓÃ
+    Isdq_Set2 = Iq_Set; // Isdq_Set2 åªåœ¨__speedControl()ä¸­ä½¿ç”¨
 }
 
 void __speedControl() {
@@ -804,7 +804,7 @@ void __speedControl() {
     Isdq_Set = Isdq_Set1;
 
     if (Isdq_Set2 >= 0) {
-        // ¿ØÖÆµçÁ÷ÉÏÉı¡¢ÏÂ½µĞ±ÂÊ
+        // æ§åˆ¶ç”µæµä¸Šå‡ã€ä¸‹é™æ–œç‡
         if (Isdq_Set - Isdq_Set2 > Is_PerAdd) {
             Isdq_Set2 = Isdq_Set2 + Is_PerAdd;
         } else if (Isdq_Set2 - Isdq_Set > Is_DownPerAdd) {
@@ -823,7 +823,7 @@ void __speedControl() {
     }
 
     if (IdSet >= 0) {
-        // ¿ØÖÆµçÁ÷ÉÏÉı¡¢ÏÂ½µĞ±ÂÊ
+        // æ§åˆ¶ç”µæµä¸Šå‡ã€ä¸‹é™æ–œç‡
         if (Isd_Set - IdSet > Is_PerAdd) {
             IdSet = IdSet + Is_PerAdd;
         } else if (IdSet - Isd_Set > Is_DownPerAdd) {
@@ -841,10 +841,10 @@ void __speedControl() {
         }
     }
 
-    /// ÕâÀïµÄTorqueAngleÒª²»Òªµ÷Õû
+    /// è¿™é‡Œçš„TorqueAngleè¦ä¸è¦è°ƒæ•´
     Id_Set = -_IQmpy(_IQabs(Isdq_Set2), _IQsinPU(TorqueAngleA)) + IdSet;
 
-    // ÕâÀïµÄTorqueAngleÒª²»Òªµ÷Õû
+    // è¿™é‡Œçš„TorqueAngleè¦ä¸è¦è°ƒæ•´
     Iq_Set = _IQmpy(Isdq_Set2, _IQcosPU(TorqueAngleA));
 }
 
@@ -852,7 +852,7 @@ void fieldWeakeningControl(void) {
     pi_usLimit.ctrl_index++;
     if (pi_usLimit.ctrl_index >= pi_usLimit.ctrl_period) {
         pi_usLimit.ctrl_index = 0;
-        // ÕâÀïÏà³ËÊÇÊ²Ã´ÒâË¼£¿£¿
+        // è¿™é‡Œç›¸ä¹˜æ˜¯ä»€ä¹ˆæ„æ€ï¼Ÿï¼Ÿ
         pi_usLimit.pi_ref_reg = _IQmpy(Us_Max, UsSet);
         pi_usLimit.pi_fdb_reg = Us;
         pi_usLimit.calc(&pi_usLimit);
@@ -860,45 +860,45 @@ void fieldWeakeningControl(void) {
 }
 
 void torqueContorl() {
-    IqZ_Set = Iq_Set; // TODO: Iq_Set = ËÙ¶È»·PiÊä³ö £¿£¿£¿
+    IqZ_Set = Iq_Set; // TODO: Iq_Set = é€Ÿåº¦ç¯Piè¾“å‡º ï¼Ÿï¼Ÿï¼Ÿ
 
-    // TODO£º pi_usLimit.pi_out_reg === 0£¬Id_Set === 0 ?£¿£¿£¬ Idz_Set === 0 ?£¿£¿
-    IdZ_Set = Id_Set + pi_usLimit.pi_out_reg; // pi_usLimit£ºÈõ´Å»·Êä³ö£¬Ã»ÓĞµ÷ÓÃ
+    // TODOï¼š pi_usLimit.pi_out_reg === 0ï¼ŒId_Set === 0 ?ï¼Ÿï¼Ÿï¼Œ Idz_Set === 0 ?ï¼Ÿï¼Ÿ
+    IdZ_Set = Id_Set + pi_usLimit.pi_out_reg; // pi_usLimitï¼šå¼±ç£ç¯è¾“å‡ºï¼Œæ²¡æœ‰è°ƒç”¨
 
-    // idSet_Max: ×î´óµçÁ÷£¬18
+    // idSet_Max: æœ€å¤§ç”µæµï¼Œ18
     if (_IQmag(IdZ_Set, IqZ_Set) > idSet_Max) {
-        // ËÄÏóÏŞµÄ·´ÕıÏÒº¯Êı
+        // å››è±¡é™çš„åæ­£å¼¦å‡½æ•°
         _iq Temp_Q = _IQasin4PU(IdZ_Set, IqZ_Set);
 
-        // °´Éè¶¨ÏŞµÄ×î´óÖµÊä³öUd
+        // æŒ‰è®¾å®šé™çš„æœ€å¤§å€¼è¾“å‡ºUd
         IdZ_Set = _IQmpy(idSet_Max, _IQcosPU(Temp_Q));
 
-        // °´Éè¶¨ÏŞ·ùµÄ×î´óÖµÊä³öUq
+        // æŒ‰è®¾å®šé™å¹…çš„æœ€å¤§å€¼è¾“å‡ºUq
         IqZ_Set = _IQmpy(idSet_Max, _IQsinPU(Temp_Q));
     }
 
-    // IdµÄPIµ÷½ÚÆ÷
+    // Idçš„PIè°ƒèŠ‚å™¨
     pi_Id_Kc.ctrl_index++;
-    /* pi_Id_Kc.ctrl_period = 1£¬Ã¿´Î¶¼¼ÆËã£¨100usÖÜÆÚ£© */
+    /* pi_Id_Kc.ctrl_period = 1ï¼Œæ¯æ¬¡éƒ½è®¡ç®—ï¼ˆ100uså‘¨æœŸï¼‰ */
     if (pi_Id_Kc.ctrl_index >= pi_Id_Kc.ctrl_period) {
         pi_Id_Kc.ctrl_index = 0;
         pi_Id_Kc.pi_ref_reg = IdZ_Set;
-        pi_Id_Kc.pi_fdb_reg = Id; /* clark + park ±ä»»ºóµÄ d ÖáµçÁ÷ */
+        pi_Id_Kc.pi_fdb_reg = Id; /* clark + park å˜æ¢åçš„ d è½´ç”µæµ */
         pi_Id_Kc.calc(&pi_Id_Kc);
 
         Uint16 isIntGreaterMaxInt = pi_Id_Kc.ui_out_max <= pi_Id_Kc.ui_reg;
         Uint16 isIntLessMinInt = pi_Id_Kc.ui_reg <= pi_Id_Kc.ui_out_min;
         if (isIntGreaterMaxInt || isIntLessMinInt) {
-            Sys_Flag.bit.Flag_Id = 1; /* IdÏŞ·ù */
+            Sys_Flag.bit.Flag_Id = 1; /* Idé™å¹… */
         } else {
             Sys_Flag.bit.Flag_Id = 0;
         }
     }
 
     //--------------------------------------------------------------
-    // IqµÄPIµ÷½ÚÆ÷
+    // Iqçš„PIè°ƒèŠ‚å™¨
     pi_Iq_Kc.ctrl_index++;
-    /* pi_Iq_Kc.ctrl_period = 1£¬Ã¿´Î¶¼¼ÆËã£¨100usÖÜÆÚ£© */
+    /* pi_Iq_Kc.ctrl_period = 1ï¼Œæ¯æ¬¡éƒ½è®¡ç®—ï¼ˆ100uså‘¨æœŸï¼‰ */
     if (pi_Iq_Kc.ctrl_index >= pi_Iq_Kc.ctrl_period) {
         pi_Iq_Kc.ctrl_index = 0;
         pi_Iq_Kc.pi_ref_reg = IqZ_Set;
@@ -908,27 +908,27 @@ void torqueContorl() {
         Uint16 isIntGreaterMaxInt = pi_Iq_Kc.ui_out_max <= pi_Iq_Kc.ui_reg;
         Uint16 isIntLessMinInt = pi_Iq_Kc.ui_reg <= pi_Iq_Kc.ui_out_min;
         if (isIntGreaterMaxInt || isIntLessMinInt) {
-            Sys_Flag.bit.Flag_Iq = 1; /* Iq ÏŞ·ù */
+            Sys_Flag.bit.Flag_Iq = 1; /* Iq é™å¹… */
         } else {
             Sys_Flag.bit.Flag_Iq = 0;
         }
     }
 
-    // ¿ØÖÆ·½³Ì ÇóµÃ¸ø³öµÄUd,Uq µçÑ¹·½³ÌÊ½,µÃµ½Vd,Vq
+    // æ§åˆ¶æ–¹ç¨‹ æ±‚å¾—ç»™å‡ºçš„Ud,Uq ç”µå‹æ–¹ç¨‹å¼,å¾—åˆ°Vd,Vq
     Ud = _IQmpy(pi_Id_Kc.ui_reg, Radq) + _IQmpy(Velo_Elec, _IQmpy(Lq, pi_Iq_Kc.ui_reg)) + _IQmpy(pi_Id_Kc.ui_reg, Rs) + pi_Id_Kc.up_reg - _IQmpy(Id, Radq);
     Uq = _IQmpy(pi_Iq_Kc.ui_reg, Radq) - _IQmpy(Velo_Elec, PHI + _IQmpy(Ld, pi_Id_Kc.ui_reg)) + _IQmpy(pi_Iq_Kc.ui_reg, Rs) + pi_Iq_Kc.up_reg - _IQmpy(Iq, Radq);
 
-    //	Ud,UqÏŞ·ù
-    Udc_Mche = Udc_Setg; // Udc_SetgÊÇÉÏÎ»»úÉèÖÃµÄÖ±Á÷µçÑ¹µÄµ¹Êı
+    //	Ud,Uqé™å¹…
+    Udc_Mche = Udc_Setg; // Udc_Setgæ˜¯ä¸Šä½æœºè®¾ç½®çš„ç›´æµç”µå‹çš„å€’æ•°
 
     Us = _IQmag(Ud, Uq);
     Us_Max = _IQmpy(Udc_Mche_realvalue, _IQ(0.70710678118654752440084436210485));
     Us_Max = _IQmpy(Us_Max, Us_M);
 
     if (Us > Us_Max) {
-        _iq Temp_Q = _IQasin4PU(Ud, Uq);       // ËÄÏóÏŞµÄ·´ÕıÏÒº¯Êı
-        Ud = _IQmpy(Us_Max, _IQcosPU(Temp_Q)); // °´Éè¶¨ÏŞ·ùµÄ×î´óÖµÊä³öUd
-        Uq = _IQmpy(Us_Max, _IQsinPU(Temp_Q)); // °´Éè¶¨ÏŞ·ùµÄ×î´óÖµÊä³öUq
+        _iq Temp_Q = _IQasin4PU(Ud, Uq);       // å››è±¡é™çš„åæ­£å¼¦å‡½æ•°
+        Ud = _IQmpy(Us_Max, _IQcosPU(Temp_Q)); // æŒ‰è®¾å®šé™å¹…çš„æœ€å¤§å€¼è¾“å‡ºUd
+        Uq = _IQmpy(Us_Max, _IQsinPU(Temp_Q)); // æŒ‰è®¾å®šé™å¹…çš„æœ€å¤§å€¼è¾“å‡ºUq
         Us = _IQmag(Ud, Uq);
         Sys_Flag.bit.Flag_Us = 1;
     } else {
@@ -955,31 +955,31 @@ void torqueContorl() {
 }
 
 //--------------------------------------------------------------------------
-// µç¶¯×´Ì¬ÏÂµÄ¿ØÖÆ³ÌĞò
+// ç”µåŠ¨çŠ¶æ€ä¸‹çš„æ§åˆ¶ç¨‹åº
 //--------------------------------------------------------------------------
 void Main_ControlA(void) {
-    /* ½øÈëÎ»ÖÃ¿ØÖÆ³ÌĞò */
+    /* è¿›å…¥ä½ç½®æ§åˆ¶ç¨‹åº */
     Uint16 isPositionControl = Ctrl_Flag.bit.POS_CONTROL_FLAG == 1;
     if (isPositionControl) {
         positionControl();
     }
 
-    /* ½øÈëËÙ¶È¿ØÖÆ³ÌĞò */
+    /* è¿›å…¥é€Ÿåº¦æ§åˆ¶ç¨‹åº */
     Uint16 isSpeedControl = Ctrl_Flag.bit.VELO_CONTROL_FLAG == 1;
     if (isSpeedControl) {
         speedControl();
     } else {
-        // TODO£º Ìõ¼ş´ï²»µ½£¿£¿£¿
+        // TODOï¼š æ¡ä»¶è¾¾ä¸åˆ°ï¼Ÿï¼Ÿï¼Ÿ
         __speedControl();
     }
 
-    /* Èõ´Å¿ØÖÆ */
+    /* å¼±ç£æ§åˆ¶ */
     Uint16 isFieldWeakeningControl = Ctrl_Flag.bit.UsCtrl_Flag == 1;
     if (isFieldWeakeningControl) {
         fieldWeakeningControl();
     }
 
-    /* ×ª¾Ø¿ØÖÆ±êÖ¾ */
+    /* è½¬çŸ©æ§åˆ¶æ ‡å¿— */
     Uint16 isTorqueControl = Ctrl_Flag.bit.TORQ_CONTROL_FLAG == 1;
     if (isTorqueControl) {
         torqueContorl();
@@ -1005,16 +1005,16 @@ Uint16 isClearStopPwmFlag() {
     return isCtrlFault || isSysFault || isFault;
 }
 
-// ¿ØÖÆÖÜÆÚ¼ÆËã³ÌĞò (100uS)  µç¶¯×´Ì¬
+// æ§åˆ¶å‘¨æœŸè®¡ç®—ç¨‹åº (100uS)  ç”µåŠ¨çŠ¶æ€
 void ControlA(void) {
-    hardwareProtection(); // Ó²¼ş±£»¤
+    hardwareProtection(); // ç¡¬ä»¶ä¿æŠ¤
 
-    /* Çå³ı¹ÊÕÏÍ£»ú±êÖ¾ */
+    /* æ¸…é™¤æ•…éšœåœæœºæ ‡å¿— */
     if (isClearStopPwmFlag()) {
         Ctrl_Flag.bit.STOP_PWM_Flag = 0;
     }
 
-    /* ½øÈëÍ£»ú³ÌĞò£¬ ÎŞ·¨½øÈë£¿£¿£¿ */
+    /* è¿›å…¥åœæœºç¨‹åºï¼Œ æ— æ³•è¿›å…¥ï¼Ÿï¼Ÿï¼Ÿ */
     if (Ctrl_Flag.bit.STOP_VELO_FLAG == 1) {
         Uint16 isLock = Ctrl_Flag.bit.LOCK_FLAG == 1;
         Uint16 isOverSpeedProtect = Sys_Flag.bit.STOP_PWM_Flag_Velo == 0;
@@ -1053,13 +1053,13 @@ void ControlA(void) {
             TorqueAngleA = TorqueAngle;
             pi_usLimit.pi_out_reg = _IQ(0);
             pi_Pos.pi_out_reg = _IQ(0);
-            pi_velo.pi_out_reg = _IQ(0); // ËÙ¶È»·µÄPI
+            pi_velo.pi_out_reg = _IQ(0); // é€Ÿåº¦ç¯çš„PI
             pi_Id_Kc.pi_out_reg = _IQ(0);
             pi_Iq_Kc.pi_out_reg = _IQ(0);
 
-            pi_usLimit.ui_reg = _IQ(0); // Vdc»·µÄPI
+            pi_usLimit.ui_reg = _IQ(0); // Vdcç¯çš„PI
             pi_Pos.ui_reg = _IQ(0);
-            pi_velo.ui_reg = _IQ(0); // ËÙ¶È»·µÄPI
+            pi_velo.ui_reg = _IQ(0); // é€Ÿåº¦ç¯çš„PI
             pi_Id_Kc.ui_reg = _IQ(0);
             pi_Iq_Kc.ui_reg = _IQ(0);
         }
@@ -1084,12 +1084,12 @@ void Control(void) {
             EPwm1Regs.TBPRD = (Uint16)Control_Period;
             EPwm2Regs.TBPRD = (Uint16)Control_Period;
             EPwm3Regs.TBPRD = (Uint16)Control_Period;
-            EPwm1Regs.DBRED = Deadtime; /*ÉÏÉıÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBRED*TBCLK*/
-            EPwm1Regs.DBFED = Deadtime; /*ÏÂ½µÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBFED*TBCLK*/
-            EPwm2Regs.DBRED = Deadtime; /*ÉÏÉıÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBRED*TBCLK*/
-            EPwm2Regs.DBFED = Deadtime; /*ÏÂ½µÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBFED*TBCLK*/
-            EPwm3Regs.DBRED = Deadtime; /*ÉÏÉıÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBRED*TBCLK*/
-            EPwm3Regs.DBFED = Deadtime; /*ÏÂ½µÑØÑÓÊ±ËÀÇøÊ±¼ä£ºDBFED*TBCLK*/
+            EPwm1Regs.DBRED = Deadtime; /*ä¸Šå‡æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBRED*TBCLK*/
+            EPwm1Regs.DBFED = Deadtime; /*ä¸‹é™æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBFED*TBCLK*/
+            EPwm2Regs.DBRED = Deadtime; /*ä¸Šå‡æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBRED*TBCLK*/
+            EPwm2Regs.DBFED = Deadtime; /*ä¸‹é™æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBFED*TBCLK*/
+            EPwm3Regs.DBRED = Deadtime; /*ä¸Šå‡æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBRED*TBCLK*/
+            EPwm3Regs.DBFED = Deadtime; /*ä¸‹é™æ²¿å»¶æ—¶æ­»åŒºæ—¶é—´ï¼šDBFED*TBCLK*/
             if (Velo_Duty0 != Velo_Duty) {
                 Velo_Duty0 = Velo_Duty;
                 K_Velo_Cal = _IQdiv(_IQ(62.83185307179586476925286766559), V_Base);

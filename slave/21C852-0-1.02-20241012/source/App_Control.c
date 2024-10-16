@@ -418,18 +418,23 @@ void Ready_DataA(void)
 	volatile Uint16 i=0;
 
 	/**
-     * 修改时间：20241006
+     * 修改时间：20241016
      * 修改人：李盛
      * 修改类型：新增
      *
      * 修改内容：增加速度波动计算，判断是否需要进行切板操作
      */
-    static _iq speedThreshold = 104858; /* 实际转速与计算使用的转速相差：524.288， 200 * 524.88 = 104857.6 */
+    static _iq speedThreshold = 104858; // 实际转速与计算使用的转速相差：524.288， 200 * 524.88 = 104857.6
+	static _iq speedRatio = _IQ(0.2);
+	static Uint16 usec = 0; // 微妙计数器，150us自增1
+	static Uint16 msec = 0; // 毫秒计数器
+	static Uint16 sec = 0; // 秒计数器
+    static Uint16 startTime = 6; // 启动阶段不进行转速波动判断（6s内不判断），现实际启动时间1s
+	static Uint16 protectionUsec = 0;
+	static Uint16 protectionMsec = 0;
+	static Uint16 protectionSec = 0;
     static Uint16 speedProtectionCount = 0;
-    static Uint16 speedProtectionExitCount = 0;
-    static Uint16 speedMaxProtectionCount = 5;
-    static Uint16 startTime = 20000; /* 启动阶段不进行转速波动判断，现实际启动时间1s，150 * 5000 / 1000 / 1000 = 0.75s  */
-    static Uint16 startTimeCount = 0;
+    static Uint16 speedMaxProtectionCount = 2000; // 连续检测3s（3000000us/150us*10% = 2000），存在10%转速波动进行切板操作 
     static Uint16 exitTimeCount = 0;
     volatile _iq speedError = 0;
 
@@ -511,45 +516,82 @@ void Ready_DataA(void)
 	Velo_Elec0 = Velo_Elec;
 	Velo_Elec_abs = _IQabs(Velo_Elec);
 
-	if (BORAD_NUM == 2 || BORAD_NUM == 3) {
-		/* 设定转速为0时， 计数器清0 */
-	    if (_IQabs(setSpeed - prevSpeed) > 0 || (setSpeed <= 0 && prevSpeed <= 0)) {
-	        startTimeCount = 0;
+	/**
+	 * 主板检测到转速波动后进行切板操作
+	 * 波动范围：设定转速的20%
+	 * 波动次数：检测次数的10%
+	 * 主板切换，副板转速波动时不检测，波动过大人为停机
+	 **/
+	if (BORAD_NUM == 2) {
+		// 设定转速为0时，计数器清0，转速切换时也重新计时
+	    if ((_IQabs(setSpeed - prevSpeed) > 0) || (setSpeed <= 0 && prevSpeed <= 0)) {
+	        usec = 0;
 	        prevSpeed = setSpeed;
 	    } else {
-	        startTimeCount++;
+			/* 毫秒计时 */
+			usec++;
+			if (usec >= 20) {
+				msec+=3; /* 3ms */
+				usec = 0;
+			}
+
+			/* 秒计时 */
+			if (msec >= 1000) {
+				sec += 3; /* 3s */
+				msec = 0;
+			}
 	    }
 
-	    /* 速度波动过大切换逻辑 */
-	    if (startTimeCount >= startTime) {
-	        speedError = _IQabs(Velo_Elec_abs - setSpeed);
-	        if (speedError >= speedThreshold) {
-	            speedProtectionCount++;
-	            if (speedProtectionCount >= speedMaxProtectionCount) {
-					prevSpeed = 0;
+		/* 根据设定转速计算转速波动阈值：设定转速*转速波动比例（20%） */
+		speedThreshold = _IQmpy(Veloover_Set, speedRatio);
+
+		/* 计算转速误差 */
+		speedError = _IQabs(Velo_Elec_abs - Veloover_Set);
+
+		/*
+		 * 启动结束或转速切换完成之后进行转速波动判断
+		 **/
+		if (sec >= startTime) {		
+			/* 毫秒计时 */
+			protectionUsec++;
+			if (protectionUsec >= 20) {
+				protectionMsec+=3; /* 3ms */
+				protectionUsec = 0;
+			}
+
+			/* 秒计时 */
+			if (protectionMsec >= 1000) {
+				protectionSec += 3; /* 3s */
+				protectionMsec = 0;
+			}
+
+			/* 波动计数 */
+			if (speedError >= speedThreshold) {
+				speedProtectionCount++;
+			}
+
+			if (protectionSec >= 3) {
+				if (speedProtectionCount >=  speedMaxProtectionCount) {
 	                Ctrl_Flag.bit.STOP_VELO_FLAG = 1;
 	                Ctrl_Flag.bit.speedFluctuation = 1;
 	                Ctrl_Flag.bit.STOP_PWM_Flag = 1;
-	            }
-	        } else {
-	            speedProtectionCount = 0;
-	        }
+		        } else {
+		        	protectionSec = 0;
+					speedProtectionCount = 0;
+		        }
+			}   
 	    }
 
-	    if (Ctrl_Flag.bit.speedFluctuation == 1) {
+	    if ((Ctrl_Flag.bit.speedFluctuation == 1) && (speedError < speedThreshold)) {
 	        exitTimeCount++;
-	        if (exitTimeCount >= 200) { // 30: 4.5ms, 100: 150ms, 200: 300ms
-	            speedProtectionExitCount++;
-	            if (speedProtectionExitCount >= speedMaxProtectionCount) {
-	                Ctrl_Flag.bit.speedFluctuation = 0;
-	                speedProtectionExitCount = 0;
-	            }
+	        if (exitTimeCount >= 1000) { // 30: 4.5ms, 1000: 150ms, 2000: 300ms, 3000: 450ms,  4000:600m
+                Ctrl_Flag.bit.speedFluctuation = 0;
+				exitTimeCount = 0;
 	        }
 	    } else {
 	        exitTimeCount = 0;
-	        speedProtectionExitCount = 0;
 	    }
-	}
+	 }
 
 //----------------------------------------------------------
 	ADc_Isa = AdcRegs.ADCRESULT0; 	//a相电流

@@ -1141,6 +1141,7 @@ void Can_Deal(void)
 			Sys_Flag.bit.STOP_PWM_Flag_Velo = 0;	// "1"表明超速保护
 			Sys_Flag.bit.UDC_FLAG = 0;				// "1"表明直流电压故障
 			Sys_Flag.bit.STOP_PWM_Flag_Driv = 0;
+			Ctrl_Flag.bit.speedFluctuation = 0; /* 20241013 李盛 新增 */
 		
 		if(CANB.FLAG.bit.TXBO_FLAG ==1)
 		{
